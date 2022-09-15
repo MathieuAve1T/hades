@@ -559,15 +559,6 @@ class AutoRigGenerateRig(object):
 
             hadLib.setRotateOrient(hadEnv.AUTORIGLISTCHESTJOINT[4],0,0,0)        
 
-            if hadEnv.AUTORIGLISTLEGJOINT:
-                cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[1])
-
-            if hadEnv.AUTORIGLISTARMJOINT:
-                cmds.parent(hadEnv.AUTORIGLISTARMJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[4])
-
-            if hadEnv.AUTORIGLISTHEADJOINT:
-                cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[4])
-
         cmds.delete(hadEnv.GUIDELINEGRP)
 
         cmds.select(clear=True)   
@@ -859,7 +850,16 @@ class AutoRigGenerateRig(object):
             cmds.connectAttr(reverseIK+'.outputX', grpCtrlPLLeg+'.visibility')
             cmds.setAttr(tempIkAnkle+'.visibility', False)
             cmds.setAttr(tempIkFoot+'.visibility', False)
-            cmds.setAttr(tempIkToe+'.visibility', False) 
+            cmds.setAttr(tempIkToe+'.visibility', False)
+
+            #Clean
+
+            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[0+step], 'Joints')
+            cmds.parent(grpCtrlPLLeg, 'ControlObjects')
+            cmds.parent(grpctrlLegIk , 'ControlObjects')
+            cmds.parent(grpCtrlLegIKFK , 'ControlObjects')
+            cmds.parent(GrpFootRool , 'ControlObjects')
+
             
 
         def rigArms(side):
@@ -1015,8 +1015,8 @@ class AutoRigGenerateRig(object):
             reverseIK = cmds.createNode('reverse', name='reverseIK'+ hadEnv.DICTMIRROR[side], skipSelect=True)
             cmds.connectAttr(ctrlLArmIKFK+'.SwitchIKFK', reverseIK+'.inputX')
             cmds.connectAttr(reverseIK+'.outputX', grpCtrlWristIK+'.visibility')
-            grpCtrlPLLeg = cmds.listRelatives(ctrlPLArm, parent=True)[0]
-            cmds.connectAttr(reverseIK+'.outputX', grpCtrlPLLeg+'.visibility')
+            grpCtrlPLArm = cmds.listRelatives(ctrlPLArm, parent=True)[0]
+            cmds.connectAttr(reverseIK+'.outputX', grpCtrlPLArm+'.visibility')
             cmds.setAttr(tempIkArm+'.visibility', False)
 
             #Parent FkCtrl Scapula
@@ -1111,9 +1111,28 @@ class AutoRigGenerateRig(object):
             cmds.connectAttr(mulSpreadFingersB+'.outputX', grpOffsetFingers[10]+'.rotateZ')
             cmds.connectAttr(mulSpreadFingersA+'.outputX', grpOffsetFingers[13]+'.rotateZ')
 
+            #Clean
+
+            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[0+step], 'Joints')
+            cmds.parent(grpCtrlClavicle, 'ControlObjects')
+            cmds.parent(tempIkArm, 'Iks')
+            cmds.parent(grpCtrlPLArm, 'ControlObjects')
+            cmds.parent(grpCtrlWristIK , 'ControlObjects')
+            cmds.parent(GrpctrlLArmIKFK , 'ControlObjects')
+            cmds.parent(grpFingers[3] , 'ControlObjects')
+            cmds.parent(grpFingers[0] , 'ControlObjects')
+
+
     
 
+            #if hadEnv.AUTORIGLISTLEGJOINT:
+                #cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[1])
 
+            #if hadEnv.AUTORIGLISTARMJOINT:
+                #cmds.parent(hadEnv.AUTORIGLISTARMJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[4])
+
+            #if hadEnv.AUTORIGLISTHEADJOINT:
+                #cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[4])
 
 
             

@@ -167,7 +167,8 @@ def createPoleVector(start, middle, end, locaname, ik, side):
     cmds.setAttr( tempCrv + ".overrideDisplayType", 2)
     
     cmds.setAttr(PoleVectorLeg + ".overrideEnabled", 1)
-    cmds.setAttr(PoleVectorLeg + ".overrideColor", 6+side)        
+    cmds.setAttr(PoleVectorLeg + ".overrideColor", 6+side)  
+    cmds.parent(tempParentCrv,'Xtra_toHide')
 
     return PoleVectorLeg
     
