@@ -1,6 +1,6 @@
 import maya.cmds as cmds
-from hades import hadLib
-from hades import hadEnv
+import hades.hadLib as hadLib
+import hades.hadEnv as hadEnv
 
 
 class AutoRigCreateGuide(object):
@@ -481,18 +481,28 @@ class AutoRigGenerateRig(object):
             cmds.select(hierarchy=True)
             cmds.joint(edit=True, zeroScaleOrient=True, orientJoint="xyz", secondaryAxisOrient="zdown")
 
-            TempEndJoint = [hadEnv.AUTORIGLISTARMJOINT[19], hadEnv.AUTORIGLISTARMJOINT[16], hadEnv.AUTORIGLISTARMJOINT[13],hadEnv.AUTORIGLISTARMJOINT[10], hadEnv.AUTORIGLISTARMJOINT[16]]
+            cmds.select(hadEnv.AUTORIGLISTARMJOINT[4])
+            cmds.select(hierarchy=True)
+            cmds.joint(edit=True, zeroScaleOrient=True, orientJoint="xzy", secondaryAxisOrient="yup")
+
+            cmds.parent( hadEnv.AUTORIGLISTARMJOINT[5], world=True )       
+            TempX = cmds.getAttr(hadEnv.AUTORIGLISTARMJOINT[4] + ".jointOrientX")
+            TempY = cmds.getAttr(hadEnv.AUTORIGLISTARMJOINT[4] + ".jointOrientY")
+            TempX = TempX - TempY         
+            cmds.setAttr(hadEnv.AUTORIGLISTARMJOINT[4] + ".jointOrientX", TempX)
+            cmds.setAttr(hadEnv.AUTORIGLISTARMJOINT[4] + ".jointOrientZ", 0)           
+            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[5], hadEnv.AUTORIGLISTARMJOINT[4])
+
+            cmds.parent( hadEnv.AUTORIGLISTARMJOINT[4], world=True )
+            cmds.parent( hadEnv.AUTORIGLISTARMJOINT[7], world=True )
+
+            TempEndJoint = [hadEnv.AUTORIGLISTARMJOINT[3], hadEnv.AUTORIGLISTARMJOINT[19], hadEnv.AUTORIGLISTARMJOINT[16], hadEnv.AUTORIGLISTARMJOINT[13],hadEnv.AUTORIGLISTARMJOINT[10], hadEnv.AUTORIGLISTARMJOINT[6]]
             for each in TempEndJoint:
                 for attr in [".jointOrientX", ".jointOrientY", ".jointOrientZ"]:
                     cmds.setAttr(each+attr, 0)
 
-            cmds.parent( hadEnv.AUTORIGLISTARMJOINT[5], world=True )       
-            TempX = cmds.getAttr(hadEnv.AUTORIGLISTARMJOINT[4] + ".jointOrientX")
-            TempZ = cmds.getAttr(hadEnv.AUTORIGLISTARMJOINT[4] + ".jointOrientZ")
-            TempZ = TempZ - TempX           
-            cmds.setAttr(hadEnv.AUTORIGLISTARMJOINT[4] + ".jointOrientZ", TempZ)
-            cmds.setAttr(hadEnv.AUTORIGLISTARMJOINT[4] + ".jointOrientX", 0)           
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[5], hadEnv.AUTORIGLISTARMJOINT[4])
+            cmds.parent( hadEnv.AUTORIGLISTARMJOINT[4], hadEnv.AUTORIGLISTARMJOINT[3] )
+            cmds.parent( hadEnv.AUTORIGLISTARMJOINT[7], hadEnv.AUTORIGLISTARMJOINT[3] )
 
         if hadEnv.AUTORIGLISTHEADGUIDE:
 
@@ -868,6 +878,9 @@ class AutoRigGenerateRig(object):
             cmds.delete(jointsListArmFK[3])
             cmds.delete(jointsListArmFK[6])
 
+            jointsListArmIK = [jointsListArmIK[0], jointsListArmIK[1], jointsListArmIK[2]]
+            jointsListArmFK = [jointsListArmFK[0], jointsListArmFK[1], jointsListArmFK[2]]
+
             #Create Clavicle Ctrl
         
             ctrlClavicle = cmds.circle(name=  "Ctrl_Clavicle" + hadEnv.DICTMIRROR[side], normal=(0, 1, 0), center=(0, -1, 0), radius=0.7, degree=1, sections=1, constructionHistory=False)[0]         
@@ -908,16 +921,204 @@ class AutoRigGenerateRig(object):
 
             #Create IK handle
 
-            tempIkAnkle = cmds.ikHandle(name='Ik_Arms'+ hadEnv.DICTMIRROR[side], startJoint=jointsListArmIK[0], endEffector=jointsListArmIK[2])[0]
+            tempIkArm = cmds.ikHandle(name='Ik_Arms'+ hadEnv.DICTMIRROR[side], startJoint=jointsListArmIK[0], endEffector=jointsListArmIK[2])[0]
 
             #Create pole vector for legs
 
-            ctrlPLArm = hadLib.createPoleVector(jointsListArmIK[0], jointsListArmIK[1], jointsListArmIK[2], 'locPoleVectorArm', tempIkAnkle, side)
+            ctrlPLArm = hadLib.createPoleVector(jointsListArmIK[0], jointsListArmIK[1], jointsListArmIK[2], 'locPoleVectorArm', tempIkArm, side)
 
             hadLib.freezeRotate(ctrlPLArm)  
             hadLib.freezeScale(ctrlPLArm) 
+
+            #Create Ctrl IK Arm  
+        
+            ctrlWristIK = cmds.curve(name = "Ctrl_Wrist" + hadEnv.DICTMIRROR[side], degree=1, point=[(0, 1, 1),(0,1,-1) ,(0, -1, -1) ,(0, -1, 1) ,(0, 1, 1)], knot = [0,1,2,3,4])        
+            grpCtrlWristIK = cmds.group( ctrlWristIK, name= "Grp_"+ctrlWristIK ) 
+            cmds.setAttr( ctrlWristIK + ".overrideEnabled", 1)
+            cmds.setAttr( ctrlWristIK + ".overrideColor", 6+side)         
+            cmds.matchTransform(grpCtrlWristIK, jointsListArmIK[2])
+
+            cmds.orientConstraint(ctrlWristIK, jointsListArmIK[2])
+            cmds.pointConstraint(ctrlWristIK, tempIkArm)
+            hadLib.freezeScale(ctrlWristIK) 
+
+            #create FK ctrls
+                
+            grpCtrlArmFK = []
+            ctrlArmFK = []
+            for each in jointsListArmFK:
+                tempCtrl = cmds.circle(nr=(1, 0, 0), c=(0, 0, 0), r=1, n='Ctrl*'+each+ hadEnv.DICTMIRROR[side], constructionHistory=False)[0]
+                ctrlArmFK.append(tempCtrl)
+                tempGrp = cmds.group(tempCtrl, name='Grp*'+tempCtrl)
+                grpCtrlArmFK.append(tempGrp)    
+                cmds.matchTransform(tempGrp, each)
+                cmds.orientConstraint(tempCtrl, each)
+                hadLib.freezeTranslate(tempCtrl)
+                hadLib.freezeScale(tempCtrl)
+                cmds.setAttr( tempCtrl + ".overrideEnabled", 1)
+                cmds.setAttr( tempCtrl + ".overrideColor", 6+side)                    
+            
+            cmds.parent( grpCtrlArmFK[1], ctrlArmFK[0] )
+            cmds.parent( grpCtrlArmFK[2], ctrlArmFK[1] ) 
+
+            #Create Ctrls for swicth IK FK
+        
+            ctrlLArmIKFK = cmds.curve(name="Ctrl_L_Switch_IK/Fk_Arm"+ hadEnv.DICTMIRROR[side], d=1, p=[(-1, -0.5, 1), (-0.5, -0.5, 1), (-0.5, -1, 1), (0.5, -1, 1), (0.5, -0.5, 1), (1, -0.5, 1), (1, 0.5, 1), (0.5, 0.5, 1), (0.5, 1, 1), (-0.5, 1, 1), (-0.5, 0.5, 1), (-1, 0.5, 1), (-1, -0.5, 1), (-0.5, -0.5, 1)]) 
+            cmds.addAttr( shortName='SwitchIKFK', longName='SwitchIKFK', defaultValue=0, minValue=0, maxValue=1, k=True)
+            cmds.addAttr( shortName='ThumbCurl', longName='ThumbCurl', defaultValue=0, minValue=-20, maxValue=60, k=True)
+            cmds.addAttr( shortName='IndexCurl', longName='IndexCurl', defaultValue=0, minValue=-20, maxValue=60, k=True)
+            cmds.addAttr( shortName='MidCurl', longName='MidCurl', defaultValue=0, minValue=-20, maxValue=60, k=True)
+            cmds.addAttr( shortName='RingCurl', longName='RingCurl', defaultValue=0, minValue=-20, maxValue=60, k=True)
+            cmds.addAttr( shortName='PinkyCurl', longName='PinkyCurl', defaultValue=0, minValue=-20, maxValue=60, k=True)
+            cmds.addAttr( shortName='Spread', longName='Spread', defaultValue=0, minValue=-30, maxValue=30, k=True)
+            if side == 6:
+                cmds.setAttr(ctrlLArmIKFK + ".rotateX", 180)
+                cmds.select(ctrlLArmIKFK)
+                cmds.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
+            else:
+                pass
+            GrpctrlLArmIKFK = cmds.group( em=True, name='Grp*'+ ctrlLArmIKFK )
+            cmds.parent(ctrlLArmIKFK, GrpctrlLArmIKFK)
+            cmds.matchTransform(GrpctrlLArmIKFK, hadEnv.AUTORIGLISTARMJOINT[3+step])
+            cmds.parentConstraint( hadEnv.AUTORIGLISTARMJOINT[3+step], GrpctrlLArmIKFK ) 
+
+            hadLib.freezeTranslate(ctrlLArmIKFK)  
+            hadLib.freezeRotate(ctrlLArmIKFK)
+            hadLib.freezeScale(ctrlLArmIKFK)         
+            cmds.setAttr( ctrlLArmIKFK + ".overrideEnabled", 1)
+            cmds.setAttr( ctrlLArmIKFK + ".overrideColor", 17)
+
+            #Create PairBlend
+
+            jointsListArmSK = [hadEnv.AUTORIGLISTARMJOINT[1+step], hadEnv.AUTORIGLISTARMJOINT[2+step], hadEnv.AUTORIGLISTARMJOINT[3+step]]
+
+            for jointSK, jointIK, jointFK in zip(jointsListArmSK, jointsListArmIK , jointsListArmFK):    
+        
+                pairBlendArm = cmds.createNode('pairBlend', name= jointSK + '_pairBlend'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                cmds.setAttr(pairBlendArm+'.rotInterpolation', 1)
+                cmds.connectAttr(jointIK+'.translate', pairBlendArm+'.inTranslate1')
+                cmds.connectAttr(jointIK+'.rotate', pairBlendArm+'.inRotate1')
+                cmds.connectAttr(jointFK+'.translate', pairBlendArm+'.inTranslate2')
+                cmds.connectAttr(jointFK+'.rotate', pairBlendArm+'.inRotate2')
+                cmds.connectAttr(pairBlendArm+'.outTranslate', jointSK+'.translate')
+                cmds.connectAttr(pairBlendArm+'.outRotate', jointSK+'.rotate')
+                cmds.connectAttr(ctrlLArmIKFK+'.SwitchIKFK', pairBlendArm+'.weight')
+    
+            #hide joints FK and IK
+            
+            cmds.setAttr(jointsListArmIK[0]+'.visibility', 0)     
+            cmds.setAttr(jointsListArmFK[0]+'.visibility', 0)
+
+            #set visibility switch IK FK
+            
+            cmds.connectAttr(ctrlLArmIKFK+'.SwitchIKFK', grpCtrlArmFK[0]+'.visibility')   
+            reverseIK = cmds.createNode('reverse', name='reverseIK'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            cmds.connectAttr(ctrlLArmIKFK+'.SwitchIKFK', reverseIK+'.inputX')
+            cmds.connectAttr(reverseIK+'.outputX', grpCtrlWristIK+'.visibility')
+            grpCtrlPLLeg = cmds.listRelatives(ctrlPLArm, parent=True)[0]
+            cmds.connectAttr(reverseIK+'.outputX', grpCtrlPLLeg+'.visibility')
+            cmds.setAttr(tempIkArm+'.visibility', False)
+
+            #Parent FkCtrl Scapula
+        
+            cmds.parent(grpCtrlArmFK[0], grpCtrlScapula)
+
+            #Fix Last Fingers orient : 
+
+            range = [hadEnv.AUTORIGLISTARMJOINT[6+step], hadEnv.AUTORIGLISTARMJOINT[10+step], hadEnv.AUTORIGLISTARMJOINT[13+step], hadEnv.AUTORIGLISTARMJOINT[16+step], hadEnv.AUTORIGLISTARMJOINT[19+step]]
+            
+            for each in range:
+                cmds.setAttr(each + ".jointOrientY", 10)
+
+            #Create Ctrl for fingers                
+                            
+            grpFingers = []
+            grpOffsetFingers = []
+            ctrlFingers = []
+            
+            for each in hadEnv.AUTORIGLISTARMJOINT[4+step:20+step]:
+                
+                tempCtrlFinger = cmds.curve(name= "Ctrl" + each, d=1, p=[(0, 0, 0), (0, 0, -0.44), (0, 0, -0.9), (0, 0, -1.23), (-0.21, 0, -1.37), (-0.44, 0, -2), (0, 0, -2.2), (0.44, 0, -2), (0.21, 0, -1.37), (0, 0, -1.23), (0, 0.21, -1.37), (0, 0.44, -2), (0, 0, -2.2), (0, -0.44, -2), (0, -0.21, -1.37), (0, 0, -1.23)] )
+                ctrlFingers.append(tempCtrlFinger)
+                if side == 6:
+                    pass
+                else:
+                    cmds.setAttr(tempCtrlFinger +'.rotateX', 180)
+                hadLib.setScale(tempCtrlFinger, 0.5, 0.5, 0.5)
+                cmds.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
+                tempGrpCtrlFingerOff = cmds.group( em=True, name='Grp_OffSet*'+ each )
+                grpOffsetFingers.append(tempGrpCtrlFingerOff)
+                cmds.parent(tempCtrlFinger, tempGrpCtrlFingerOff)
+                tempGrpCtrlFinger = cmds.group( em=True, name='Grp*'+ each )
+                grpFingers.append(tempGrpCtrlFinger)
+                cmds.parent(tempGrpCtrlFingerOff, tempGrpCtrlFinger)
+                cmds.matchTransform(tempGrpCtrlFinger, each)
+                hadLib.freezeTranslate(tempCtrlFinger)  
+                hadLib.freezeScale(tempCtrlFinger)             
+                cmds.setAttr( tempCtrlFinger + ".overrideEnabled", 1)
+                cmds.setAttr( tempCtrlFinger + ".overrideColor", 6+side)  
+                cmds.orientConstraint( tempCtrlFinger, each ) 
+                
+            cmds.parent(grpFingers[15], ctrlFingers[14])
+            cmds.parent(grpFingers[14], ctrlFingers[13])
+            cmds.parent(grpFingers[12], ctrlFingers[11])
+            cmds.parent(grpFingers[11], ctrlFingers[10])
+            cmds.parent(grpFingers[9], ctrlFingers[8])
+            cmds.parent(grpFingers[8], ctrlFingers[7])
+            cmds.parent(grpFingers[6], ctrlFingers[5])
+            cmds.parent(grpFingers[5], ctrlFingers[4])
+            cmds.parent(grpFingers[4], ctrlFingers[3])
+            cmds.parent(grpFingers[7], ctrlFingers[3])
+            cmds.parent(grpFingers[10], ctrlFingers[3])
+            cmds.parent(grpFingers[13], ctrlFingers[3])
+            cmds.parent(grpFingers[2], ctrlFingers[1])
+            cmds.parent(grpFingers[1], ctrlFingers[0])
+            cmds.parentConstraint(hadEnv.AUTORIGLISTARMJOINT[3+step], grpFingers[0], maintainOffset = True)
+            cmds.parentConstraint(hadEnv.AUTORIGLISTARMJOINT[3+step], grpFingers[3], maintainOffset = True)
+
+            #Fingers control attribute
+        
+            cmds.connectAttr(ctrlLArmIKFK+'.ThumbCurl', grpOffsetFingers[0]+'.rotateY')
+            cmds.connectAttr(ctrlLArmIKFK+'.ThumbCurl', grpOffsetFingers[1]+'.rotateY')
+            cmds.connectAttr(ctrlLArmIKFK+'.ThumbCurl', grpOffsetFingers[2]+'.rotateY')
+
+            cmds.connectAttr(ctrlLArmIKFK+'.IndexCurl', grpOffsetFingers[4]+'.rotateY')
+            cmds.connectAttr(ctrlLArmIKFK+'.IndexCurl', grpOffsetFingers[5]+'.rotateY')
+            cmds.connectAttr(ctrlLArmIKFK+'.IndexCurl', grpOffsetFingers[6]+'.rotateY')
+            
+            cmds.connectAttr(ctrlLArmIKFK+'.MidCurl', grpOffsetFingers[7]+'.rotateY')
+            cmds.connectAttr(ctrlLArmIKFK+'.MidCurl', grpOffsetFingers[8]+'.rotateY')
+            cmds.connectAttr(ctrlLArmIKFK+'.MidCurl', grpOffsetFingers[9]+'.rotateY')
+            
+            cmds.connectAttr(ctrlLArmIKFK+'.RingCurl', grpOffsetFingers[10]+'.rotateY')
+            cmds.connectAttr(ctrlLArmIKFK+'.RingCurl', grpOffsetFingers[11]+'.rotateY')
+            cmds.connectAttr(ctrlLArmIKFK+'.RingCurl', grpOffsetFingers[12]+'.rotateY')
+            
+            cmds.connectAttr(ctrlLArmIKFK+'.PinkyCurl', grpOffsetFingers[13]+'.rotateY')
+            cmds.connectAttr(ctrlLArmIKFK+'.PinkyCurl', grpOffsetFingers[14]+'.rotateY')
+            cmds.connectAttr(ctrlLArmIKFK+'.PinkyCurl', grpOffsetFingers[15]+'.rotateY')
+            
+            cmds.connectAttr(ctrlLArmIKFK+'.Spread', grpOffsetFingers[0]+'.rotateZ')
+            cmds.connectAttr(ctrlLArmIKFK+'.Spread', grpOffsetFingers[4]+'.rotateZ')
+            mulSpreadFingersA = cmds.createNode('multiplyDivide', name='MultiplyDivide_SpreadFingersA'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            cmds.setAttr(mulSpreadFingersA + '.operation', 1)
+            cmds.setAttr(mulSpreadFingersA + '.input2X', -1)
+            mulSpreadFingersB = cmds.createNode('multiplyDivide', name='MultiplyDivide_SpreadFingersB'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            cmds.setAttr(mulSpreadFingersB + '.operation', 1)
+            cmds.setAttr(mulSpreadFingersB + '.input2X', -0.5)
+            cmds.connectAttr(ctrlLArmIKFK+'.Spread', mulSpreadFingersA+'.input1X')
+            cmds.connectAttr(ctrlLArmIKFK+'.Spread', mulSpreadFingersB+'.input1X')
+            cmds.connectAttr(mulSpreadFingersB+'.outputX', grpOffsetFingers[10]+'.rotateZ')
+            cmds.connectAttr(mulSpreadFingersA+'.outputX', grpOffsetFingers[13]+'.rotateZ')
+
+    
+
+
+
+
             
         if hadEnv.AUTORIGLISTLEGJOINT:
             rigLegs(side)
         if hadEnv.AUTORIGLISTARMJOINT:
             rigArms(side)
+        cmds.select(clear=True)

@@ -1,8 +1,9 @@
 import maya.cmds as cmds
-from maya import mel
-from hades import hadLib
-from hades import hadEnv
-from hades import hadAutoRig
+import maya.mel as mel
+
+import hades.hadLib as hadLib
+import hades.hadEnv as hadEnv
+import hades.hadAutoRig as hadAutoRig
 
 #AutoRig
 

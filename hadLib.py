@@ -1,5 +1,5 @@
 import maya.cmds as cmds
-from hades import hadEnv
+import hades.hadEnv as hadEnv
 
 def setScale(object, x, y, z):
     

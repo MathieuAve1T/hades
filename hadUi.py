@@ -1,9 +1,29 @@
 from Qt import QtWidgets
 from Qt import QtCore
 from Qt import QtGui
-from hades import hadCore
-from hades import hadEnv
+import hades.hadEnv as hadEnv
+import hades.hadCore as hadCore
 import sys
+
+'''
+#In maya
+
+import sys
+sys.path.append(r'C:\Users\MKR\MyProject\pandemonium\src')
+
+import my_utils
+my_utils.reload_module('hades')
+
+import hades
+reload(hades)
+
+from hades import hadMaster
+
+ui = hadMaster.Hades()
+ui.show()
+
+
+'''
 
 class MyLineEdit(QtWidgets.QLineEdit):
     def __init__(self, text='', parent=None):
@@ -549,22 +569,3 @@ if __name__ == "__main__":
     show()
 
 
-'''
-#In maya
-
-import sys
-sys.path.append(r'C:\Users\MKR\MyProject\pandemonium\src')
-
-import my_utils
-my_utils.reload_module('hades')
-
-import hades
-reload(hades)
-
-from hades import hadMaster
-
-ui = hadMaster.Hades()
-ui.show()
-
-
-'''
