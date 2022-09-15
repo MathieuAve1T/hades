@@ -917,7 +917,6 @@ class AutoRigGenerateRig(object):
             hadLib.freezeRotate(ctrlPLArm)  
             hadLib.freezeScale(ctrlPLArm) 
 
-            print('test')
             
         if hadEnv.AUTORIGLISTLEGJOINT:
             rigLegs(side)
