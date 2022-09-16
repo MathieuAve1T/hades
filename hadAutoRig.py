@@ -630,7 +630,7 @@ class AutoRigGenerateRig(object):
         
         x = 0
         for each in hadEnv.AUTORIGLISTARMJOINT:
-            print(x, '=', each)
+            #print(x, '=', each)
             x += 1
             #+20       
         x = 0
@@ -640,12 +640,18 @@ class AutoRigGenerateRig(object):
             #+14
         x = 0
         for each in hadEnv.AUTORIGLISTHEADJOINT:
-            #print(x, '=', each)
+            print(x, '=', each)
             x += 1
         x = 0
         for each in hadEnv.AUTORIGLISTCHESTJOINT:
             #print(x, '=', each)
             x += 1
+
+        def rigHead():
+
+            pass
+
+        rigHead()
 
     def autoRigCreateRigWithSide(self, side):
 
