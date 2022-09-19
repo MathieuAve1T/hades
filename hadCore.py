@@ -5,6 +5,13 @@ import hades.hadLib as hadLib
 import hades.hadEnv as hadEnv
 import hades.hadAutoRig as hadAutoRig
 
+import os 
+from zBuilder.ui import zUI as sp1 
+from zBuilder.scenePanel2 import main as sp2
+import zBuilder.zMaya as zMaya
+import zBuilder.utils as utility
+
+
 #AutoRig
 
 def coreAutoRigGuide():
@@ -28,6 +35,7 @@ def coreAutoRigGuide():
 		headAutoRig = hadAutoRig.AutoRigCreateGuide()
 		headAutoRig.autoRigHeadModule()	
 
+
 def coreAutoRigGenerator():
 
 	armAutoRig = hadAutoRig.AutoRigGenerateRig()
@@ -46,6 +54,7 @@ def coreAutoRigGenerator():
 		armAutoRig = hadAutoRig.AutoRigGenerateRig()   
 		armAutoRig.autoRigCreateRigWithSide(side)
 
+	cmds.select(clear=True)
             
     
 
@@ -153,7 +162,8 @@ def coreShapeEditor():
 	mel.eval('ShapeEditor')
 
 def coreDrivenKey():
-	mel.eval('SetDrivenKeyOptions')
+	mel.eval('''SetDrivenKey;
+setDrivenKeyWindow "" {};''')
 
 def coreCreateLocator():
 	x = False
@@ -235,170 +245,595 @@ def coreCreateLocator():
 
 
 def coreToolZivaPanelOpen():
-	pass	
+	sp1.run() if 'ZIVA_ZBUILDER_USE_SCENE_PANEL1' in os.environ else sp2.run()		
 def coreToolZivaPanelAddCache():
-	pass	
+	mel.eval('''global proc invertZCache()
+	{
+		$solverTab = `ls -type "zCacheTransform"`;
+		$solver = $solverTab[0];
+		if(`getAttr(($solver +".cache" ))`)
+		{
+			setAttr ($solver +".cache" ) 0;
+			inViewMessage -smg "zCache disable" -pos topRight -bkc 0x00000000 -fade;
+		}
+		else
+		{
+			setAttr ($solver +".cache" ) 1;
+			inViewMessage -smg "zCache enable" -pos topRight -bkc 0x00000000 -fade;
+		}
+	}
+	invertZCache;	''')
+	print('AddPanelCache')
 def coreToolZivaPanelDeleteCache():
-	pass	
+	mel.eval('zCache -c')	
 def coreToolZivaTissueCreate():
-	pass	
+	mel.eval('ziva -t')	
 def coreToolZivaTissueDisaRSide():
-	pass	
+	def disableRightSide(r='r_',value=False):
+		tissue_list = cmds.ls('%s*_zTissue'%r)
+		for tissue in tissue_list:
+			cmds.setAttr('%s.enable'%tissue,value)
+	disableRightSide()	
 def coreToolZivaTissueEnaRSide():
-	pass	
+	def disableRightSide(r='r_',value=True):
+		tissue_list = cmds.ls('%s*_zTissue'%r)
+		for tissue in tissue_list:
+			cmds.setAttr('%s.enable'%tissue,value)
+	disableRightSide()	
 def coreToolZivaTissueDamping():
-	pass	
+	def disableRightSide(r='',value=1):
+		tissue_list = cmds.ls('%s*_zTissue'%r)
+		for tissue in tissue_list:
+			cmds.setAttr('%s.inertialDamping'%tissue,value)
+	disableRightSide()	
 def coreToolZivaTetShowHide():
-	pass	
+	mel.eval('''global proc showZTets()
+	{
+		//$solverTab = `ls -type "zSolver"`;
+		$solver = "zSolver1Shape";
+		if(`getAttr(($solver +".showTetMeshes" ))`)
+		{
+			setAttr ($solver +".showTetMeshes" ) 0;
+			inViewMessage -smg "zTets disable" -pos topRight -bkc 0x00000000 -fade;
+		}
+		else
+		{
+			setAttr ($solver +".showTetMeshes" ) 1;
+			inViewMessage -smg "zTets enable" -pos topRight -bkc 0x00000000 -fade;
+		}
+	}
+	showZTets;	''')
 def coreToolZivaTetX05():
-	pass	
+	def set_tet_size(t_list=[],mult=0.5):
+		if not t_list:
+			t_list= mel.eval('zQuery -t zTet')
+		for t in t_list:
+			t_value=cmds.getAttr('%s.tetSize'%t)
+			cmds.setAttr('%s.tetSize'%t,t_value*mult)
+	set_tet_size(mult=0.5)	
 def coreToolZivaTetX075():
-	pass	
+	def set_tet_size(t_list=[],mult=0.5):
+		if not t_list:
+			t_list= mel.eval('zQuery -t zTet')
+		for t in t_list:
+			t_value=cmds.getAttr('%s.tetSize'%t)
+			cmds.setAttr('%s.tetSize'%t,t_value*mult)
+	set_tet_size(mult=0.75)	
 def coreToolZivaTetX9():
-	pass	
+	def set_tet_size(t_list=[],mult=0.5):
+		if not t_list:
+			t_list= mel.eval('zQuery -t zTet')
+		for t in t_list:
+			t_value=cmds.getAttr('%s.tetSize'%t)
+			cmds.setAttr('%s.tetSize'%t,t_value*mult)
+	set_tet_size(mult=0.9)	
 def coreToolZivaTetX11():
-	pass	
+	def set_tet_size(t_list=[],mult=0.5):
+		if not t_list:
+			t_list= mel.eval('zQuery -t zTet')
+		for t in t_list:
+			t_value=cmds.getAttr('%s.tetSize'%t)
+			cmds.setAttr('%s.tetSize'%t,t_value*mult)
+	set_tet_size(mult=1.1)	
 def coreToolZivaTetX125():
-	pass	
+	def set_tet_size(t_list=[],mult=0.5):
+		if not t_list:
+			t_list= mel.eval('zQuery -t zTet')
+		for t in t_list:
+			t_value=cmds.getAttr('%s.tetSize'%t)
+			cmds.setAttr('%s.tetSize'%t,t_value*mult)
+	set_tet_size(mult=1.25)
 def coreToolZivaTetX2():
-	pass	
-def coreToolZivaMaterialGelatin():
-	pass	
-def coreToolZivaMaterialBrain():
-	pass	
-def coreToolZivaMaterialLiver():
-	pass	
-def coreToolZivaMaterialBreastTissue():
-	pass	
-def coreToolZivaMaterialFat():
-	pass	
-def coreToolZivaMaterialSmoothMuscle():
-	pass	
-def coreToolZivaMaterialSkeletalMuscle():
-	pass	
-def coreToolZivaMaterialCartilage():
-	pass	
-def coreToolZivaMaterialRubber():
-	pass	
-def coreToolZivaMaterialWood():
-	pass	
-def coreToolZivaMaterialTendon():
-	pass	
-def coreToolZivaMaterialPlastic():
-	pass	
-def coreToolZivaMaterialBone():
-	pass	
-def coreToolZivaMaterialWalnutShell():
-	pass	
-def coreToolZivaMaterialSteel():
-	pass	
-def coreToolMaterialDiamond():
-	pass	
-def coreToolZivaFiberCreate():
-	pass	
-def coreToolZivaFiberSelect():
-	pass	
-def coreToolZivaLOACreate():
-	pass	
-def coreToolZivaLOASelect():
-	pass	
-def coreToolZivaLOAAddCrv():
-	pass	
+	def set_tet_size(t_list=[],mult=0.5):
+		if not t_list:
+			t_list= mel.eval('zQuery -t zTet')
+		for t in t_list:
+			t_value=cmds.getAttr('%s.tetSize'%t)
+			cmds.setAttr('%s.tetSize'%t,t_value*mult)
+	set_tet_size(mult=2)
+
 def coreToolZivaBoneCreate():
-	pass	
+	cmds.select(mel.eval('ziva -bone'))	
+
+
+def coreToolZivaMaterialGelatin():	#1.0*10^0
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=1)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=0)
+def coreToolZivaMaterialBrain():	#0.5*10^3
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=0.5)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=3)	
+def coreToolZivaMaterialLiver():	#0.7*10^3
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=0.7)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=3)	
+def coreToolZivaMaterialBreastTissue():	#0.9*10^3
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=0.9)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=3)	
+def coreToolZivaMaterialFat():	#3.0*10^3
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=3)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=3)	
+def coreToolZivaMaterialSmoothMuscle():	#5.0*10^3
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=5)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=3)	
+def coreToolZivaMaterialSkeletalMuscle():	#1.2*10^4
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=1.2)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=4)	
+def coreToolZivaMaterialCartilage():	#2.0*10^4
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=2)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=4)	
+def coreToolZivaMaterialRubber():	#1.0*10^7
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=1)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=7)	
+def coreToolZivaMaterialWood():	#0.6*10^9
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=0.6)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=9)	
+def coreToolZivaMaterialTendon():	#1.0*10^9
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=1)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=9)	
+def coreToolZivaMaterialPlastic():	#1.5*10^9
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=1.5)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=9)	
+def coreToolZivaMaterialBone():	#1.4*10^10
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=1.4)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=10)	
+def coreToolZivaMaterialWalnutShell():	#1.5*10^10
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=1.5)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=10)	
+def coreToolZivaMaterialSteel():	#2.0*10^11
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=2)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=11)	
+def coreToolMaterialDiamond():	#1.0*10^12
+	def set_power_value(a_list=[],power=1):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulus'%a,power)
+	set_power_value(power=1)
+	def set_power(a_list=[],power=8):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zMaterial')
+		for a in a_list:
+			cmds.setAttr('%s.youngsModulusExp'%a,power)
+	set_power(power=12)	
+def coreToolZivaFiberCreate():
+	cmds.select(mel.eval('ziva -fiber;'))	
+def coreToolZivaFiberSelect():
+	if not 'zFiber_i' in locals():
+		zFiber_i=0
+	if zFiber_i < len(mel.eval('zQuery -t zFiber')):
+		cmds.select(mel.eval('zQuery -t zFiber')[zFiber_i])
+		zFiber_i+=1
+	else :
+		cmds.select(mel.eval('zQuery -t zFiber')[0])
+		zFiber_i=1	
+def coreToolZivaLOACreate():
+	cmds.select(mel.eval('ziva -loa;'))	
+def coreToolZivaLOASelect():
+	cmds.select(mel.eval('zQuery -t lineOfAction'))	
+def coreToolZivaLOAAddCrv():
+	def get_next_free_mult_index(attr):
+		"""For given mutlindex attribute, returns the next available index.
+		Arg:
+			:attr, (str): node.attr
+		Returns:
+			:int:
+		"""
+		used_indexes = cmds.getAttr(attr, multiIndices=True)
+		return int(used_indexes[-1] + 1) if used_indexes else 0
+		
+
+	def add_curve_to_loa(curve_list=None,zFiber=None):
+		selection_list = cmds.ls(sl=True)
+		if not curve_list and not zFiber:
+			curve_list = [selection_list[0]]
+			print (curve_list)
+			zFiber  = selection_list[-1]
+		
+		if not cmds.objectType(zFiber,isType='zFiber'):
+			zFiber= mel.eval('zQuery -t zFiber %s'%zFiber)[0]
+			print (zFiber)
+		if cmds.objectType(zFiber,isType='zFiber'):
+			loa = cmds.listConnections(zFiber,p=False,s=True,type='zLineOfAction')[0]
+			if loa : 
+				attr='%s.curves'%loa
+				for curve in curve_list:
+					index = get_next_free_mult_index(attr)
+					shape=cmds.listRelatives(curve,s=True)[0]
+					print (index)
+					cmds.connectAttr('%s.worldSpace[0]'%shape,'%s[%s]'%(attr,index),f=True)
+			else:
+				print ('no loa found')
+	add_curve_to_loa()	
 def coreToolZivaAttachmentCreate():
-	pass	
+	cmds.select(mel.eval('ziva -a'))	
 def coreToolZivaAttachmentSelect():
-	pass	
+	cmds.select(mel.eval('zQuery -t zAttachment'))	
 def coreToolZivaAttachmentPaint():
 	pass	
 def coreToolZivaAttachmentSliding():
-	pass	
+	def set_sliding(a_list=[],mode=2):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zAttachment')
+		for a in a_list:
+			cmds.setAttr('%s.attachmentMode'%a,mode)
+	set_sliding(mode=2)	
 def coreToolZivaAttachmentFixed():
-	pass	
+	def set_sliding(a_list=[],mode=2):
+		if not a_list:
+			a_list= cmds.ls(sl=True,type='zAttachment')
+		for a in a_list:
+			cmds.setAttr('%s.attachmentMode'%a,mode)
+	set_sliding(mode=1)
 def coreToolZivaAttachment02():
-	pass	
+	mel.eval('''string $sel[] = `ls -sl`;
+	for ($obj in $sel)
+	{
+	select $obj;
+	zPaintAttachmentsByProximity -min 0.1 -max 0.2;
+	}	''')
 def coreToolZivaAttachment05():
-	pass	
+	mel.eval('''string $sel[] = `ls -sl`;
+	for ($obj in $sel)
+	{
+	select $obj;
+	zPaintAttachmentsByProximity -min 0.1 -max 0.5;
+	}	''')
 def coreToolZivaAttachment1():
-	pass	
+	mel.eval('''string $sel[] = `ls -sl`;
+	for ($obj in $sel)
+	{
+	select $obj;
+	zPaintAttachmentsByProximity -min 0.1 -max 1;
+	}''')	
 def coreToolZivaAttachment2():
-	pass	
+	mel.eval('''string $sel[] = `ls -sl`;
+	for ($obj in $sel)
+	{
+	select $obj;
+	zPaintAttachmentsByProximity -min 0.1 -max 2;
+	}''')
 def coreToolZivaAttachment5():
-	pass	
+	mel.eval('''string $sel[] = `ls -sl`;
+	for ($obj in $sel)
+	{
+	select $obj;
+	zPaintAttachmentsByProximity -min 0.1 -max 5;
+	}	''')
 def coreToolZivaAttachment10():
-	pass	
+	mel.eval('''string $sel[] = `ls -sl`;
+	for ($obj in $sel)
+	{
+	select $obj;
+	zPaintAttachmentsByProximity -min 0.1 -max 10;
+	}	''')
 def coreToolZivaCopy():
-	pass	
+	utility.rig_cut()	
 def coreToolZivaPaste():
-	pass	
+	utility.rig_paste()	
 def coreToolZivaMeshStandart():
-	pass	
+	mel.eval('SetMeshSculptTool')
 def coreToolZivaMeshMove():
-	pass	
+	mel.eval('SetMeshGrabTool')	
 def coreToolZivaMeshInFlat():
-	pass	
+	mel.eval('SetMeshWaxTool')	
 def coreToolZivaMeshFlatten():
-	pass	
+	mel.eval('SetMeshFlattenTool')	
 def coreToolZivaMeshPinch():
-	pass	
+	mel.eval('SetMeshPinchTool')	
 def coreToolZivaMeshSmooth():
-	pass	
+	mel.eval('SetMeshSmoothTool')	
 def coreToolZivaMeshFreeze():
-	pass	
+	mel.eval('SetMeshFreezeTool')	
 def coreToolZivaMeshUnFreeze():
-	pass	
+	mel.eval('SculptMeshUnfreezeAll')	
 def coreToolZivaMeshRelax():
-	pass	
+	mel.eval('SetMeshRelaxTool')	
 def coreToolZivaMeshRemesh():
-	pass	
+	mel.eval('PolyRemesh')	
 def coreToolZivaMeshRetopo():
-	pass	
+	mel.eval('PolyRetopo')
 def coreToolZivaMeshMirror():
-	pass	
+	sel = cmds.ls(sl=True)
+	axis = ['x', 'y', 'z']
+	attrs = ['t', 'r', 's']
+	for obj in sel:
+		for ax in axis:
+			for attr in attrs:
+				cmds.setAttr(obj+'.'+attr+ax, lock=0)
+		cmds.delete(cmds.ls(obj + "ShapeOrig*"))
+		cmds.setAttr(obj + ".sx",-1)
+	cmds.makeIdentity(apply=True,t=1,r=1,s=1,n=0,pn=1)
+	cmds.deformer(type="tweak")
+	mel.eval("DeleteHistory;")	
 def coreToolZivaMeshTransfer():
-	pass	
+	sel=cmds.ls(sl=True)
+	cmds.connectAttr((sel[0] + ".outMesh"),(sel[1] + ".inMesh"),f=True)	
 def coreToolZivaPaintToolOpen():
-	pass	
+	mel.ArtPaintSkinWeightsToolOptions
 def coreToolZivaPaintTool0():
-	pass	
+	mel.eval('''artAttrCtx -e -value 0 `currentCtx`''')
 def coreToolZivaPaintTool05():
-	pass	
+	mel.eval('''artAttrCtx -e -value 0.5 `currentCtx`''')
 def coreToolZivaPaintTool1():
-	pass	
+	mel.eval('''artAttrCtx -e -value 1 `currentCtx`	''')
 def coreToolZivaPaintToolFlood0():
-	pass	
+	mel.eval('''artAttrCtx -e -value 0 `currentCtx`
+	artAttrCtx -e -clear `currentCtx`''')	
 def coreToolZivaPaintToolFlood1():
-	pass	
-def coreToolZivaPanelOpen():
-	pass	
+	mel.eval('''artAttrCtx -e -value 1 `currentCtx`
+	artAttrCtx -e -clear `currentCtx`''')	
+def coreToolZivaOPaintToolSmooth():
+	mel.eval('''artAttrPaintOperation artAttrCtx Smooth
+	artAttrCtx -e -clear `currentCtx`
+	artAttrPaintOperation artAttrCtx Replace'''	)
 def coreToolZivaPaintToolAdd001():
-	pass	
+	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Add
+	artSkinSetSelectionValue 0.01 false artAttrSkinPaintCtx artAttrSkin
+	artAttrSkinValues artAttrSkinContext
+	toolPropertyShow
+	dR_updateToolSettings
+	dR_updateToolSettings''')
 def coreToolZivaPaintToolAdd01():
-	pass	
+	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Add
+	artSkinSetSelectionValue 0.1 false artAttrSkinPaintCtx artAttrSkin
+	artAttrSkinValues artAttrSkinContext
+	toolPropertyShow
+	dR_updateToolSettings
+	dR_updateToolSettings	''')
 def coreToolZivaPaintToolAdd02():
-	pass	
+	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Add
+	artSkinSetSelectionValue 0.2 false artAttrSkinPaintCtx artAttrSkin
+	artAttrSkinValues artAttrSkinContext
+	toolPropertyShow
+	dR_updateToolSettings
+	dR_updateToolSettings	''')
 def coreToolZivaPaintToolAdd05():
-	pass	
+	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Add
+	artSkinSetSelectionValue 0.5 false artAttrSkinPaintCtx artAttrSkin
+	artAttrSkinValues artAttrSkinContext
+	toolPropertyShow
+	dR_updateToolSettings
+	dR_updateToolSettings	''')
 def coreToolZivaPaintToolScale1():
-	pass	
+	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Scale
+	artSkinSetSelectionValue 1 false artAttrSkinPaintCtx artAttrSkin
+	artAttrSkinValues artAttrSkinContext
+	toolPropertyShow
+	dR_updateToolSettings
+	dR_updateToolSettings''')
 def coreToolZivaPaintToolScale08():
-	pass	
+	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Scale
+	artSkinSetSelectionValue 0.8 false artAttrSkinPaintCtx artAttrSkin
+	artAttrSkinValues artAttrSkinContext
+	toolPropertyShow
+	dR_updateToolSettings
+	dR_updateToolSettings	''')
 def coreToolZivaPaintToolScale06():
-	pass	
+	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Scale
+	artSkinSetSelectionValue 0.6 false artAttrSkinPaintCtx artAttrSkin
+	artAttrSkinValues artAttrSkinContext
+	toolPropertyShow
+	dR_updateToolSettings
+	dR_updateToolSettings	''')
 def coreToolZivaPaintToolScale04():
-	pass	
+	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Scale
+	artSkinSetSelectionValue 0.4 false artAttrSkinPaintCtx artAttrSkin
+	artAttrSkinValues artAttrSkinContext
+	toolPropertyShow
+	dR_updateToolSettings
+	dR_updateToolSettings	''')
 def coreToolZivaPaintToolScale02():
-	pass	
+	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Scale
+	artSkinSetSelectionValue 0.2 false artAttrSkinPaintCtx artAttrSkin
+	artAttrSkinValues artAttrSkinContext
+	toolPropertyShow
+	dR_updateToolSettings
+	dR_updateToolSettings	''')
 def coreToolZivaPaintToolScale0():
-	pass	
+	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Scale
+	artSkinSetSelectionValue 0 false artAttrSkinPaintCtx artAttrSkin
+	artAttrSkinValues artAttrSkinContext
+	toolPropertyShow
+	dR_updateToolSettings
+	dR_updateToolSettings	''')
 def coreToolZivaMirrorLR():
-	pass	
+	selection = cmds.ls(sl = True)
+	for obj in selection :
+		cmds.select(obj)
+		zObj = zMaya.Ziva()
+		zObj.retrieve_from_scene_selection()
+		zObj.string_replace( '^lf_', 'rt_' )
+		zObj.string_replace( '^lt_', 'rt_' )
+		zObj.string_replace( '^l_', 'r_' )
+		zObj.build()	
 def coreToolZivaMirrorRL():
-	pass	
+	selection = cmds.ls(sl = True)
+	for obj in selection :
+		cmds.select(obj)
+		zObj = zMaya.Ziva()
+		zObj.retrieve_from_scene_selection()
+		zObj.string_replace( '^rt_', 'lf_' )
+		zObj.string_replace( '^rt_', 'lt_' )
+		zObj.string_replace( '^r_', 'l_' )
+		zObj.string_replace( '_R', '_L' )
+		zObj.build()	
 def coreToolZivaRename():
-	pass	
+	zMaya.rename_ziva_nodes() 	
 def coreToolZivaActivate():
-	pass	
+	sele = cmds.ls(selection=True)
+	for each in sele:	
+		geoSele = cmds.listConnections( each+".worldMatrix[0]", s=False, d=True) or []	
+		for x in geoSele:	
+			zTissueSele = cmds.listConnections( x+".oGeo", s=False, d=True, type="zTissue")
+			cmds.setAttr(zTissueSele[0]+".enable", not cmds.getAttr(zTissueSele[0]+".enable"))	
 def coreToolZivaDesativate():
 	pass	

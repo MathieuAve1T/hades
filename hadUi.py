@@ -873,7 +873,7 @@ class Hades(MyUi):
     def clickToolZivaPaintToolFlood1(self):
         hadCore.coreToolZivaPaintToolFlood1()
     def clickToolZivaPaintToolSmooth(self):
-        hadCore.coreToolZivaPanelOpen()
+        hadCore.coreToolZivaOPaintToolSmooth()
     def clickToolZivaPaintToolAdd001(self):
         hadCore.coreToolZivaPaintToolAdd001()
     def clickToolZivaPaintToolAdd01(self):

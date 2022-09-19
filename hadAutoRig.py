@@ -68,7 +68,7 @@ class AutoRigCreateGuide(object):
 
             cmds.parent(hadEnv.AUTORIGLISTCHESTGUIDELINE[-1], hadEnv.GUIDELINEGRP)
 
-        cmds.select(clear=True)
+ 
 
     def autoRigArmModule(self, *args):  
 
@@ -216,7 +216,7 @@ class AutoRigCreateGuide(object):
 
             cmds.parent(hadEnv.AUTORIGLISTARMGUIDELINE[-1], hadEnv.GUIDELINEGRP)
 
-        cmds.select(clear=True)
+
 
     def autoRigLegModule(self):
 
@@ -303,7 +303,7 @@ class AutoRigCreateGuide(object):
 
             cmds.parent(hadEnv.AUTORIGLISTLEGGUIDELINE[-1], hadEnv.GUIDELINEGRP)
 
-        cmds.select(clear=True)
+
 
 
     def autoRigHeadModule(self):
@@ -365,8 +365,6 @@ class AutoRigCreateGuide(object):
             hadEnv.AUTORIGLISTHEADGUIDELINE.append(hadLib.createLineDisplay(locaA, locaB))
 
             cmds.parent(hadEnv.AUTORIGLISTHEADGUIDELINE[-1], hadEnv.GUIDELINEGRP)
-
-        cmds.select(clear=True)
 
 class AutoRigGenerateRig(object):
 
@@ -561,7 +559,6 @@ class AutoRigGenerateRig(object):
 
         cmds.delete(hadEnv.GUIDELINEGRP)
 
-        cmds.select(clear=True)   
 
     def autoRigCheckMirror(self):
 
@@ -628,30 +625,144 @@ class AutoRigGenerateRig(object):
 
         ctrlGeneral(self)
         
-        x = 0
-        for each in hadEnv.AUTORIGLISTARMJOINT:
-            #print(x, '=', each)
-            x += 1
-            #+20       
-        x = 0
-        for each in hadEnv.AUTORIGLISTLEGJOINT:
-            #print(x, '=', each)
-            x += 1
-            #+14
-        x = 0
-        for each in hadEnv.AUTORIGLISTHEADJOINT:
-            print(x, '=', each)
-            x += 1
-        x = 0
-        for each in hadEnv.AUTORIGLISTCHESTJOINT:
-            #print(x, '=', each)
-            x += 1
+        def rigHead(self):
 
-        def rigHead():
+            #Neck and Head controller
 
-            pass
+            hadEnv.AUTORIGLISTHEADJOINT[0]
+        
+            self.ctrlNeck = cmds.circle(normal=(1, 0, 0), center=(0, 0, 0), radius=1.4, name= "Ctrl_" + hadEnv.AUTORIGLISTHEADJOINT[0] , constructionHistory=False)[0]        
+            ctrlHead = cmds.curve(name= "Ctrl_" + hadEnv.AUTORIGLISTHEADJOINT[1], d=3, p=[(0, -1, 0), (-0.5, -0.9, 0), (-1.3, -0.7, 0), (-2.5, 1.5, 0), (-1.7, 3.3, 0), (0, 3.3, 0), (1.7, 3.3, 0), (2.5, 1.5, 0), (1.3, -0.7, 0), (0.5, -0.9, 0), (0, -1, 0)] )
 
-        rigHead()
+            hadLib.setRotate(ctrlHead, 0, 90, -90)
+            hadLib.setScale(ctrlHead, 0.7, 0.7, 0.7)
+            cmds.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
+            grpCtrlHead = cmds.group( em=True, name="Grp_"+ctrlHead  )
+            cmds.parent(ctrlHead, grpCtrlHead)
+
+            grpCtrlNeck = cmds.group( self.ctrlNeck, n= "Grp_"+self.ctrlNeck ) 
+
+            cmds.matchTransform(grpCtrlNeck, hadEnv.AUTORIGLISTHEADJOINT[0])
+            cmds.matchTransform(grpCtrlHead, hadEnv.AUTORIGLISTHEADJOINT[1]) 
+            
+            cmds.parent(grpCtrlHead, self.ctrlNeck)
+            
+            range = [self.ctrlNeck, ctrlHead]           
+            x=0
+            for each in range:
+                hadLib.freezeTranslate(each)
+                hadLib.freezeScale(each)
+                cmds.parentConstraint(each, hadEnv.AUTORIGLISTHEADJOINT[x])
+                x = 1 
+                cmds.setAttr(each + ".overrideEnabled", 1)
+                cmds.setAttr(each + ".overrideColor", 17)
+
+            #clean 
+
+            cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[0], 'Joints')
+            cmds.parent(grpCtrlNeck, 'ControlObjects')
+
+        def rigChest(self):
+
+            #Create Root Ctrl
+        
+            ctrlRoot = cmds.curve(n= "Ctrl_" + hadEnv.AUTORIGLISTCHESTJOINT[0], d=1, p=[(2, 1, 2),(2,1,-2) ,(2, -1, -2) ,(2, -1, 2) ,(-2, -1, 2) ,(-2, 1, 2) ,(2, 1, 2) ,(2, -1, 2) ,(-2, -1, 2) ,(-2, -1, -2) ,(-2, 1, -2) ,(2, 1, -2) ,(2, -1, -2) ,(-2, -1, -2) ,(-2, 1, -2) ,(-2, 1, 2)], k = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
+            grpCtrlRoot = cmds.group( em=True, name='Grp*'+ ctrlRoot )
+            cmds.parent(ctrlRoot, grpCtrlRoot)
+            cmds.matchTransform(grpCtrlRoot, hadEnv.AUTORIGLISTCHESTJOINT[0])
+            hadLib.freezeScale(ctrlRoot)
+            cmds.setAttr(ctrlRoot + ".overrideEnabled", 1)
+            cmds.setAttr(ctrlRoot + ".overrideColor", 17)
+
+            #Create Spine IK
+               
+            ikSpine = cmds.ikHandle( name = "Ik_Spine_IK", startJoint= hadEnv.AUTORIGLISTCHESTJOINT[0], endEffector= hadEnv.AUTORIGLISTCHESTJOINT[4] , solver='ikSplineSolver',parentCurve=False,simplifyCurve=False, createCurve= True)[0]
+            crvSpine = cmds.rename('curve1', 'Crv_Spine_IK')
+            
+            jointSpineIklist = []
+            jointSpineIklist.append(cmds.duplicate(hadEnv.AUTORIGLISTCHESTJOINT[0], parentOnly=True, name= "Spine_Start_IK")[0])
+            hadLib.setRotateOrient(jointSpineIklist[-1], -90, 0, 90)
+            jointSpineIklist.append(cmds.duplicate(hadEnv.AUTORIGLISTCHESTJOINT[3], parentOnly=True, name= "Spine_Mid_IK")[0])
+            cmds.parent(jointSpineIklist[-1], world=True)
+            jointSpineIklist.append(cmds.duplicate(hadEnv.AUTORIGLISTCHESTJOINT[4], parentOnly=True, name= "Spine_End_IK")[0])
+            cmds.parent(jointSpineIklist[-1], world=True)
+            
+            cmds.skinCluster(jointSpineIklist[0], jointSpineIklist[1], jointSpineIklist[2], crvSpine, tsb=True)
+
+            #Create Spine Ctrl IK
+
+            self.ctrlSpineIK = []
+            grpCtrlSpineIK = []
+            for each in jointSpineIklist:
+                self.ctrlSpineIK.append(cmds.curve(n= "Ctrl_" + each, d=1, p=[(0, 1.5, 1.5),(0,1.5,-1.5) ,(0, -1.5, -1.5) ,(0, -1.5, 1.5) ,(0, 1.5, 1.5)], k = [0,1,2,3,4]))
+                grpCtrlSpineIK.append(cmds.group( self.ctrlSpineIK[-1], n= "Grp_"+self.ctrlSpineIK[-1] ))
+                cmds.matchTransform(grpCtrlSpineIK[-1], each)
+                cmds.parentConstraint(self.ctrlSpineIK[-1], each)
+                hadLib.freezeScale(self.ctrlSpineIK[-1])
+                cmds.setAttr(self.ctrlSpineIK[-1] + ".overrideEnabled", 1)
+                cmds.setAttr(self.ctrlSpineIK[-1] + ".overrideColor", 20)
+                
+
+            jointSpineFKlist = [hadEnv.AUTORIGLISTCHESTJOINT[2], hadEnv.AUTORIGLISTCHESTJOINT[5], hadEnv.AUTORIGLISTCHESTJOINT[3], hadEnv.AUTORIGLISTCHESTJOINT[6], hadEnv.AUTORIGLISTCHESTJOINT[4]]
+
+            ctrlSpineFK = []
+            grpCtrlSpineFK = []
+            for each in jointSpineFKlist:
+
+                ctrlSpineFK.append(cmds.circle(normal=(1, 0, 0), center=(0, 0, 0), radius=1.4, name= "Ctrl_"+each, constructionHistory=False)[0])
+                grpCtrlSpineFK.append(cmds.group( ctrlSpineFK[-1], n= "Grp_"+ctrlSpineFK[-1]))
+                cmds.matchTransform(grpCtrlSpineFK[-1], each)
+                hadLib.freezeTranslate(ctrlSpineFK[-1])
+                hadLib.freezeScale(ctrlSpineFK[-1])
+                cmds.setAttr(ctrlSpineFK[-1] + ".overrideEnabled", 1)
+                cmds.setAttr(ctrlSpineFK[-1] + ".overrideColor", 22)
+                
+            #Parent Ctrl Spine
+        
+            cmds.parent(grpCtrlSpineFK[4], ctrlSpineFK[3])
+            cmds.parent(grpCtrlSpineFK[3], ctrlSpineFK[2])
+            cmds.parent(grpCtrlSpineFK[2], ctrlSpineFK[1])
+            cmds.parent(grpCtrlSpineFK[1], ctrlSpineFK[0])
+            cmds.parent(grpCtrlSpineFK[0], ctrlRoot)
+            cmds.parent(grpCtrlSpineIK[0], ctrlRoot)
+            cmds.parent(grpCtrlSpineIK[1], ctrlSpineFK[2])
+            cmds.parent(grpCtrlSpineIK[2], ctrlSpineFK[4])
+
+            #Create Hip Ctrl                
+
+            ctrlHip = cmds.curve(name='Ctrl_Hip', degree=3, point=[	(0.5, 0.0, 0.0), (0.462, 0.0, 0.19), (0.35, 0.0, 0.35),(0.19, 0.0, 0.46), (0.0, 0.0, 0.5), (-0.19, 0.0, 0.46),(-0.35, 0.0, 0.35), (-0.46, 0.0, 0.19), (-0.5, 0.0, 0.0),(-0.46, 0.0, -0.19), (-0.35, 0.0, -0.35), (-0.19, 0.0, -0.46),(0.0, 0.0, -0.5), (0.19, 0.0, -0.46), (0.35, 0.0, -0.35),(0.46, 0.0, -0.19), (0.5, 0.0, 0.0), (0.46, -0.19, 0.0),(0.35, -0.35, 0.0), (0.19, -0.46, 0.0), (0.0, -0.5, 0.0), (-0.19, -0.46, 0.0), (-0.35, -0.35, 0.0), (-0.46, -0.19, 0.0), (-0.5, 0.0, 0.0), (-0.46, 0.19, 0.0), (-0.35, 0.35, 0.0), (-0.19, 0.46, 0.0), (0.0, 0.5, 0.0), (0.19, 0.46, 0.0), (0.35, 0.35, 0.0), (0.46, 0.19, 0.0), (0.5, 0.0, 0.0), (0.46, 0.0, 0.19), (0.35, 0.0, 0.35), (0.19, 0.0, 0.46), (0.0, 0.0, 0.5), (0.0, 0.24, 0.44), (0.0, 0.44, 0.24), (0.0, 0.5, 0.0), (0.0, 0.44, -0.24), (0.0, 0.24, -0.44), (0.0, 0.0, -0.5), (0.0, -0.24, -0.44), (0.0, -0.44, -0.24), (0.0, -0.5, 0.0), (0.0, -0.44, 0.24), (0.0, -0.24, 0.44), (0.0, 0.0, 0.5)] )
+            hadLib.setScale(ctrlHip, 2, 2, 2)
+            cmds.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
+            hadLib.freezeTranslate(ctrlHip)
+            hadLib.freezeScale(ctrlHip)
+            grpCtrlHip = cmds.group( ctrlHip, n= "Grp_"+ctrlHip ) 
+            cmds.matchTransform(grpCtrlHip, ctrlRoot)
+            cmds.setAttr(grpCtrlHip+'.translateX', 3.2)
+            cmds.parent(grpCtrlHip, ctrlRoot)
+            cmds.setAttr(grpCtrlHip+'.rotateY', 90) 
+            cmds.orientConstraint( ctrlHip, hadEnv.AUTORIGLISTCHESTJOINT[1] )
+            cmds.setAttr(ctrlHip + ".overrideEnabled", 1)
+            cmds.setAttr(ctrlHip + ".overrideColor", 22)
+
+            #Clean
+
+            cmds.parent(hadEnv.AUTORIGLISTCHESTJOINT[0], 'Joints')
+            for each in jointSpineIklist:
+                cmds.parent(each, 'Joints')
+            cmds.parent(ikSpine, 'Iks')
+            cmds.parent(crvSpine, 'Xtra_toHide')
+            cmds.parent(grpCtrlRoot, 'ControlObjects')
+
+            hadEnv.CTRLCHEST = self.ctrlSpineIK[-1]
+        
+        if hadEnv.AUTORIGLISTHEADJOINT:
+            rigHead(self)
+        if hadEnv.AUTORIGLISTCHESTJOINT:
+            rigChest(self)
+            if hadEnv.AUTORIGLISTHEADJOINT:
+
+                cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[4])
+                cmds.parent(self.ctrlNeck, self.ctrlSpineIK[-1])
 
     def autoRigCreateRigWithSide(self, side):
 
@@ -664,14 +775,14 @@ class AutoRigGenerateRig(object):
 
             #CreateIKFK
 
-            jointsListLegIK = hadLib.createIKJoints(hadEnv.AUTORIGLISTLEGJOINT[0+step])           
-            jointsListLegFK = hadLib.createFKJoints(hadEnv.AUTORIGLISTLEGJOINT[0+step])
+            self.jointsListLegIK = hadLib.createIKJoints(hadEnv.AUTORIGLISTLEGJOINT[0+step])           
+            self.jointsListLegFK = hadLib.createFKJoints(hadEnv.AUTORIGLISTLEGJOINT[0+step])
 
             #Create IK handle
 
-            tempIkAnkle = cmds.ikHandle(name='Ik_Legs'+ hadEnv.DICTMIRROR[side], startJoint=jointsListLegIK[0], endEffector=jointsListLegIK[2])[0]
-            tempIkFoot = cmds.ikHandle(name='Ik_Foot'+ hadEnv.DICTMIRROR[side], startJoint=jointsListLegIK[2], endEffector=jointsListLegIK[3])[0]
-            tempIkToe = cmds.ikHandle(name='Ik_Toe'+ hadEnv.DICTMIRROR[side], startJoint=jointsListLegIK[3], endEffector=jointsListLegIK[4])[0]
+            tempIkAnkle = cmds.ikHandle(name='Ik_Legs'+ hadEnv.DICTMIRROR[side], startJoint=self.jointsListLegIK[0], endEffector=self.jointsListLegIK[2])[0]
+            tempIkFoot = cmds.ikHandle(name='Ik_Foot'+ hadEnv.DICTMIRROR[side], startJoint=self.jointsListLegIK[2], endEffector=self.jointsListLegIK[3])[0]
+            tempIkToe = cmds.ikHandle(name='Ik_Toe'+ hadEnv.DICTMIRROR[side], startJoint=self.jointsListLegIK[3], endEffector=self.jointsListLegIK[4])[0]
 
             cmds.parent(tempIkAnkle, hadEnv.AUTORIGLISTLEGJOINT[11+step])
             cmds.parent(tempIkFoot, hadEnv.AUTORIGLISTLEGJOINT[9+step])
@@ -679,7 +790,7 @@ class AutoRigGenerateRig(object):
 
             #Create pole vector for legs
 
-            ctrlPLLeg = hadLib.createPoleVector(jointsListLegIK[0], jointsListLegIK[1], jointsListLegIK[2], 'locPoleVectorLeg', tempIkAnkle, side)
+            ctrlPLLeg = hadLib.createPoleVector(self.jointsListLegIK[0], self.jointsListLegIK[1], self.jointsListLegIK[2], 'locPoleVectorLeg', tempIkAnkle, side)
 
             #Create IK Ctrl for legs
         
@@ -785,13 +896,13 @@ class AutoRigGenerateRig(object):
 
             #create FK ctrls
                 
-            grpCtrlLegFK = []
+            self.grpCtrlLegFK = []
             ctrlLegFK = []
-            for each in jointsListLegFK:
+            for each in self.jointsListLegFK:
                 tempCtrl = cmds.circle(nr=(1, 0, 0), c=(0, 0, 0), r=1, n='Ctrl*'+each+ hadEnv.DICTMIRROR[side], constructionHistory=False)[0]
                 ctrlLegFK.append(tempCtrl)
                 tempGrp = cmds.group(tempCtrl, name='Grp*'+tempCtrl)
-                grpCtrlLegFK.append(tempGrp)    
+                self.grpCtrlLegFK.append(tempGrp)    
                 cmds.matchTransform(tempGrp, each)
                 cmds.orientConstraint(tempCtrl, each)
                 hadLib.freezeTranslate(tempCtrl)
@@ -799,10 +910,10 @@ class AutoRigGenerateRig(object):
                 cmds.setAttr( tempCtrl + ".overrideEnabled", 1)
                 cmds.setAttr( tempCtrl + ".overrideColor", 6+side)                    
             
-            cmds.parent( grpCtrlLegFK[1], ctrlLegFK[0] )
-            cmds.parent( grpCtrlLegFK[2], ctrlLegFK[1] ) 
-            cmds.parent( grpCtrlLegFK[3], ctrlLegFK[2] )
-            cmds.parent( grpCtrlLegFK[4], ctrlLegFK[3] )
+            cmds.parent( self.grpCtrlLegFK[1], ctrlLegFK[0] )
+            cmds.parent( self.grpCtrlLegFK[2], ctrlLegFK[1] ) 
+            cmds.parent( self.grpCtrlLegFK[3], ctrlLegFK[2] )
+            cmds.parent( self.grpCtrlLegFK[4], ctrlLegFK[3] )
 
             #Create Ctrls for swicth IK FK
 
@@ -829,7 +940,7 @@ class AutoRigGenerateRig(object):
 
             jointsListLegSK = [hadEnv.AUTORIGLISTLEGJOINT[0+step], hadEnv.AUTORIGLISTLEGJOINT[1+step], hadEnv.AUTORIGLISTLEGJOINT[2+step], hadEnv.AUTORIGLISTLEGJOINT[3+step], hadEnv.AUTORIGLISTLEGJOINT[4+step]]
  
-            for jointSK, jointIK, jointFK in zip(jointsListLegSK, jointsListLegIK , jointsListLegFK):    
+            for jointSK, jointIK, jointFK in zip(jointsListLegSK, self.jointsListLegIK , self.jointsListLegFK):    
         
                 pairBlendLeg = cmds.createNode('pairBlend', name= jointSK + '_pairBlend'+ hadEnv.DICTMIRROR[side], skipSelect=True)
                 cmds.setAttr(pairBlendLeg+'.rotInterpolation', 1)
@@ -843,12 +954,12 @@ class AutoRigGenerateRig(object):
     
             #hide joints FK and IK
             
-            cmds.setAttr(jointsListLegIK[0]+'.visibility', 0)     
-            cmds.setAttr(jointsListLegFK[0]+'.visibility', 0)
+            cmds.setAttr(self.jointsListLegIK[0]+'.visibility', 0)     
+            cmds.setAttr(self.jointsListLegFK[0]+'.visibility', 0)
 
             #set visibility switch IK FK
             
-            cmds.connectAttr(ctrlLegIKFK+'.SwitchIKFK', grpCtrlLegFK[0]+'.visibility')   
+            cmds.connectAttr(ctrlLegIKFK+'.SwitchIKFK', self.grpCtrlLegFK[0]+'.visibility')   
             reverseIK = cmds.createNode('reverse', name='reverseIK'+ hadEnv.DICTMIRROR[side], skipSelect=True)
             cmds.connectAttr(ctrlLegIKFK+'.SwitchIKFK', reverseIK+'.inputX')
             cmds.connectAttr(reverseIK+'.outputX', grpctrlLegIk+'.visibility')
@@ -861,12 +972,13 @@ class AutoRigGenerateRig(object):
             #Clean
 
             cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[0+step], 'Joints')
+            cmds.parent(self.jointsListLegIK[0], 'Joints')
+            cmds.parent(self.jointsListLegFK[0], 'Joints')
             cmds.parent(grpCtrlPLLeg, 'ControlObjects')
             cmds.parent(grpctrlLegIk , 'ControlObjects')
             cmds.parent(grpCtrlLegIKFK , 'ControlObjects')
+            cmds.parent(self.grpCtrlLegFK[0] , 'ControlObjects')
             cmds.parent(GrpFootRool , 'ControlObjects')
-
-            
 
         def rigArms(side):
 
@@ -899,9 +1011,9 @@ class AutoRigGenerateRig(object):
             cmds.setAttr(ctrlClavicle+'.rotateY', -90)
             cmds.setAttr(ctrlClavicle+'.rotateX', tempB)
             cmds.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
-            grpCtrlClavicle = cmds.group( em=True, name='Grp*'+ctrlClavicle )
-            cmds.parent(ctrlClavicle , grpCtrlClavicle)
-            cmds.matchTransform(grpCtrlClavicle, hadEnv.AUTORIGLISTARMJOINT[0+step])
+            self.grpCtrlClavicle = cmds.group( em=True, name='Grp*'+ctrlClavicle )
+            cmds.parent(ctrlClavicle , self.grpCtrlClavicle)
+            cmds.matchTransform(self.grpCtrlClavicle, hadEnv.AUTORIGLISTARMJOINT[0+step])
             cmds.setAttr(ctrlClavicle + ".overrideEnabled", 1)
             cmds.setAttr(ctrlClavicle + ".overrideColor", 6+side) 
             hadLib.freezeTranslate(ctrlClavicle)  
@@ -1120,7 +1232,7 @@ class AutoRigGenerateRig(object):
             #Clean
 
             cmds.parent(hadEnv.AUTORIGLISTARMJOINT[0+step], 'Joints')
-            cmds.parent(grpCtrlClavicle, 'ControlObjects')
+            cmds.parent(self.grpCtrlClavicle, 'ControlObjects')
             cmds.parent(tempIkArm, 'Iks')
             cmds.parent(grpCtrlPLArm, 'ControlObjects')
             cmds.parent(grpCtrlWristIK , 'ControlObjects')
@@ -1128,22 +1240,26 @@ class AutoRigGenerateRig(object):
             cmds.parent(grpFingers[3] , 'ControlObjects')
             cmds.parent(grpFingers[0] , 'ControlObjects')
 
-
-    
-
-            #if hadEnv.AUTORIGLISTLEGJOINT:
-                #cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[1])
-
-            #if hadEnv.AUTORIGLISTARMJOINT:
-                #cmds.parent(hadEnv.AUTORIGLISTARMJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[4])
-
-            #if hadEnv.AUTORIGLISTHEADJOINT:
-                #cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[4])
-
-
-            
         if hadEnv.AUTORIGLISTLEGJOINT:
             rigLegs(side)
+            if hadEnv.AUTORIGLISTCHESTJOINT:
+                if side == 6:
+                    step = hadEnv.DICTMIRROR['stepLeg']
+                else:
+                    step = 0
+                cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[0+step], hadEnv.AUTORIGLISTCHESTJOINT[1])
+                cmds.parent(self.jointsListLegIK[0], hadEnv.AUTORIGLISTCHESTJOINT[1])
+                cmds.parent(self.jointsListLegFK[0], hadEnv.AUTORIGLISTCHESTJOINT[1])
+                cmds.parent(self.grpCtrlLegFK[0] , hadEnv.AUTORIGLISTCHESTJOINT[1])
+
+
         if hadEnv.AUTORIGLISTARMJOINT:
             rigArms(side)
-        cmds.select(clear=True)
+            if hadEnv.AUTORIGLISTCHESTJOINT:
+                if side == 6:
+                    step = hadEnv.DICTMIRROR['stepArm']
+                else:
+                    step = 0
+                cmds.parent(hadEnv.AUTORIGLISTARMJOINT[0+step], hadEnv.AUTORIGLISTCHESTJOINT[4])
+                cmds.parent(self.grpCtrlClavicle, hadEnv.CTRLCHEST)
+
