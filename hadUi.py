@@ -33,7 +33,7 @@ class MyUi(QtWidgets.QDialog):
     def __init__(self):
         super(MyUi, self).__init__() 
         self.setWindowFlags(self.windowFlags() |QtCore.Qt.WindowStaysOnTopHint)   #pour l'inverse , remplacer | par &~
-        self.setWindowTitle('Hades_V.1.0.0')
+        self.setWindowTitle('Hades_V.1.1.0')
         self.resize(400, 300)
 
         self.create_widgets()
@@ -53,6 +53,10 @@ class Hades(MyUi):
     def create_widgets(self):
 
         #master_tab : 
+
+        self.windowOnTop = QtWidgets.QCheckBox("Always On Top")
+        self.windowOnTop.setChecked(True)
+        self.windowOnTop.stateChanged.connect(self.windowAlwayOnTopCheck)
 
         self.title_l = QtWidgets.QLabel("By_Mathieu_Karadjia")
 
@@ -446,6 +450,7 @@ class Hades(MyUi):
 
         title_lay = QtWidgets.QHBoxLayout()
         title_lay.addWidget(self.title_l)
+        title_lay.addWidget(self.windowOnTop)
         
         self.autoRig_layout = QtWidgets.QVBoxLayout()
         self.autoRig_layout.addWidget(self.autoRig_but)
@@ -575,6 +580,8 @@ class Hades(MyUi):
     def create_connections(self):
         self.tabMaster.currentChanged.connect(self.tabChanged)
 
+    def windowAlwayOnTopCheck(self):
+        pass
     #tab connection
 
     def tabChanged(self):

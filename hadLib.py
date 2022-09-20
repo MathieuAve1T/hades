@@ -338,3 +338,23 @@ def createLocator():
         cmds.matchTransform(tempGrp, sele)
     elif x == True and not hadEnv.CTRLGRPVALUE:
         cmds.matchTransform(tempCrv, sele)    
+
+def setZMaterial(value, valueEx):
+    sele = cmds.ls(sl=True)
+    listZMaterial = []
+    if cmds.objectType( sele[0], isType='zMaterial'):
+        listZMaterial.append(sele[0])
+    else:
+        for each in sele:
+            allzGeo = cmds.ls( cmds.listConnections(each, destination=True, source=True, type='zGeo'), long=True )
+            for sGeo in allzGeo:
+                allzTissue = cmds.ls( cmds.listConnections(sGeo, destination=True, source=True, type='zTissue'), long=True ) 
+                for zTissue in allzTissue:
+                    allzTet = cmds.ls( cmds.listConnections(zTissue, destination=True, source=True, type='zTet'), long=True )
+                    for zTet in allzTet:
+                        ZMaterial = cmds.ls( cmds.listConnections(zTet, destination=True, source=True, type='zMaterial'), long=True )	
+                        for x in ZMaterial:
+                            listZMaterial.append(x)	                       
+    for each in listZMaterial:
+        cmds.setAttr(each+'.youngsModulus',value)
+        cmds.setAttr(each+'.youngsModulusExp',valueEx)

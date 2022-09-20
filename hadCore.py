@@ -55,10 +55,6 @@ def coreAutoRigGenerator():
 		armAutoRig.autoRigCreateRigWithSide(side)
 
 	cmds.select(clear=True)
-            
-    
-
-
 
 #Tool for maya
 
@@ -218,8 +214,6 @@ def coreColorPurple():
 		cmds.setAttr( each + ".overrideEnabled", 1)
 		cmds.setAttr( each + ".overrideColor", 30) 
 
-
-
 #Create Ctrl
 
 def coreCreateCircle():
@@ -242,7 +236,6 @@ def coreCreateLocator():
 	hadLib.createLocator()
 
  #Tools for Ziva
-
 
 def coreToolZivaPanelOpen():
 	sp1.run() if 'ZIVA_ZBUILDER_USE_SCENE_PANEL1' in os.environ else sp2.run()		
@@ -355,215 +348,39 @@ def coreToolZivaTetX2():
 def coreToolZivaBoneCreate():
 	cmds.select(mel.eval('ziva -bone'))	
 
-
 def coreToolZivaMaterialGelatin():	#1.0*10^0
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=1)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=0)
+	hadLib.setZMaterial(1,0)
+
 def coreToolZivaMaterialBrain():	#0.5*10^3
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=0.5)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=3)	
+	hadLib.setZMaterial(0.5,3)
 def coreToolZivaMaterialLiver():	#0.7*10^3
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=0.7)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=3)	
+	hadLib.setZMaterial(0.7,3)
 def coreToolZivaMaterialBreastTissue():	#0.9*10^3
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=0.9)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=3)	
+	hadLib.setZMaterial(0.9,3)
 def coreToolZivaMaterialFat():	#3.0*10^3
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=3)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=3)	
+	hadLib.setZMaterial(3,3)
 def coreToolZivaMaterialSmoothMuscle():	#5.0*10^3
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=5)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=3)	
+	hadLib.setZMaterial(5,3)
 def coreToolZivaMaterialSkeletalMuscle():	#1.2*10^4
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=1.2)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=4)	
+	hadLib.setZMaterial(1.2,4)
 def coreToolZivaMaterialCartilage():	#2.0*10^4
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=2)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=4)	
+	hadLib.setZMaterial(2,4)
 def coreToolZivaMaterialRubber():	#1.0*10^7
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=1)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=7)	
+	hadLib.setZMaterial(1,7)
 def coreToolZivaMaterialWood():	#0.6*10^9
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=0.6)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=9)	
+	hadLib.setZMaterial(0.6,9)
 def coreToolZivaMaterialTendon():	#1.0*10^9
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=1)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=9)	
+	hadLib.setZMaterial(1,9)
 def coreToolZivaMaterialPlastic():	#1.5*10^9
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=1.5)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=9)	
+	hadLib.setZMaterial(1.5,9)
 def coreToolZivaMaterialBone():	#1.4*10^10
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=1.4)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=10)	
+	hadLib.setZMaterial(1.4,10)
 def coreToolZivaMaterialWalnutShell():	#1.5*10^10
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=1.5)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=10)	
+	hadLib.setZMaterial(1.5,10)
 def coreToolZivaMaterialSteel():	#2.0*10^11
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=2)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=11)	
+	hadLib.setZMaterial(2,11)
 def coreToolMaterialDiamond():	#1.0*10^12
-	def set_power_value(a_list=[],power=1):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulus'%a,power)
-	set_power_value(power=1)
-	def set_power(a_list=[],power=8):
-		if not a_list:
-			a_list= cmds.ls(sl=True,type='zMaterial')
-		for a in a_list:
-			cmds.setAttr('%s.youngsModulusExp'%a,power)
-	set_power(power=12)	
+	hadLib.setZMaterial(1,12)
 def coreToolZivaFiberCreate():
 	cmds.select(mel.eval('ziva -fiber;'))	
 def coreToolZivaFiberSelect():
@@ -814,6 +631,7 @@ def coreToolZivaMirrorLR():
 		zObj.string_replace( '^lf_', 'rt_' )
 		zObj.string_replace( '^lt_', 'rt_' )
 		zObj.string_replace( '^l_', 'r_' )
+		zObj.string_replace( '_L', '_R' )
 		zObj.build()	
 def coreToolZivaMirrorRL():
 	selection = cmds.ls(sl = True)
