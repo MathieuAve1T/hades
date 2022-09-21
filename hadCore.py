@@ -5,7 +5,6 @@ import hades.hadLib as hadLib
 import hades.hadEnv as hadEnv
 import hades.hadAutoRig as hadAutoRig
 
-import os 
 from zBuilder.ui import zUI as sp1 
 from zBuilder.scenePanel2 import main as sp2
 import zBuilder.zMaya as zMaya
