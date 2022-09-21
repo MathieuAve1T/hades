@@ -29,12 +29,17 @@ class MyLineEdit(QtWidgets.QLineEdit):
     def __init__(self, text='', parent=None):
         super(MyLineEdit, self).__init__(text, parent)
 
-class MyUi(QtWidgets.QDialog):
+class MyUi(QtWidgets.QMainWindow):
     def __init__(self):
         super(MyUi, self).__init__() 
         self.setWindowFlags(self.windowFlags() |QtCore.Qt.WindowStaysOnTopHint)   #pour l'inverse , remplacer | par &~
-        self.setWindowTitle('Hades_V.1.1.0')
+        self.setWindowTitle('Hades_V.1.1.2')
         self.resize(400, 300)
+
+        file = QtCore.QFile(r'C:\Users\MKR\MyProject\pandemonium\src\hades\Combinear.qss')
+        file.open(QtCore.QFile.ReadOnly | QtCore.QFile.Text)
+        stream = QtCore.QTextStream(file)
+        self.setStyleSheet(stream.readAll())
 
         self.create_widgets()
         self.create_layouts()
@@ -54,11 +59,8 @@ class Hades(MyUi):
 
         #master_tab : 
 
-        self.windowOnTop = QtWidgets.QCheckBox("Always On Top")
-        self.windowOnTop.setChecked(True)
-        self.windowOnTop.stateChanged.connect(self.windowAlwayOnTopCheck)
-
         self.title_l = QtWidgets.QLabel("By_Mathieu_Karadjia")
+        self.title_l.setAlignment(QtCore.Qt.AlignBottom | QtCore.Qt.AlignRight)
 
         self.autoRig_but = QtWidgets.QPushButton("AutoRig")
         self.autoRig_but.clicked.connect(self.clickAutoRig_But)
@@ -120,283 +122,378 @@ class Hades(MyUi):
         #tools_for_Maya
 
         self.toolMayaH_but = QtWidgets.QPushButton("DeleteHistory")
+        self.toolMayaH_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\history.png'))
         self.toolMayaH_but.clicked.connect(self.clickDeleteHistory_But)
         self.toolMayaT_but = QtWidgets.QPushButton("FreezeTransform")
+        self.toolMayaT_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\freezeTransform.png'))
         self.toolMayaT_but.clicked.connect(self.clickFreezeTransform_But) 
         self.toolMayaC_but = QtWidgets.QPushButton("CenterPivot")
+        self.toolMayaC_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\centerPivot.png'))
         self.toolMayaC_but.clicked.connect(self.clickCenterPivot_But) 
         self.toolMayaCreJnt_but = QtWidgets.QPushButton("Create Joints")
+        self.toolMayaCreJnt_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\skeleton.png'))
         self.toolMayaCreJnt_but.setStyleSheet("background-color: Purple")
         self.toolMayaCreJnt_but.clicked.connect(self.clickCreateJoints_But) 
         self.toolMayaJntSz_but = QtWidgets.QPushButton("Joint Size")
-        self.toolMayaJntSz_but.setStyleSheet("background-color: #E4D64E")
+        self.toolMayaJntSz_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\jointSize.png'))
+        self.toolMayaJntSz_but.setStyleSheet("background-color: #E0B93D")
         self.toolMayaJntSz_but.clicked.connect(self.clickJointSize_But) 
         self.toolMayaLRA_but = QtWidgets.QPushButton("Local Rotation Axis")
-        self.toolMayaLRA_but.setStyleSheet("background-color: #E4D64E")
+        self.toolMayaLRA_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\lRA.png'))
+        self.toolMayaLRA_but.setStyleSheet("background-color: #E0B93D")
         self.toolMayaLRA_but.clicked.connect(self.clickLocalRotationAxis_But) 
         self.toolMayaChaGrp_but = QtWidgets.QPushButton("Character Group")
+        self.toolMayaChaGrp_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\charNode.png'))
         self.toolMayaChaGrp_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaChaGrp_but.clicked.connect(self.clickCharacterGroup_But) 
         self.toolMayaMirJnt_but = QtWidgets.QPushButton("Mirror joints")
+        self.toolMayaMirJnt_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\mirrorJoint.png'))
         self.toolMayaMirJnt_but.setStyleSheet("background-color: #E265CB")
         self.toolMayaMirJnt_but.clicked.connect(self.clickMirrorJoints_But) 
         self.toolMayaOriJnt_but = QtWidgets.QPushButton("Orient Joints")
+        self.toolMayaOriJnt_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\orientJoint.png'))
         self.toolMayaOriJnt_but.setStyleSheet("background-color: #E265CB")
         self.toolMayaOriJnt_but.clicked.connect(self.clickOrientJoints_But) 
         self.toolMayaReOriJnt_but = QtWidgets.QPushButton("ReOrient Last Joint")
+        self.toolMayaReOriJnt_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\reOrientLastJoint.png'))
         self.toolMayaReOriJnt_but.setStyleSheet("background-color: #E265CB")
         self.toolMayaReOriJnt_but.clicked.connect(self.clickReOrientLastJoint_But) 
         self.toolMayaMirCrv_but = QtWidgets.QPushButton("Mirror Curves")
+        self.toolMayaMirCrv_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\mirrorCrv.png'))
         self.toolMayaMirCrv_but.setStyleSheet("background-color: #58C6Dc")
         self.toolMayaMirCrv_but.clicked.connect(self.clickMirrorCurves_But) 
         self.toolMayaParCrv_but = QtWidgets.QPushButton("Parent Curves")
+        self.toolMayaParCrv_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\parentShape.png'))
         self.toolMayaParCrv_but.setStyleSheet("background-color: #58C6Dc")
         self.toolMayaParCrv_but.clicked.connect(self.clickParentCurves_But) 
         self.toolMayaConEdi_but = QtWidgets.QPushButton("Connection Editor")
+        self.toolMayaConEdi_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\connectionEditor.png'))
         self.toolMayaConEdi_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaConEdi_but.clicked.connect(self.clickConnectionEditor_But) 
         self.toolMayaShaEdi_but = QtWidgets.QPushButton("Shape Editor")
+        self.toolMayaShaEdi_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\shapeEditor.png'))
         self.toolMayaShaEdi_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaShaEdi_but.clicked.connect(self.clickShapeEditor_But) 
         self.toolMayaDrivK_but = QtWidgets.QPushButton("DrivenKey")
+        self.toolMayaDrivK_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\drivenKey.png'))
         self.toolMayaDrivK_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaDrivK_but.clicked.connect(self.clickDrivenKey_But) 
         self.toolMayaLoca_but = QtWidgets.QPushButton("Create Locator")
-        self.toolMayaLoca_but.setStyleSheet("background-color: green")
+        self.toolMayaLoca_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\locatorCreate.png'))
+        self.toolMayaLoca_but.setStyleSheet("background-color: #55A35A")
         self.toolMayaLoca_but.clicked.connect(self.clickCreateLocator_But) 
         self.toolMayaNodEdi_but = QtWidgets.QPushButton("Node Editor")
+        self.toolMayaNodEdi_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\nodeEditor.png'))
         self.toolMayaNodEdi_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaNodEdi_but.clicked.connect(self.clickNodeEditor_But) 
         self.toolMayaCopEdi_but = QtWidgets.QPushButton("Component Editor")
+        self.toolMayaCopEdi_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\componentEditor.png'))
         self.toolMayaCopEdi_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaCopEdi_but.clicked.connect(self.clickComponentEditor_But) 
         self.toolMayaYellow_but = QtWidgets.QPushButton("Color Yellow")
-        self.toolMayaYellow_but.setStyleSheet("background-color: #E4D64E")
+        self.toolMayaYellow_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\color.png'))
+        self.toolMayaYellow_but.setStyleSheet("background-color: #E0B93D")
         self.toolMayaYellow_but.clicked.connect(self.clickColorYellow_But) 
         self.toolMayaRed_but = QtWidgets.QPushButton("Color Red")
+        self.toolMayaRed_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\color.png'))
         self.toolMayaRed_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaRed_but.clicked.connect(self.clickColorRed_But) 
         self.toolMayaBlue_but = QtWidgets.QPushButton("Color Blue")
+        self.toolMayaBlue_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\color.png'))
         self.toolMayaBlue_but.setStyleSheet("background-color: #58C6Dc")
         self.toolMayaBlue_but.clicked.connect(self.clickColorBlue_But) 
         self.toolMayaPink_but = QtWidgets.QPushButton("Color Pink")
-        self.toolMayaPink_but.setStyleSheet("background-color: pink")
+        self.toolMayaPink_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\color.png'))
+        self.toolMayaPink_but.setStyleSheet("background-color: #D48EAB")
         self.toolMayaPink_but.clicked.connect(self.clickColorPink_But) 
         self.toolMayaGreen_but = QtWidgets.QPushButton("Color Green")
-        self.toolMayaGreen_but.setStyleSheet("background-color: green")
+        self.toolMayaGreen_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\color.png'))
+        self.toolMayaGreen_but.setStyleSheet("background-color: #55A35A")
         self.toolMayaGreen_but.clicked.connect(self.clickColorGreen_But) 
         self.toolMayaPurple_but = QtWidgets.QPushButton("Color Purple")
+        self.toolMayaPurple_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\color.png'))
         self.toolMayaPurple_but.setStyleSheet("background-color: #E265CB")
         self.toolMayaPurple_but.clicked.connect(self.clickColorPurple_But) 
 
         #tools_for_Ziva
 
         self.toolZivaFirst_l = QtWidgets.QLabel("Simulation Component :")
-        self.toolZivaPanel_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaPanel_bar = self.toolZivaPanel_menu.addMenu("Scene Panel")
-        self.toolZivaPanel_open = self.toolZivaPanel_bar.addAction("Open")
+
+        self.toolZivaPanel_menu = QtWidgets.QMenu(self)
+        self.toolZivaPanel_open = self.toolZivaPanel_menu.addAction("Open")
         self.toolZivaPanel_open.triggered.connect(self.clickToolZivaPanelOpen)
-        self.toolZivaPanel_add = self.toolZivaPanel_bar.addAction("Add Cache")
+        self.toolZivaPanel_add = self.toolZivaPanel_menu.addAction("Add Cache")
         self.toolZivaPanel_add.triggered.connect(self.clickToolZivaPanelAddCache)
-        self.toolZivaPanel_del = self.toolZivaPanel_bar.addAction("Delete Cache") 
+        self.toolZivaPanel_del = self.toolZivaPanel_menu.addAction("Delete Cache")
         self.toolZivaPanel_del.triggered.connect(self.clickToolZivaPanelDeleteCache)
-        self.toolZivaTissue_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaTissue_bar = self.toolZivaTissue_menu.addMenu("zTissue")
-        self.toolZivaTissue_create = self.toolZivaTissue_bar.addAction("create zTissue")
+        self.toolZivaPanel_but = QtWidgets.QPushButton("Scene Panel")
+        self.toolZivaPanel_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\scenePanel.png'))
+        self.toolZivaPanel_but.setMenu(self.toolZivaPanel_menu)
+    
+
+        self.toolZivaTissue_menu = QtWidgets.QMenu(self)
+        self.toolZivaTissue_create = self.toolZivaTissue_menu.addAction("create zTissue")
         self.toolZivaTissue_create.triggered.connect(self.clickToolZivaTissueCreate)
-        self.toolZivaTissue_disaRSide = self.toolZivaTissue_bar.addAction("disable right side")
+        self.toolZivaTissue_disaRSide = self.toolZivaTissue_menu.addAction("disable right side")
         self.toolZivaTissue_disaRSide.triggered.connect(self.clickToolZivaTissueDisaRSide)
-        self.toolZivaTissue_enaRSide = self.toolZivaTissue_bar.addAction("enable right side")
+        self.toolZivaTissue_enaRSide = self.toolZivaTissue_menu.addAction("enable right side")
         self.toolZivaTissue_enaRSide.triggered.connect(self.clickToolZivaTissueEnaRSide)
-        self.toolZivaTissue_damping = self.toolZivaTissue_bar.addAction("set damping 1")
+        self.toolZivaTissue_damping = self.toolZivaTissue_menu.addAction("set damping 1")
         self.toolZivaTissue_damping.triggered.connect(self.clickToolZivaTissueDamping)
-        self.toolZivaTet_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaTet_bar = self.toolZivaTet_menu.addMenu("zTet")
-        self.toolZivaTet_showHide = self.toolZivaTet_bar.addAction("show/hide")
+        self.toolZivaTissue_but = QtWidgets.QPushButton("zTissue")
+        self.toolZivaTissue_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\zTissue.png'))
+        self.toolZivaTissue_but.setMenu(self.toolZivaTissue_menu)
+
+
+        self.toolZivaTet_menu = QtWidgets.QMenu(self)
+        self.toolZivaTet_showHide = self.toolZivaTet_menu.addAction("show/hide")
         self.toolZivaTet_showHide.triggered.connect(self.clickToolZivaTetShowHide)
-        self.toolZivaTet_x05 = self.toolZivaTet_bar.addAction("x 0.5")
+        self.toolZivaTet_x05 = self.toolZivaTet_menu.addAction("x 0.5")
         self.toolZivaTet_x05.triggered.connect(self.clickToolZivaTetX05)
-        self.toolZivaTet_x075 = self.toolZivaTet_bar.addAction("x 0.75")
+        self.toolZivaTet_x075 = self.toolZivaTet_menu.addAction("x 0.75")
         self.toolZivaTet_x075.triggered.connect(self.clickToolZivaTetX075)
-        self.toolZivaTet_09 = self.toolZivaTet_bar.addAction("x 0.9")
+        self.toolZivaTet_09 = self.toolZivaTet_menu.addAction("x 0.9")
         self.toolZivaTet_09.triggered.connect(self.clickToolZivaTetX9)
-        self.toolZivaTet_x11 = self.toolZivaTet_bar.addAction("x 1.1")
+        self.toolZivaTet_x11 = self.toolZivaTet_menu.addAction("x 1.1")
         self.toolZivaTet_x11.triggered.connect(self.clickToolZivaTetX11)
-        self.toolZivaTet_x125 = self.toolZivaTet_bar.addAction("x 1.25")
+        self.toolZivaTet_x125 = self.toolZivaTet_menu.addAction("x 1.25")
         self.toolZivaTet_x125.triggered.connect(self.clickToolZivaTetX125)
-        self.toolZivaTet_x2 = self.toolZivaTet_bar.addAction("x 2")
+        self.toolZivaTet_x2 = self.toolZivaTet_menu.addAction("x 2")
         self.toolZivaTet_x2.triggered.connect(self.clickToolZivaTetX2)
+        self.toolZivaTet_but = QtWidgets.QPushButton("zTet")
+        self.toolZivaTet_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\zTet.png'))
+        self.toolZivaTet_but.setMenu(self.toolZivaTet_menu)
+
+
         self.toolZivaSecond_l = QtWidgets.QLabel("Tissue Property :")
-        self.toolZivaPower_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaPower_bar = self.toolZivaPower_menu.addMenu("zMaterial")
-        self.toolZivaPower_gelatin = self.toolZivaPower_bar.addAction("Gelatin")  #1.0*10^0
-        self.toolZivaPower_gelatin.triggered.connect(self.clickToolZivaMaterialGelatin)
-        self.toolZivaPower_brain = self.toolZivaPower_bar.addAction("Brain")  #0.5*10^3
-        self.toolZivaPower_brain.triggered.connect(self.clickToolZivaMaterialBrain)
-        self.toolZivaPower_liver = self.toolZivaPower_bar.addAction("Liver")  #0.7*10^3
-        self.toolZivaPower_liver.triggered.connect(self.clickToolZivaMaterialLiver)
-        self.toolZivaPower_breastTissue = self.toolZivaPower_bar.addAction("Breast Tissue")  #0.9*10^3
-        self.toolZivaPower_breastTissue.triggered.connect(self.clickToolZivaMaterialBreastTissue)
-        self.toolZivaPower_fat = self.toolZivaPower_bar.addAction("Fat")  #3.0*10^3
-        self.toolZivaPower_fat.triggered.connect(self.clickToolZivaMaterialFat)
-        self.toolZivaPower_smoothMuscle = self.toolZivaPower_bar.addAction("Smooth Muscle")  #5.0*10^3
-        self.toolZivaPower_smoothMuscle.triggered.connect(self.clickToolZivaMaterialSmoothMuscle)
-        self.toolZivaPower_skeletalMuscle = self.toolZivaPower_bar.addAction("Skeletal Muscle")  #1.2*10^4
-        self.toolZivaPower_skeletalMuscle.triggered.connect(self.clickToolZivaMaterialSkeletalMuscle)
-        self.toolZivaPower_cartilage = self.toolZivaPower_bar.addAction("Cartilage")  #2.0*10^4
-        self.toolZivaPower_cartilage.triggered.connect(self.clickToolZivaMaterialCartilage)
-        self.toolZivaPower_rubber = self.toolZivaPower_bar.addAction("Rubber")  #1.0*10^7
-        self.toolZivaPower_rubber.triggered.connect(self.clickToolZivaMaterialRubber)
-        self.toolZivaPower_wood = self.toolZivaPower_bar.addAction("Wood")  #0.6*10^9
-        self.toolZivaPower_wood.triggered.connect(self.clickToolZivaMaterialWood)
-        self.toolZivaPower_tendon = self.toolZivaPower_bar.addAction("Tendon")  #1.0*10^9
-        self.toolZivaPower_tendon.triggered.connect(self.clickToolZivaMaterialTendon)
-        self.toolZivaPower_plastic = self.toolZivaPower_bar.addAction("Plastic")  #1.5*10^9
-        self.toolZivaPower_plastic.triggered.connect(self.clickToolZivaMaterialPlastic)
-        self.toolZivaPower_bone = self.toolZivaPower_bar.addAction("Bone")  #1.4*10^10
-        self.toolZivaPower_bone.triggered.connect(self.clickToolZivaMaterialBone)
-        self.toolZivaPower_walnutShell = self.toolZivaPower_bar.addAction("Walnut Shell")  #1.5*10^10
-        self.toolZivaPower_walnutShell.triggered.connect(self.clickToolZivaMaterialWalnulShell)
-        self.toolZivaPower_steel = self.toolZivaPower_bar.addAction("Steel")  #2.0*10^11
-        self.toolZivaPower_steel.triggered.connect(self.clickToolZivaMaterialSteel)
-        self.toolZivaPower_diamond = self.toolZivaPower_bar.addAction("Diamond")  #1.0*10^12 
-        self.toolZivaPower_diamond.triggered.connect(self.clickToolZivaMaterialDiamond)
-        self.toolZivaFiber_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaFiber_bar = self.toolZivaFiber_menu.addMenu("zFiber")
-        self.toolZivaFiber_create = self.toolZivaFiber_bar.addAction("create zFiber")
+
+
+        self.toolZivaMaterial_menu = QtWidgets.QMenu(self)
+        self.toolZivaMaterial_gelatin = self.toolZivaMaterial_menu.addAction("Gelatin")  #1.0*10^0
+        self.toolZivaMaterial_gelatin.triggered.connect(self.clickToolZivaMaterialGelatin)
+        self.toolZivaMaterial_brain = self.toolZivaMaterial_menu.addAction("Brain")  #0.5*10^3
+        self.toolZivaMaterial_brain.triggered.connect(self.clickToolZivaMaterialBrain)
+        self.toolZivaMaterial_liver = self.toolZivaMaterial_menu.addAction("Liver")  #0.7*10^3
+        self.toolZivaMaterial_liver.triggered.connect(self.clickToolZivaMaterialLiver)
+        self.toolZivaMaterial_breastTissue = self.toolZivaMaterial_menu.addAction("Breast Tissue")  #0.9*10^3
+        self.toolZivaMaterial_breastTissue.triggered.connect(self.clickToolZivaMaterialBreastTissue)
+        self.toolZivaMaterial_fat = self.toolZivaMaterial_menu.addAction("Fat")  #3.0*10^3
+        self.toolZivaMaterial_fat.triggered.connect(self.clickToolZivaMaterialFat)
+        self.toolZivaMaterial_smoothMuscle = self.toolZivaMaterial_menu.addAction("Smooth Muscle")  #5.0*10^3
+        self.toolZivaMaterial_smoothMuscle.triggered.connect(self.clickToolZivaMaterialSmoothMuscle)
+        self.toolZivaMaterial_skeletalMuscle = self.toolZivaMaterial_menu.addAction("Skeletal Muscle")  #1.2*10^4
+        self.toolZivaMaterial_skeletalMuscle.triggered.connect(self.clickToolZivaMaterialSkeletalMuscle)
+        self.toolZivaMaterial_cartilage = self.toolZivaMaterial_menu.addAction("Cartilage")  #2.0*10^4
+        self.toolZivaMaterial_cartilage.triggered.connect(self.clickToolZivaMaterialCartilage)
+        self.toolZivaMaterial_rubber = self.toolZivaMaterial_menu.addAction("Rubber")  #1.0*10^7
+        self.toolZivaMaterial_rubber.triggered.connect(self.clickToolZivaMaterialRubber)
+        self.toolZivaMaterial_wood = self.toolZivaMaterial_menu.addAction("Wood")  #0.6*10^9
+        self.toolZivaMaterial_wood.triggered.connect(self.clickToolZivaMaterialWood)
+        self.toolZivaMaterial_tendon = self.toolZivaMaterial_menu.addAction("Tendon")  #1.0*10^9
+        self.toolZivaMaterial_tendon.triggered.connect(self.clickToolZivaMaterialTendon)
+        self.toolZivaMaterial_plastic = self.toolZivaMaterial_menu.addAction("Plastic")  #1.5*10^9
+        self.toolZivaMaterial_plastic.triggered.connect(self.clickToolZivaMaterialPlastic)
+        self.toolZivaMaterial_bone = self.toolZivaMaterial_menu.addAction("Bone")  #1.4*10^10
+        self.toolZivaMaterial_bone.triggered.connect(self.clickToolZivaMaterialBone)
+        self.toolZivaMaterial_walnutShell = self.toolZivaMaterial_menu.addAction("Walnut Shell")  #1.5*10^10
+        self.toolZivaMaterial_walnutShell.triggered.connect(self.clickToolZivaMaterialWalnulShell)
+        self.toolZivaMaterial_steel = self.toolZivaMaterial_menu.addAction("Steel")  #2.0*10^11
+        self.toolZivaMaterial_steel.triggered.connect(self.clickToolZivaMaterialSteel)
+        self.toolZivaMaterial_diamond = self.toolZivaMaterial_menu.addAction("Diamond")  #1.0*10^12 
+        self.toolZivaMaterial_diamond.triggered.connect(self.clickToolZivaMaterialDiamond)
+        self.toolZivaMaterial_but = QtWidgets.QPushButton("zMaterial")
+        self.toolZivaMaterial_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\zMaterial.png'))
+        self.toolZivaMaterial_but.setMenu(self.toolZivaMaterial_menu)
+
+
+        self.toolZivaFiber_menu = QtWidgets.QMenu(self)
+        self.toolZivaFiber_create = self.toolZivaFiber_menu.addAction("create zFiber")
         self.toolZivaFiber_create.triggered.connect(self.clickToolZivaFiberCreate)
-        self.toolZivaFiber_select = self.toolZivaFiber_bar.addAction("select zFiber")
+        self.toolZivaFiber_select = self.toolZivaFiber_menu.addAction("select zFiber")
         self.toolZivaFiber_select.triggered.connect(self.clickToolZivaFiberSelect)
-        self.toolZivaLOA_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaLOA_bar = self.toolZivaLOA_menu.addMenu("Line-of-Action")
-        self.toolZivaLOA_create = self.toolZivaLOA_bar.addAction("create LOA")
+        self.toolZivaFiber_but = QtWidgets.QPushButton("zFiber")
+        self.toolZivaFiber_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\zFiber.png'))
+        self.toolZivaFiber_but.setMenu(self.toolZivaFiber_menu)
+
+
+        self.toolZivaLOA_menu = QtWidgets.QMenu(self)
+        self.toolZivaLOA_create = self.toolZivaLOA_menu.addAction("create LOA")
         self.toolZivaLOA_create.triggered.connect(self.clickToolZivaLOACreate)
-        self.toolZivaLOA_select = self.toolZivaLOA_bar.addAction("select LOA")
+        self.toolZivaLOA_select = self.toolZivaLOA_menu.addAction("select LOA")
         self.toolZivaLOA_select.triggered.connect(self.clickToolZivaLOASelect)
-        self.toolZivaLOA_addCrv = self.toolZivaLOA_bar.addAction("add curve to LOA")
+        self.toolZivaLOA_addCrv = self.toolZivaLOA_menu.addAction("add curve to LOA")
         self.toolZivaLOA_addCrv.triggered.connect(self.clickToolZivaLOAAddCrv)
-        self.toolZivaBone_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaBone_bar = self.toolZivaBone_menu.addMenu("zBone")
-        self.toolZivaBone_create = self.toolZivaBone_bar.addAction("create zBone")
+        self.toolZivaLOA_but = QtWidgets.QPushButton("LOA")
+        self.toolZivaLOA_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\zLineOfAction.png'))
+        self.toolZivaLOA_but.setMenu(self.toolZivaLOA_menu)
+
+
+        self.toolZivaBone_menu = QtWidgets.QMenu(self)
+        self.toolZivaBone_create = self.toolZivaBone_menu.addAction("create zBone")
         self.toolZivaBone_create.triggered.connect(self.clickToolZivaBoneCreate)
-        self.toolZivaPaintAttach_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaPaintAttch_bar = self.toolZivaPaintAttach_menu.addMenu("zAttachment")
-        self.toolZivaPaintAttch_create = self.toolZivaPaintAttch_bar.addAction("create zattachment")
-        self.toolZivaPaintAttch_create.triggered.connect(self.clickToolZivaAttachmentCreate)
-        self.toolZivaPaintAttch_select = self.toolZivaPaintAttch_bar.addAction("select zattachment")
-        self.toolZivaPaintAttch_select.triggered.connect(self.clickToolZivaAttachmentSelect)
-        self.toolZivaPaintAttch_paint = self.toolZivaPaintAttch_bar.addAction("paint zattachment")
-        self.toolZivaPaintAttch_paint.triggered.connect(self.clickToolZivaAttachmentPaint)
-        self.toolZivaPaintAttch_sliding = self.toolZivaPaintAttch_bar.addAction("set sliding")
-        self.toolZivaPaintAttch_sliding.triggered.connect(self.clickToolZivaAttachmentSliding)
-        self.toolZivaPaintAttch_fixed = self.toolZivaPaintAttch_bar.addAction("set fixed")
-        self.toolZivaPaintAttch_fixed.triggered.connect(self.clickToolZivaAttachmentFixed)
-        self.toolZivaPaintAttch_02 = self.toolZivaPaintAttch_bar.addAction("0.2")
-        self.toolZivaPaintAttch_02.triggered.connect(self.clickToolZivaAttachment02)
-        self.toolZivaPaintAttch_05 = self.toolZivaPaintAttch_bar.addAction("0.5")
-        self.toolZivaPaintAttch_05.triggered.connect(self.clickToolZivaAttachment05)
-        self.toolZivaPaintAttch_1 = self.toolZivaPaintAttch_bar.addAction("1")
-        self.toolZivaPaintAttch_1.triggered.connect(self.clickToolZivaAttachment1)
-        self.toolZivaPaintAttch_2 = self.toolZivaPaintAttch_bar.addAction("2")
-        self.toolZivaPaintAttch_2.triggered.connect(self.clickToolZivaAttachment2)
-        self.toolZivaPaintAttch_5 = self.toolZivaPaintAttch_bar.addAction("5")
-        self.toolZivaPaintAttch_5.triggered.connect(self.clickToolZivaAttachment5)
-        self.toolZivaPaintAttch_10 = self.toolZivaPaintAttch_bar.addAction("10")
-        self.toolZivaPaintAttch_10.triggered.connect(self.clickToolZivaAttachment10)
+        self.toolZivaBone_but = QtWidgets.QPushButton("zBone")
+        self.toolZivaBone_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\zBone.png'))
+        self.toolZivaBone_but.setMenu(self.toolZivaBone_menu)
+
+
+        self.toolZivaPaintAttach_menu = QtWidgets.QMenu(self)
+        self.toolZivaPaintAttach_create = self.toolZivaPaintAttach_menu.addAction("create zattachment")
+        self.toolZivaPaintAttach_create.triggered.connect(self.clickToolZivaAttachmentCreate)
+        self.toolZivaPaintAttach_select = self.toolZivaPaintAttach_menu.addAction("select zattachment")
+        self.toolZivaPaintAttach_select.triggered.connect(self.clickToolZivaAttachmentSelect)
+        self.toolZivaPaintAttach_paint = self.toolZivaPaintAttach_menu.addAction("paint zattachment")
+        self.toolZivaPaintAttach_paint.triggered.connect(self.clickToolZivaAttachmentPaint)
+        self.toolZivaPaintAttach_sliding = self.toolZivaPaintAttach_menu.addAction("set sliding")
+        self.toolZivaPaintAttach_sliding.triggered.connect(self.clickToolZivaAttachmentSliding)
+        self.toolZivaPaintAttach_fixed = self.toolZivaPaintAttach_menu.addAction("set fixed")
+        self.toolZivaPaintAttach_fixed.triggered.connect(self.clickToolZivaAttachmentFixed)
+        self.toolZivaPaintAttach_02 = self.toolZivaPaintAttach_menu.addAction("0.2")
+        self.toolZivaPaintAttach_02.triggered.connect(self.clickToolZivaAttachment02)
+        self.toolZivaPaintAttach_05 = self.toolZivaPaintAttach_menu.addAction("0.5")
+        self.toolZivaPaintAttach_05.triggered.connect(self.clickToolZivaAttachment05)
+        self.toolZivaPaintAttach_1 = self.toolZivaPaintAttach_menu.addAction("1")
+        self.toolZivaPaintAttach_1.triggered.connect(self.clickToolZivaAttachment1)
+        self.toolZivaPaintAttach_2 = self.toolZivaPaintAttach_menu.addAction("2")
+        self.toolZivaPaintAttach_2.triggered.connect(self.clickToolZivaAttachment2)
+        self.toolZivaPaintAttach_5 = self.toolZivaPaintAttach_menu.addAction("5")
+        self.toolZivaPaintAttach_5.triggered.connect(self.clickToolZivaAttachment5)
+        self.toolZivaPaintAttach_10 = self.toolZivaPaintAttach_menu.addAction("10")
+        self.toolZivaPaintAttach_10.triggered.connect(self.clickToolZivaAttachment10)
+        self.toolZivaPaintAttach_but = QtWidgets.QPushButton("zAttach")
+        self.toolZivaPaintAttach_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\zAttachment.png'))
+        self.toolZivaPaintAttach_but.setMenu(self.toolZivaPaintAttach_menu)
+
+
         self.toolZivaThird_l = QtWidgets.QLabel("Edit Mesh :")
-        self.toolZivaCopyPaste_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaCopyPaste_bar = self.toolZivaCopyPaste_menu.addMenu("CopyPaste")
-        self.toolZivaCopyPaste_copy = self.toolZivaCopyPaste_bar.addAction("Copy")
+
+
+        self.toolZivaCopyPaste_menu = QtWidgets.QMenu(self)
+        self.toolZivaCopyPaste_copy = self.toolZivaCopyPaste_menu.addAction("Copy")
         self.toolZivaCopyPaste_copy.triggered.connect(self.clickToolZivaCopy)
-        self.toolZivaCopyPaste_paste = self.toolZivaCopyPaste_bar.addAction("Paste")
+        self.toolZivaCopyPaste_paste = self.toolZivaCopyPaste_menu.addAction("Paste")
         self.toolZivaCopyPaste_paste.triggered.connect(self.clickToolZivaPaste)
-        self.toolZivaMeshSculpt_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaMeshSculpt_bar = self.toolZivaMeshSculpt_menu.addMenu("MeshSculpt")
-        self.toolZivaMesh_standard = self.toolZivaMeshSculpt_bar.addAction("Standard")
-        self.toolZivaMesh_standard.triggered.connect(self.clickToolZivaMeshStandart) 
-        self.toolZivaMesh_move = self.toolZivaMeshSculpt_bar.addAction("Move")
-        self.toolZivaMesh_move.triggered.connect(self.clickToolZivaMeshMove)
-        self.toolZivaMesh_inflat = self.toolZivaMeshSculpt_bar.addAction("Inflat")
-        self.toolZivaMesh_inflat.triggered.connect(self.clickToolZivaMeshInflat)
-        self.toolZivaMesh_flatten = self.toolZivaMeshSculpt_bar.addAction("Flatten")
-        self.toolZivaMesh_flatten.triggered.connect(self.clickToolZivaMeshFlatten)
-        self.toolZivaMesh_pinch = self.toolZivaMeshSculpt_bar.addAction("Pinch")
-        self.toolZivaMesh_pinch.triggered.connect(self.clickToolZivaMeshPinch)
-        self.toolZivaMeshModify_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaMeshModify_bar = self.toolZivaMeshModify_menu.addMenu("MeshModify")
-        self.toolZivaMesh_smooth = self.toolZivaMeshModify_bar.addAction("Smooth")
-        self.toolZivaMesh_smooth.triggered.connect(self.clickToolZivaMeshSmooth)
-        self.toolZivaMesh_freeze = self.toolZivaMeshModify_bar.addAction("Freeze")
-        self.toolZivaMesh_freeze.triggered.connect(self.clickToolZivaMeshFreeze)
-        self.toolZivaMesh_unFreeze = self.toolZivaMeshModify_bar.addAction("UnFreeze")
-        self.toolZivaMesh_unFreeze.triggered.connect(self.clickToolZivaMeshUnFreeze)
-        self.toolZivaMesh_relax = self.toolZivaMeshModify_bar.addAction("Relax")
-        self.toolZivaMesh_relax.triggered.connect(self.clickToolZivaMeshRelax)
-        self.toolZivaMesh_remesh = self.toolZivaMeshModify_bar.addAction("Remesh")
-        self.toolZivaMesh_remesh.triggered.connect(self.clickToolZivaMeshRemesh)
-        self.toolZivaMesh_retopo = self.toolZivaMeshModify_bar.addAction("Retopo")
-        self.toolZivaMesh_retopo.triggered.connect(self.clickToolZivaMeshRetopo)
-        self.toolZivaMeshMirror_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaMeshMirror_bar = self.toolZivaMeshMirror_menu.addMenu("MeshMirror")
-        self.toolZivaMesh_mirror = self.toolZivaMeshMirror_bar.addAction("Mirror")
-        self.toolZivaMesh_mirror.triggered.connect(self.clickToolZivaMeshMirror)
-        self.toolZivaMesh_transfer = self.toolZivaMeshMirror_bar.addAction("Transfer Shape")
-        self.toolZivaMesh_transfer.triggered.connect(self.clickToolZivaMeshTransfer)
+        self.toolZivaCopyPaste_but = QtWidgets.QPushButton("CopyPaste")
+        self.toolZivaCopyPaste_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\copyPaste.png'))
+        self.toolZivaCopyPaste_but.setMenu(self.toolZivaCopyPaste_menu)
+
+
+        self.toolZivaMeshSculpt_menu = QtWidgets.QMenu(self)
+        self.toolZivaMeshSculpt_standard = self.toolZivaMeshSculpt_menu.addAction("Standard")
+        self.toolZivaMeshSculpt_standard.triggered.connect(self.clickToolZivaMeshStandart) 
+        self.toolZivaMeshSculpt_move = self.toolZivaMeshSculpt_menu.addAction("Move")
+        self.toolZivaMeshSculpt_move.triggered.connect(self.clickToolZivaMeshMove)
+        self.toolZivaMeshSculpt_inflat = self.toolZivaMeshSculpt_menu.addAction("Inflat")
+        self.toolZivaMeshSculpt_inflat.triggered.connect(self.clickToolZivaMeshInflat)
+        self.toolZivaMeshSculpt_flatten = self.toolZivaMeshSculpt_menu.addAction("Flatten")
+        self.toolZivaMeshSculpt_flatten.triggered.connect(self.clickToolZivaMeshFlatten)
+        self.toolZivaMeshSculpt_pinch = self.toolZivaMeshSculpt_menu.addAction("Pinch")
+        self.toolZivaMeshSculpt_pinch.triggered.connect(self.clickToolZivaMeshPinch)
+        self.toolZivaMeshSculpt_but = QtWidgets.QPushButton("MeshSculpt")
+        self.toolZivaMeshSculpt_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\meshStandart.png'))
+        self.toolZivaMeshSculpt_but.setMenu(self.toolZivaMeshSculpt_menu)
+
+
+        self.toolZivaMeshModify_menu = QtWidgets.QMenu(self)
+        self.toolZivaMeshModify_smooth = self.toolZivaMeshModify_menu.addAction("Smooth")
+        self.toolZivaMeshModify_smooth.triggered.connect(self.clickToolZivaMeshSmooth)
+        self.toolZivaMeshModify_freeze = self.toolZivaMeshModify_menu.addAction("Freeze")
+        self.toolZivaMeshModify_freeze.triggered.connect(self.clickToolZivaMeshFreeze)
+        self.toolZivaMeshModify_unFreeze = self.toolZivaMeshModify_menu.addAction("UnFreeze")
+        self.toolZivaMeshModify_unFreeze.triggered.connect(self.clickToolZivaMeshUnFreeze)
+        self.toolZivaMeshModify_relax = self.toolZivaMeshModify_menu.addAction("Relax")
+        self.toolZivaMeshModify_relax.triggered.connect(self.clickToolZivaMeshRelax)
+        self.toolZivaMeshModify_remesh = self.toolZivaMeshModify_menu.addAction("Remesh")
+        self.toolZivaMeshModify_remesh.triggered.connect(self.clickToolZivaMeshRemesh)
+        self.toolZivaMeshModify_retopo = self.toolZivaMeshModify_menu.addAction("Retopo")
+        self.toolZivaMeshModify_retopo.triggered.connect(self.clickToolZivaMeshRetopo)
+        self.toolZivaMeshModify_but = QtWidgets.QPushButton("MeshModify")
+        self.toolZivaMeshModify_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\meshOption.png'))
+        self.toolZivaMeshModify_but.setMenu(self.toolZivaMeshModify_menu)
+
+
+
+
+        self.toolZivaMeshMirror_menu = QtWidgets.QMenu(self)
+        self.toolZivaMeshMirror_mirror = self.toolZivaMeshMirror_menu.addAction("Mirror")
+        self.toolZivaMeshMirror_mirror.triggered.connect(self.clickToolZivaMeshMirror)
+        self.toolZivaMeshMirror_transfer = self.toolZivaMeshMirror_menu.addAction("Transfer Shape")
+        self.toolZivaMeshMirror_transfer.triggered.connect(self.clickToolZivaMeshTransfer)
+        self.toolZivaMeshMirror_but = QtWidgets.QPushButton("MeshMirror")
+        self.toolZivaMeshMirror_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\meshMirror.png'))
+        self.toolZivaMeshMirror_but.setMenu(self.toolZivaMeshMirror_menu)
+
+
         self.toolZivaFourth_l = QtWidgets.QLabel("Tools :")
-        self.toolZivaPaintTool_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaPaintTool_bar = self.toolZivaPaintTool_menu.addMenu("PaintTool")
-        self.toolZivaPaintTool_open = self.toolZivaPaintTool_bar.addAction("Open")
+
+
+        self.toolZivaPaintTool_menu = QtWidgets.QMenu(self)
+        self.toolZivaPaintTool_open = self.toolZivaPaintTool_menu.addAction("Open")
         self.toolZivaPaintTool_open.triggered.connect(self.clickToolZivaPaintToolOpen)
-        self.toolZivaPaintTool_0 = self.toolZivaPaintTool_bar.addAction("Value 0")
+        self.toolZivaPaintTool_0 = self.toolZivaPaintTool_menu.addAction("Value 0")
         self.toolZivaPaintTool_0.triggered.connect(self.clickToolZivaPaintTool0)
-        self.toolZivaPaintTool_05 = self.toolZivaPaintTool_bar.addAction("Value 0.5")
+        self.toolZivaPaintTool_05 = self.toolZivaPaintTool_menu.addAction("Value 0.5")
         self.toolZivaPaintTool_05.triggered.connect(self.clickToolZivaPaintTool05)
-        self.toolZivaPaintTool_1 = self.toolZivaPaintTool_bar.addAction("Value 1")
+        self.toolZivaPaintTool_1 = self.toolZivaPaintTool_menu.addAction("Value 1")
         self.toolZivaPaintTool_1.triggered.connect(self.clickToolZivaPaintTool1)
-        self.toolZivaPaintTool_flood0 = self.toolZivaPaintTool_bar.addAction("Flood 0")
+        self.toolZivaPaintTool_flood0 = self.toolZivaPaintTool_menu.addAction("Flood 0")
         self.toolZivaPaintTool_flood0.triggered.connect(self.clickToolZivaPaintToolFlood0)
-        self.toolZivaPaintTool_flood1 = self.toolZivaPaintTool_bar.addAction("Flood 1")
+        self.toolZivaPaintTool_flood1 = self.toolZivaPaintTool_menu.addAction("Flood 1")
         self.toolZivaPaintTool_flood1.triggered.connect(self.clickToolZivaPaintToolFlood1)
-        self.toolZivaPaintTool_smooth = self.toolZivaPaintTool_bar.addAction("Smooth")
+        self.toolZivaPaintTool_smooth = self.toolZivaPaintTool_menu.addAction("Smooth")
         self.toolZivaPaintTool_smooth.triggered.connect(self.clickToolZivaPaintToolSmooth)
-        self.toolZivaPaintToolAdd_bar = self.toolZivaPaintTool_bar.addMenu("Add")
-        self.toolZivaPaintTool_add001 = self.toolZivaPaintToolAdd_bar.addAction("Value 0.01")
+        self.toolZivaPaintToolAdd_menu = self.toolZivaPaintTool_menu.addMenu("Add")
+        self.toolZivaPaintTool_add001 = self.toolZivaPaintToolAdd_menu.addAction("Value 0.01")
         self.toolZivaPaintTool_add001.triggered.connect(self.clickToolZivaPaintToolAdd001)
-        self.toolZivaPaintTool_add01 = self.toolZivaPaintToolAdd_bar.addAction("Value 0.1")
+        self.toolZivaPaintTool_add01 = self.toolZivaPaintToolAdd_menu.addAction("Value 0.1")
         self.toolZivaPaintTool_add01.triggered.connect(self.clickToolZivaPaintToolAdd01)
-        self.toolZivaPaintTool_add02 = self.toolZivaPaintToolAdd_bar.addAction("Value 0.2")
+        self.toolZivaPaintTool_add02 = self.toolZivaPaintToolAdd_menu.addAction("Value 0.2")
         self.toolZivaPaintTool_add02.triggered.connect(self.clickToolZivaPaintToolAdd02)
-        self.toolZivaPaintTool_add05 = self.toolZivaPaintToolAdd_bar.addAction("Value 0.5")
+        self.toolZivaPaintTool_add05 = self.toolZivaPaintToolAdd_menu.addAction("Value 0.5")
         self.toolZivaPaintTool_add05.triggered.connect(self.clickToolZivaPaintToolAdd05)
-        self.toolZivaPaintToolSca_bar = self.toolZivaPaintTool_bar.addMenu("Scale")
-        self.toolZivaPaintTool_scale1 = self.toolZivaPaintToolSca_bar.addAction("Value 1")
+        self.toolZivaPaintToolSca_menu = self.toolZivaPaintTool_menu.addMenu("Scale")
+        self.toolZivaPaintTool_scale1 = self.toolZivaPaintToolSca_menu.addAction("Value 1")
         self.toolZivaPaintTool_scale1.triggered.connect(self.clickToolZivaPaintToolScale1)
-        self.toolZivaPaintTool_scale08 = self.toolZivaPaintToolSca_bar.addAction("Value 0.8")
+        self.toolZivaPaintTool_scale08 = self.toolZivaPaintToolSca_menu.addAction("Value 0.8")
         self.toolZivaPaintTool_scale08.triggered.connect(self.clickToolZivaPaintToolScale08)
-        self.toolZivaPaintTool_06 = self.toolZivaPaintToolSca_bar.addAction("Value 0.6")
+        self.toolZivaPaintTool_06 = self.toolZivaPaintToolSca_menu.addAction("Value 0.6")
         self.toolZivaPaintTool_06.triggered.connect(self.clickToolZivaPaintToolScale06)
-        self.toolZivaPaintTool_04 = self.toolZivaPaintToolSca_bar.addAction("Value 0.4")
+        self.toolZivaPaintTool_04 = self.toolZivaPaintToolSca_menu.addAction("Value 0.4")
         self.toolZivaPaintTool_04.triggered.connect(self.clickToolZivaPaintToolScale04)
-        self.toolZivaPaintTool_02 = self.toolZivaPaintToolSca_bar.addAction("Value 0.2")
+        self.toolZivaPaintTool_02 = self.toolZivaPaintToolSca_menu.addAction("Value 0.2")
         self.toolZivaPaintTool_02.triggered.connect(self.clickToolZivaPaintToolScale02)
-        self.toolZivaPaintTool_0 = self.toolZivaPaintToolSca_bar.addAction("Value 0")
+        self.toolZivaPaintTool_0 = self.toolZivaPaintToolSca_menu.addAction("Value 0")
         self.toolZivaPaintTool_0.triggered.connect(self.clickToolZivaPaintToolScale0)
-        self.toolZivaMirror_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaMirror_bar = self.toolZivaMirror_menu.addMenu("Mirror")
-        self.toolZivaMirror_LR = self.toolZivaMirror_bar.addAction("Left to Right")
+        self.toolZivaPaintTool_but = QtWidgets.QPushButton("PaintTool")
+        self.toolZivaPaintTool_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\paintTool.png'))
+        self.toolZivaPaintTool_but.setMenu(self.toolZivaPaintTool_menu)
+
+
+        self.toolZivaMirror_menu = QtWidgets.QMenu(self)
+        self.toolZivaMirror_LR = self.toolZivaMirror_menu.addAction("Left to Right")
         self.toolZivaMirror_LR.triggered.connect(self.clickToolZivaMirrorLR)
-        self.toolZivaMirror_RL = self.toolZivaMirror_bar.addAction("Right to Left")
+        self.toolZivaMirror_RL = self.toolZivaMirror_menu.addAction("Right to Left")
         self.toolZivaMirror_RL.triggered.connect(self.clickToolZivaMirrorRL)
-        self.toolZivaRename_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaRename_bar = self.toolZivaRename_menu.addMenu("zRename")
-        self.toolZivaRename_rename = self.toolZivaRename_bar.addAction("rename all Ziva nodes")
+        self.toolZivaMirror_but = QtWidgets.QPushButton("Mirror")
+        self.toolZivaMirror_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\mirrorSkin.png'))
+        self.toolZivaMirror_but.setMenu(self.toolZivaMirror_menu)
+
+
+        self.toolZivaRename_menu = QtWidgets.QMenu(self)
+        self.toolZivaRename_rename = self.toolZivaRename_menu.addAction("rename all Ziva nodes")
         self.toolZivaRename_rename.triggered.connect(self.clickToolZivaRename)
-        self.toolZivaActivate_menu = QtWidgets.QMenuBar(self)
-        self.toolZivaActivate_bar = self.toolZivaActivate_menu.addMenu("On/Off")
-        self.toolZivaActivate_activate = self.toolZivaActivate_bar.addAction("activate zTissue")
+        self.toolZivaRename_but = QtWidgets.QPushButton("Rename")
+        self.toolZivaRename_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\rename.png'))
+        self.toolZivaRename_but.setMenu(self.toolZivaRename_menu)
+
+
+        self.toolZivaActivate_menu = QtWidgets.QMenu(self)
+        self.toolZivaActivate_activate = self.toolZivaActivate_menu.addAction("activate zTissue")
         self.toolZivaActivate_activate.triggered.connect(self.clickToolZivaActivate)
-        self.toolZivaActivate_desactivate = self.toolZivaActivate_bar.addAction("desactivate zTissue")
+        self.toolZivaActivate_desactivate = self.toolZivaActivate_menu.addAction("desactivate zTissue")
         self.toolZivaActivate_desactivate.triggered.connect(self.clickToolZivaDesativate)
+        self.toolZivaActivate_but = QtWidgets.QPushButton("On/Off")
+        self.toolZivaActivate_but.setIcon(QtGui.QIcon(r'C:\Users\MKR\MyProject\pandemonium\src\hades\images\onOff.png'))
+        self.toolZivaActivate_but.setMenu(self.toolZivaActivate_menu)
 
         #Create_Ctrls
 
@@ -443,14 +540,9 @@ class Hades(MyUi):
         self.createCtrlTabLocator_but.setIconSize(QtCore.QSize(100,100))
         self.createCtrlTabLocator_but.clicked.connect(self.clickCtrlLocator_But)
        
-
     def create_layouts(self):
         
         #master_tab : 
-
-        title_lay = QtWidgets.QHBoxLayout()
-        title_lay.addWidget(self.title_l)
-        title_lay.addWidget(self.windowOnTop)
         
         self.autoRig_layout = QtWidgets.QVBoxLayout()
         self.autoRig_layout.addWidget(self.autoRig_but)
@@ -473,6 +565,7 @@ class Hades(MyUi):
         toolZiva_layout.addWidget(self.toolZiva_l)
 
         master_layout = QtWidgets.QVBoxLayout(self.masterTab)
+        master_layout.addWidget(self.title_l)
         master_layout.addLayout(self.autoRig_layout)
         master_layout.addLayout(autoRigSkin_layout)
         master_layout.addLayout(toolMaya_layout)
@@ -500,7 +593,6 @@ class Hades(MyUi):
         self.autoRigSkin_layout = QtWidgets.QVBoxLayout(self.autoRigSkinTab)
         self.autoRigSkin_layout.addWidget(self.autoRigSkin_scene_l)
         self.autoRigSkin_layout.addWidget(self.autoRigSkin_scene_but)
-
 
         #tool_for_maya_tab
 
@@ -550,38 +642,31 @@ class Hades(MyUi):
 
         self.toolZivaTab_layout = QtWidgets.QGridLayout(self.toolZivaTab)
         self.toolZivaTab_layout.addWidget(self.toolZivaFirst_l, 0, 0)
-        self.toolZivaTab_layout.addWidget(self.toolZivaPanel_menu, 1, 0)
-        self.toolZivaTab_layout.addWidget(self.toolZivaTissue_menu, 1, 1)
-        self.toolZivaTab_layout.addWidget(self.toolZivaTet_menu, 1, 2)
-        self.toolZivaTab_layout.addWidget(self.toolZivaBone_menu, 1, 3)
+        self.toolZivaTab_layout.addWidget(self.toolZivaPanel_but, 1, 0)
+        self.toolZivaTab_layout.addWidget(self.toolZivaTissue_but, 1, 1)
+        self.toolZivaTab_layout.addWidget(self.toolZivaTet_but, 1, 2)
+        self.toolZivaTab_layout.addWidget(self.toolZivaBone_but, 1, 3)
         self.toolZivaTab_layout.addWidget(self.toolZivaSecond_l, 2, 0)
-        self.toolZivaTab_layout.addWidget(self.toolZivaPower_menu, 3, 0)
-        self.toolZivaTab_layout.addWidget(self.toolZivaFiber_menu, 3, 1)
-        self.toolZivaTab_layout.addWidget(self.toolZivaLOA_menu, 3, 2)
-        self.toolZivaTab_layout.addWidget(self.toolZivaPaintAttach_menu, 3, 3)
+        self.toolZivaTab_layout.addWidget(self.toolZivaMaterial_but, 3, 0)
+        self.toolZivaTab_layout.addWidget(self.toolZivaFiber_but, 3, 1)
+        self.toolZivaTab_layout.addWidget(self.toolZivaLOA_but, 3, 2)
+        self.toolZivaTab_layout.addWidget(self.toolZivaPaintAttach_but, 3, 3)
         self.toolZivaTab_layout.addWidget(self.toolZivaThird_l, 4, 0)
-        self.toolZivaTab_layout.addWidget(self.toolZivaCopyPaste_menu, 5, 0)
-        self.toolZivaTab_layout.addWidget(self.toolZivaMeshSculpt_menu, 5, 1)
-        self.toolZivaTab_layout.addWidget(self.toolZivaMeshModify_menu, 5, 2)
-        self.toolZivaTab_layout.addWidget(self.toolZivaMeshMirror_menu, 5, 3)
+        self.toolZivaTab_layout.addWidget(self.toolZivaCopyPaste_but, 5, 0)
+        self.toolZivaTab_layout.addWidget(self.toolZivaMeshSculpt_but, 5, 1)
+        self.toolZivaTab_layout.addWidget(self.toolZivaMeshModify_but, 5, 2)
+        self.toolZivaTab_layout.addWidget(self.toolZivaMeshMirror_but, 5, 3)
         self.toolZivaTab_layout.addWidget(self.toolZivaFourth_l, 6, 0)
-        self.toolZivaTab_layout.addWidget(self.toolZivaPaintTool_menu, 7, 0)
-        self.toolZivaTab_layout.addWidget(self.toolZivaMirror_menu, 7, 1)
-        self.toolZivaTab_layout.addWidget(self.toolZivaRename_menu, 7, 2)
-        self.toolZivaTab_layout.addWidget(self.toolZivaActivate_menu, 7, 3)
-
-
-
-
-        main_lay = QtWidgets.QVBoxLayout(self)
-        main_lay.addLayout(title_lay)
-        main_lay.addWidget(self.tabMaster)  
+        self.toolZivaTab_layout.addWidget(self.toolZivaPaintTool_but, 7, 0)
+        self.toolZivaTab_layout.addWidget(self.toolZivaMirror_but, 7, 1)
+        self.toolZivaTab_layout.addWidget(self.toolZivaRename_but, 7, 2)
+        self.toolZivaTab_layout.addWidget(self.toolZivaActivate_but, 7, 3)
+ 
+        self.setCentralWidget(self.tabMaster)
 
     def create_connections(self):
         self.tabMaster.currentChanged.connect(self.tabChanged)
 
-    def windowAlwayOnTopCheck(self):
-        pass
     #tab connection
 
     def tabChanged(self):
@@ -699,7 +784,6 @@ class Hades(MyUi):
     
     def clickColorPurple_But(self):
         hadCore.coreColorPurple()
-
     
     #Create ctrl connection
 
@@ -739,7 +823,6 @@ class Hades(MyUi):
         hadEnv.CTRLSIZEVALUE = self.createCtrlSize_sb.value()
         hadEnv.CTRLGRPVALUE = self.createCtrlGrp_chx.isChecked()
         hadCore.coreCreateLocator() 
-
 
     #Tools for Ziva
 
@@ -912,9 +995,6 @@ class Hades(MyUi):
     def clickToolZivaDesativate(self):
         hadCore.coreToolZivaDesativate()
 
-
-
-
 def show():
     try:
         app = QtWidgets.QApplication(sys.argv)
@@ -926,5 +1006,7 @@ def show():
 
 if __name__ == "__main__":
     show()
+
+
 
 

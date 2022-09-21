@@ -94,15 +94,15 @@ def coreCharacterGroup():
 	
 	cmds.parent("Xtra_toHide", "ExtraNodes")
 	cmds.parent("Xtra_toShow", "ExtraNodes")
-	cmds.parent("GlobalMove", "AutoRig_By_Mathieu")
-	cmds.parent("Model", "AutoRig_By_Mathieu")
-	cmds.parent("BlendShapes", "AutoRig_By_Mathieu")
+	cmds.parent("GlobalMove", "Rig_by_Hades")
+	cmds.parent("Model", "ARig_by_Hades")
+	cmds.parent("BlendShapes", "Rig_by_Hades")
 	cmds.parent("Joints", "GlobalMove")
 	cmds.parent("Iks", "GlobalMove")
 	cmds.parent("ControlObjects", "GlobalMove")
-	cmds.parent("ExtraNodes", "AutoRig_By_Mathieu")
+	cmds.parent("ExtraNodes", "Rig_by_Hades")
 	
-	cmds.parent(CtrlGeneral, "AutoRig_By_Mathieu")
+	cmds.parent(CtrlGeneral, "Rig_by_Hades")
 	
 	cmds.connectAttr(CtrlGeneral + ".translate", "GlobalMove.translate")
 	cmds.connectAttr(CtrlGeneral + ".rotate", "GlobalMove.rotate")
