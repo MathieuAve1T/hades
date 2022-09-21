@@ -35,6 +35,7 @@ def coreAutoRigGuide():
 		headAutoRig = hadAutoRig.AutoRigCreateGuide()
 		headAutoRig.autoRigHeadModule()	
 
+	cmds.select(clear=True)
 
 def coreAutoRigGenerator():
 
@@ -79,7 +80,7 @@ def coreLocalRotationAxis():
 	mel.eval('ToggleLocalRotationAxes')
 
 def coreCharacterGroup():
-	CtrlGeneral = cmds.circle(normal=(0, 1, 0), center=(0, 0, 0), radius=7, name= "Ctrl_General", constructionHistory=False)[0]
+	ctrlGeneral = cmds.circle(normal=(0, 1, 0), center=(0, 0, 0), radius=7, name= "Ctrl_General", constructionHistory=False)[0]
 
 	cmds.group( em=True, name="Rig_by_Hades" )
 	cmds.group( em=True, name="GlobalMove" )
@@ -91,32 +92,34 @@ def coreCharacterGroup():
 	cmds.group( em=True, name="ExtraNodes" )
 	cmds.group( em=True, name="Xtra_toShow" )
 	cmds.group( em=True, name="Xtra_toHide" )
+	cmds.setAttr('Xtra_toHide.visibility', 0)
+	cmds.setAttr('Iks.visibility', 0)
 	
 	cmds.parent("Xtra_toHide", "ExtraNodes")
 	cmds.parent("Xtra_toShow", "ExtraNodes")
 	cmds.parent("GlobalMove", "Rig_by_Hades")
-	cmds.parent("Model", "ARig_by_Hades")
+	cmds.parent("Model", "Rig_by_Hades")
 	cmds.parent("BlendShapes", "Rig_by_Hades")
 	cmds.parent("Joints", "GlobalMove")
 	cmds.parent("Iks", "GlobalMove")
 	cmds.parent("ControlObjects", "GlobalMove")
 	cmds.parent("ExtraNodes", "Rig_by_Hades")
 	
-	cmds.parent(CtrlGeneral, "Rig_by_Hades")
+	cmds.parent(ctrlGeneral, "Rig_by_Hades")
 	
-	cmds.connectAttr(CtrlGeneral + ".translate", "GlobalMove.translate")
-	cmds.connectAttr(CtrlGeneral + ".rotate", "GlobalMove.rotate")
+	cmds.connectAttr(ctrlGeneral + ".translate", "GlobalMove.translate")
+	cmds.connectAttr(ctrlGeneral + ".rotate", "GlobalMove.rotate")
 	
 	cmds.connectAttr("GlobalMove.scaleY", "GlobalMove.scaleX")
 	cmds.connectAttr("GlobalMove.scaleY", "GlobalMove.scaleZ")
 	
-	cmds.connectAttr(CtrlGeneral + ".scaleY", CtrlGeneral +".scaleZ")
-	cmds.connectAttr(CtrlGeneral + ".scaleY", CtrlGeneral +".scaleX")
+	cmds.connectAttr(ctrlGeneral + ".scaleY", ctrlGeneral +".scaleZ")
+	cmds.connectAttr(ctrlGeneral + ".scaleY", ctrlGeneral +".scaleX")
 	
-	cmds.connectAttr(CtrlGeneral + ".scaleX", "GlobalMove.scaleY")
+	cmds.connectAttr(ctrlGeneral + ".scaleX", "GlobalMove.scaleY")
 	
-	cmds.setAttr( CtrlGeneral +'.scaleX', lock=True , keyable = False , channelBox=False )
-	cmds.setAttr( CtrlGeneral +'.scaleZ', lock=True , keyable = False , channelBox=False ) 
+	cmds.setAttr( ctrlGeneral +'.scaleX', lock=True , keyable = False , channelBox=False )
+	cmds.setAttr( ctrlGeneral +'.scaleZ', lock=True , keyable = False , channelBox=False ) 
 
 def coreMirrorJoints():
 	mel.eval('MirrorJointOptions')

@@ -596,6 +596,9 @@ class AutoRigGenerateRig(object):
             cmds.group( em=True, name="ExtraNodes" )
             cmds.group( em=True, name="Xtra_toShow" )
             cmds.group( em=True, name="Xtra_toHide" )
+            cmds.setAttr('Xtra_toHide.visibility', 0)
+            cmds.setAttr('Iks.visibility', 0)
+
             
             cmds.parent("Xtra_toHide", "ExtraNodes")
             cmds.parent("Xtra_toShow", "ExtraNodes")
@@ -640,9 +643,9 @@ class AutoRigGenerateRig(object):
             grpCtrlHead = cmds.group( em=True, name="Grp_"+ctrlHead  )
             cmds.parent(ctrlHead, grpCtrlHead)
 
-            grpCtrlNeck = cmds.group( self.ctrlNeck, n= "Grp_"+self.ctrlNeck ) 
+            self.grpCtrlNeck = cmds.group( self.ctrlNeck, n= "Grp_"+self.ctrlNeck ) 
 
-            cmds.matchTransform(grpCtrlNeck, hadEnv.AUTORIGLISTHEADJOINT[0])
+            cmds.matchTransform(self.grpCtrlNeck, hadEnv.AUTORIGLISTHEADJOINT[0])
             cmds.matchTransform(grpCtrlHead, hadEnv.AUTORIGLISTHEADJOINT[1]) 
             
             cmds.parent(grpCtrlHead, self.ctrlNeck)
@@ -660,7 +663,7 @@ class AutoRigGenerateRig(object):
             #clean 
 
             cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[0], 'Joints')
-            cmds.parent(grpCtrlNeck, 'ControlObjects')
+            cmds.parent(self.grpCtrlNeck, 'ControlObjects')
 
         def rigChest(self):
 
@@ -749,6 +752,7 @@ class AutoRigGenerateRig(object):
             cmds.parent(hadEnv.AUTORIGLISTCHESTJOINT[0], 'Joints')
             for each in jointSpineIklist:
                 cmds.parent(each, 'Joints')
+                cmds.setAttr(each+'.visibility', 0)
             cmds.parent(ikSpine, 'Iks')
             cmds.parent(crvSpine, 'Xtra_toHide')
             cmds.parent(grpCtrlRoot, 'ControlObjects')
@@ -762,7 +766,8 @@ class AutoRigGenerateRig(object):
             if hadEnv.AUTORIGLISTHEADJOINT:
 
                 cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[4])
-                cmds.parent(self.ctrlNeck, self.ctrlSpineIK[-1])
+                cmds.parentConstraint(hadEnv.AUTORIGLISTCHESTJOINT[4], self.grpCtrlNeck, maintainOffset=True)
+                #cmds.parent(self.grpCtrlNeck, self.ctrlSpineIK[-1])
 
     def autoRigCreateRigWithSide(self, side):
 
@@ -1261,5 +1266,5 @@ class AutoRigGenerateRig(object):
                 else:
                     step = 0
                 cmds.parent(hadEnv.AUTORIGLISTARMJOINT[0+step], hadEnv.AUTORIGLISTCHESTJOINT[4])
-                cmds.parent(self.grpCtrlClavicle, hadEnv.CTRLCHEST)
+                cmds.parentConstraint(hadEnv.AUTORIGLISTCHESTJOINT[4], self.grpCtrlClavicle, maintainOffset=True)
 
