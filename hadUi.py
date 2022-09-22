@@ -36,11 +36,13 @@ reload(hades)
 
 from hades import hadUi
 from hades import hadEnv
+import os
 
-hadEnv.PATH = path
+hadEnv.PATH = hades.__file__.rpartition(os.sep)[0]
 
 ui = hadUi.Hades()
 ui.show()
+
 
 
 '''
@@ -53,11 +55,11 @@ class MyUi(QtWidgets.QMainWindow):
     def __init__(self):
         super(MyUi, self).__init__() 
         self.setWindowFlags(self.windowFlags() |QtCore.Qt.WindowStaysOnTopHint)   #pour l'inverse , remplacer | par &~
-        self.setWindowTitle('Hades_V.1.1.2')
+        self.setWindowTitle('Hades_V.1.1.3')
         self.resize(400, 300)
 
         #file = QtCore.QFile(hadEnv.PATH + '{0}hades{0}Combinear.qss'.format(os.sep))
-        file = QtCore.QFile(os.path.join(hadEnv.PATH, 'hades','Combinear.qss'))
+        file = QtCore.QFile(os.path.join(hadEnv.PATH,'Combinear.qss'))
         file.open(QtCore.QFile.ReadOnly | QtCore.QFile.Text)
         stream = QtCore.QTextStream(file)
         self.setStyleSheet(stream.readAll())
@@ -143,96 +145,96 @@ class Hades(MyUi):
         #tools_for_Maya
 
         self.toolMayaH_but = QtWidgets.QPushButton("DeleteHistory")
-        self.toolMayaH_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','history.png')))
+        self.toolMayaH_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','history.png')))
         self.toolMayaH_but.clicked.connect(self.clickDeleteHistory_But)
         self.toolMayaT_but = QtWidgets.QPushButton("FreezeTransform")
-        self.toolMayaT_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','freezeTransform.png')))
+        self.toolMayaT_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','freezeTransform.png')))
         self.toolMayaT_but.clicked.connect(self.clickFreezeTransform_But) 
         self.toolMayaC_but = QtWidgets.QPushButton("CenterPivot")
-        self.toolMayaC_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','centerPivot.png')))
+        self.toolMayaC_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','centerPivot.png')))
         self.toolMayaC_but.clicked.connect(self.clickCenterPivot_But) 
         self.toolMayaCreJnt_but = QtWidgets.QPushButton("Create Joints")
-        self.toolMayaCreJnt_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','skeleton.png')))
+        self.toolMayaCreJnt_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','skeleton.png')))
         self.toolMayaCreJnt_but.setStyleSheet("background-color: Purple")
         self.toolMayaCreJnt_but.clicked.connect(self.clickCreateJoints_But) 
         self.toolMayaJntSz_but = QtWidgets.QPushButton("Joint Size")
-        self.toolMayaJntSz_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','jointSize.png')))
+        self.toolMayaJntSz_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','jointSize.png')))
         self.toolMayaJntSz_but.setStyleSheet("background-color: #E0B93D")
         self.toolMayaJntSz_but.clicked.connect(self.clickJointSize_But) 
         self.toolMayaLRA_but = QtWidgets.QPushButton("Local Rotation Axis")
-        self.toolMayaLRA_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','lRA.png')))
+        self.toolMayaLRA_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','lRA.png')))
         self.toolMayaLRA_but.setStyleSheet("background-color: #E0B93D")
         self.toolMayaLRA_but.clicked.connect(self.clickLocalRotationAxis_But) 
         self.toolMayaChaGrp_but = QtWidgets.QPushButton("Character Group")
-        self.toolMayaChaGrp_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','charNode.png')))
+        self.toolMayaChaGrp_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','charNode.png')))
         self.toolMayaChaGrp_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaChaGrp_but.clicked.connect(self.clickCharacterGroup_But) 
         self.toolMayaMirJnt_but = QtWidgets.QPushButton("Mirror joints")
-        self.toolMayaMirJnt_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','mirrorJoint.png')))
+        self.toolMayaMirJnt_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','mirrorJoint.png')))
         self.toolMayaMirJnt_but.setStyleSheet("background-color: #E265CB")
         self.toolMayaMirJnt_but.clicked.connect(self.clickMirrorJoints_But) 
         self.toolMayaOriJnt_but = QtWidgets.QPushButton("Orient Joints")
-        self.toolMayaOriJnt_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','orientJoint.png')))
+        self.toolMayaOriJnt_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','orientJoint.png')))
         self.toolMayaOriJnt_but.setStyleSheet("background-color: #E265CB")
         self.toolMayaOriJnt_but.clicked.connect(self.clickOrientJoints_But) 
         self.toolMayaReOriJnt_but = QtWidgets.QPushButton("ReOrient Last Joint")
-        self.toolMayaReOriJnt_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','reOrientLastJoint.png')))
+        self.toolMayaReOriJnt_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','reOrientLastJoint.png')))
         self.toolMayaReOriJnt_but.setStyleSheet("background-color: #E265CB")
         self.toolMayaReOriJnt_but.clicked.connect(self.clickReOrientLastJoint_But) 
         self.toolMayaMirCrv_but = QtWidgets.QPushButton("Mirror Curves")
-        self.toolMayaMirCrv_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','mirrorCrv.png')))
+        self.toolMayaMirCrv_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','mirrorCrv.png')))
         self.toolMayaMirCrv_but.setStyleSheet("background-color: #58C6Dc")
         self.toolMayaMirCrv_but.clicked.connect(self.clickMirrorCurves_But) 
         self.toolMayaParCrv_but = QtWidgets.QPushButton("Parent Curves")
-        self.toolMayaParCrv_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','parentShape.png')))
+        self.toolMayaParCrv_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','parentShape.png')))
         self.toolMayaParCrv_but.setStyleSheet("background-color: #58C6Dc")
         self.toolMayaParCrv_but.clicked.connect(self.clickParentCurves_But) 
         self.toolMayaConEdi_but = QtWidgets.QPushButton("Connection Editor")
-        self.toolMayaConEdi_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','connectionEditor.png')))
+        self.toolMayaConEdi_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','connectionEditor.png')))
         self.toolMayaConEdi_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaConEdi_but.clicked.connect(self.clickConnectionEditor_But) 
         self.toolMayaShaEdi_but = QtWidgets.QPushButton("Shape Editor")
-        self.toolMayaShaEdi_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','shapeEditor.png')))
+        self.toolMayaShaEdi_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','shapeEditor.png')))
         self.toolMayaShaEdi_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaShaEdi_but.clicked.connect(self.clickShapeEditor_But) 
         self.toolMayaDrivK_but = QtWidgets.QPushButton("DrivenKey")
-        self.toolMayaDrivK_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','drivenKey.png')))
+        self.toolMayaDrivK_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','drivenKey.png')))
         self.toolMayaDrivK_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaDrivK_but.clicked.connect(self.clickDrivenKey_But) 
         self.toolMayaLoca_but = QtWidgets.QPushButton("Create Locator")
-        self.toolMayaLoca_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','locatorCreate.png')))
+        self.toolMayaLoca_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','locatorCreate.png')))
         self.toolMayaLoca_but.setStyleSheet("background-color: #55A35A")
         self.toolMayaLoca_but.clicked.connect(self.clickCreateLocator_But) 
         self.toolMayaNodEdi_but = QtWidgets.QPushButton("Node Editor")
-        self.toolMayaNodEdi_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','nodeEditor.png')))
+        self.toolMayaNodEdi_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','nodeEditor.png')))
         self.toolMayaNodEdi_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaNodEdi_but.clicked.connect(self.clickNodeEditor_But) 
         self.toolMayaCopEdi_but = QtWidgets.QPushButton("Component Editor")
-        self.toolMayaCopEdi_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','componentEditor.png')))
+        self.toolMayaCopEdi_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','componentEditor.png')))
         self.toolMayaCopEdi_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaCopEdi_but.clicked.connect(self.clickComponentEditor_But) 
         self.toolMayaYellow_but = QtWidgets.QPushButton("Color Yellow")
-        self.toolMayaYellow_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','color.png')))
+        self.toolMayaYellow_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','color.png')))
         self.toolMayaYellow_but.setStyleSheet("background-color: #E0B93D")
         self.toolMayaYellow_but.clicked.connect(self.clickColorYellow_But) 
         self.toolMayaRed_but = QtWidgets.QPushButton("Color Red")
-        self.toolMayaRed_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','color.png')))
+        self.toolMayaRed_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','color.png')))
         self.toolMayaRed_but.setStyleSheet("background-color: #D33C3C")
         self.toolMayaRed_but.clicked.connect(self.clickColorRed_But) 
         self.toolMayaBlue_but = QtWidgets.QPushButton("Color Blue")
-        self.toolMayaBlue_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','color.png')))
+        self.toolMayaBlue_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','color.png')))
         self.toolMayaBlue_but.setStyleSheet("background-color: #58C6Dc")
         self.toolMayaBlue_but.clicked.connect(self.clickColorBlue_But) 
         self.toolMayaPink_but = QtWidgets.QPushButton("Color Pink")
-        self.toolMayaPink_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','color.png')))
+        self.toolMayaPink_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','color.png')))
         self.toolMayaPink_but.setStyleSheet("background-color: #D48EAB")
         self.toolMayaPink_but.clicked.connect(self.clickColorPink_But) 
         self.toolMayaGreen_but = QtWidgets.QPushButton("Color Green")
-        self.toolMayaGreen_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','color.png')))
+        self.toolMayaGreen_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','color.png')))
         self.toolMayaGreen_but.setStyleSheet("background-color: #55A35A")
         self.toolMayaGreen_but.clicked.connect(self.clickColorGreen_But) 
         self.toolMayaPurple_but = QtWidgets.QPushButton("Color Purple")
-        self.toolMayaPurple_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','color.png')))
+        self.toolMayaPurple_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','color.png')))
         self.toolMayaPurple_but.setStyleSheet("background-color: #E265CB")
         self.toolMayaPurple_but.clicked.connect(self.clickColorPurple_But) 
 
@@ -248,7 +250,7 @@ class Hades(MyUi):
         self.toolZivaPanel_del = self.toolZivaPanel_menu.addAction("Delete Cache")
         self.toolZivaPanel_del.triggered.connect(self.clickToolZivaPanelDeleteCache)
         self.toolZivaPanel_but = QtWidgets.QPushButton("Scene Panel")
-        self.toolZivaPanel_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','scenePanel.png')))
+        self.toolZivaPanel_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','scenePanel.png')))
         self.toolZivaPanel_but.setMenu(self.toolZivaPanel_menu)
     
 
@@ -262,7 +264,7 @@ class Hades(MyUi):
         self.toolZivaTissue_damping = self.toolZivaTissue_menu.addAction("set damping 1")
         self.toolZivaTissue_damping.triggered.connect(self.clickToolZivaTissueDamping)
         self.toolZivaTissue_but = QtWidgets.QPushButton("zTissue")
-        self.toolZivaTissue_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','zTissue.png')))
+        self.toolZivaTissue_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','zTissue.png')))
         self.toolZivaTissue_but.setMenu(self.toolZivaTissue_menu)
 
 
@@ -282,7 +284,7 @@ class Hades(MyUi):
         self.toolZivaTet_x2 = self.toolZivaTet_menu.addAction("x 2")
         self.toolZivaTet_x2.triggered.connect(self.clickToolZivaTetX2)
         self.toolZivaTet_but = QtWidgets.QPushButton("zTet")
-        self.toolZivaTet_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','zTet.png')))
+        self.toolZivaTet_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','zTet.png')))
         self.toolZivaTet_but.setMenu(self.toolZivaTet_menu)
 
 
@@ -323,7 +325,7 @@ class Hades(MyUi):
         self.toolZivaMaterial_diamond = self.toolZivaMaterial_menu.addAction("Diamond")  #1.0*10^12 
         self.toolZivaMaterial_diamond.triggered.connect(self.clickToolZivaMaterialDiamond)
         self.toolZivaMaterial_but = QtWidgets.QPushButton("zMaterial")
-        self.toolZivaMaterial_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','zMaterial.png')))
+        self.toolZivaMaterial_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','zMaterial.png')))
         self.toolZivaMaterial_but.setMenu(self.toolZivaMaterial_menu)
 
 
@@ -333,7 +335,7 @@ class Hades(MyUi):
         self.toolZivaFiber_select = self.toolZivaFiber_menu.addAction("select zFiber")
         self.toolZivaFiber_select.triggered.connect(self.clickToolZivaFiberSelect)
         self.toolZivaFiber_but = QtWidgets.QPushButton("zFiber")
-        self.toolZivaFiber_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','zFiber.png')))
+        self.toolZivaFiber_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','zFiber.png')))
         self.toolZivaFiber_but.setMenu(self.toolZivaFiber_menu)
 
 
@@ -345,7 +347,7 @@ class Hades(MyUi):
         self.toolZivaLOA_addCrv = self.toolZivaLOA_menu.addAction("add curve to LOA")
         self.toolZivaLOA_addCrv.triggered.connect(self.clickToolZivaLOAAddCrv)
         self.toolZivaLOA_but = QtWidgets.QPushButton("LOA")
-        self.toolZivaLOA_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','zLineOfAction.png')))
+        self.toolZivaLOA_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','zLineOfAction.png')))
         self.toolZivaLOA_but.setMenu(self.toolZivaLOA_menu)
 
 
@@ -353,7 +355,7 @@ class Hades(MyUi):
         self.toolZivaBone_create = self.toolZivaBone_menu.addAction("create zBone")
         self.toolZivaBone_create.triggered.connect(self.clickToolZivaBoneCreate)
         self.toolZivaBone_but = QtWidgets.QPushButton("zBone")
-        self.toolZivaBone_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','zBone.png')))
+        self.toolZivaBone_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','zBone.png')))
         self.toolZivaBone_but.setMenu(self.toolZivaBone_menu)
 
 
@@ -381,7 +383,7 @@ class Hades(MyUi):
         self.toolZivaPaintAttach_10 = self.toolZivaPaintAttach_menu.addAction("10")
         self.toolZivaPaintAttach_10.triggered.connect(self.clickToolZivaAttachment10)
         self.toolZivaPaintAttach_but = QtWidgets.QPushButton("zAttach")
-        self.toolZivaPaintAttach_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','zAttachment.png')))
+        self.toolZivaPaintAttach_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','zAttachment.png')))
         self.toolZivaPaintAttach_but.setMenu(self.toolZivaPaintAttach_menu)
 
 
@@ -394,7 +396,7 @@ class Hades(MyUi):
         self.toolZivaCopyPaste_paste = self.toolZivaCopyPaste_menu.addAction("Paste")
         self.toolZivaCopyPaste_paste.triggered.connect(self.clickToolZivaPaste)
         self.toolZivaCopyPaste_but = QtWidgets.QPushButton("CopyPaste")
-        self.toolZivaCopyPaste_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','copyPaste.png')))
+        self.toolZivaCopyPaste_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','copyPaste.png')))
         self.toolZivaCopyPaste_but.setMenu(self.toolZivaCopyPaste_menu)
 
 
@@ -410,7 +412,7 @@ class Hades(MyUi):
         self.toolZivaMeshSculpt_pinch = self.toolZivaMeshSculpt_menu.addAction("Pinch")
         self.toolZivaMeshSculpt_pinch.triggered.connect(self.clickToolZivaMeshPinch)
         self.toolZivaMeshSculpt_but = QtWidgets.QPushButton("MeshSculpt")
-        self.toolZivaMeshSculpt_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','meshStandart.png')))
+        self.toolZivaMeshSculpt_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','meshStandart.png')))
         self.toolZivaMeshSculpt_but.setMenu(self.toolZivaMeshSculpt_menu)
 
 
@@ -428,7 +430,7 @@ class Hades(MyUi):
         self.toolZivaMeshModify_retopo = self.toolZivaMeshModify_menu.addAction("Retopo")
         self.toolZivaMeshModify_retopo.triggered.connect(self.clickToolZivaMeshRetopo)
         self.toolZivaMeshModify_but = QtWidgets.QPushButton("MeshModify")
-        self.toolZivaMeshModify_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','meshOption.png')))
+        self.toolZivaMeshModify_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','meshOption.png')))
         self.toolZivaMeshModify_but.setMenu(self.toolZivaMeshModify_menu)
 
 
@@ -440,7 +442,7 @@ class Hades(MyUi):
         self.toolZivaMeshMirror_transfer = self.toolZivaMeshMirror_menu.addAction("Transfer Shape")
         self.toolZivaMeshMirror_transfer.triggered.connect(self.clickToolZivaMeshTransfer)
         self.toolZivaMeshMirror_but = QtWidgets.QPushButton("MeshMirror")
-        self.toolZivaMeshMirror_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','meshMirror.png')))
+        self.toolZivaMeshMirror_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','meshMirror.png')))
         self.toolZivaMeshMirror_but.setMenu(self.toolZivaMeshMirror_menu)
 
 
@@ -485,7 +487,7 @@ class Hades(MyUi):
         self.toolZivaPaintTool_0 = self.toolZivaPaintToolSca_menu.addAction("Value 0")
         self.toolZivaPaintTool_0.triggered.connect(self.clickToolZivaPaintToolScale0)
         self.toolZivaPaintTool_but = QtWidgets.QPushButton("PaintTool")
-        self.toolZivaPaintTool_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','paintTool.png')))
+        self.toolZivaPaintTool_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','paintTool.png')))
         self.toolZivaPaintTool_but.setMenu(self.toolZivaPaintTool_menu)
 
 
@@ -495,7 +497,7 @@ class Hades(MyUi):
         self.toolZivaMirror_RL = self.toolZivaMirror_menu.addAction("Right to Left")
         self.toolZivaMirror_RL.triggered.connect(self.clickToolZivaMirrorRL)
         self.toolZivaMirror_but = QtWidgets.QPushButton("Mirror")
-        self.toolZivaMirror_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','mirrorSkin.png')))
+        self.toolZivaMirror_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','mirrorSkin.png')))
         self.toolZivaMirror_but.setMenu(self.toolZivaMirror_menu)
 
 
@@ -503,7 +505,7 @@ class Hades(MyUi):
         self.toolZivaRename_rename = self.toolZivaRename_menu.addAction("rename all Ziva nodes")
         self.toolZivaRename_rename.triggered.connect(self.clickToolZivaRename)
         self.toolZivaRename_but = QtWidgets.QPushButton("Rename")
-        self.toolZivaRename_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','rename.png')))
+        self.toolZivaRename_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','rename.png')))
         self.toolZivaRename_but.setMenu(self.toolZivaRename_menu)
 
 
@@ -513,7 +515,7 @@ class Hades(MyUi):
         self.toolZivaActivate_desactivate = self.toolZivaActivate_menu.addAction("desactivate zTissue")
         self.toolZivaActivate_desactivate.triggered.connect(self.clickToolZivaDesativate)
         self.toolZivaActivate_but = QtWidgets.QPushButton("On/Off")
-        self.toolZivaActivate_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','onOff.png')))
+        self.toolZivaActivate_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','onOff.png')))
         self.toolZivaActivate_but.setMenu(self.toolZivaActivate_menu)
 
         #Create_Ctrls
@@ -525,39 +527,39 @@ class Hades(MyUi):
         self.createCtrlSize_sb.setMaximum(10)
         self.createCtrlGrp_chx = QtWidgets.QCheckBox('In group ?')
         self.createCtrlTabCircle_but = QtWidgets.QToolButton()
-        self.createCtrlTabCircle_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','circle.jpg')))
+        self.createCtrlTabCircle_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','circle.jpg')))
         self.createCtrlTabCircle_but.setIconSize(QtCore.QSize(100,100))
         self.createCtrlTabCircle_but.clicked.connect(self.clickCtrlCircle_But)
         self.createCtrlTabTriangle_but = QtWidgets.QToolButton()
-        self.createCtrlTabTriangle_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','triangle.jpg')))
+        self.createCtrlTabTriangle_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','triangle.jpg')))
         self.createCtrlTabTriangle_but.setIconSize(QtCore.QSize(100,100))
         self.createCtrlTabTriangle_but.clicked.connect(self.clickCtrlTriangle_But)
         self.createCtrlTabSquare_but = QtWidgets.QToolButton()
-        self.createCtrlTabSquare_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','square.jpg')))
+        self.createCtrlTabSquare_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','square.jpg')))
         self.createCtrlTabSquare_but.setIconSize(QtCore.QSize(100,100))
         self.createCtrlTabSquare_but.clicked.connect(self.clickCtrlSquare_But)
         self.createCtrlTabBox_but = QtWidgets.QToolButton()
-        self.createCtrlTabBox_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','box.jpg')))
+        self.createCtrlTabBox_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','box.jpg')))
         self.createCtrlTabBox_but.setIconSize(QtCore.QSize(100,100))
         self.createCtrlTabBox_but.clicked.connect(self.clickCtrlBox_But)
         self.createCtrlTabCross_but = QtWidgets.QToolButton()
-        self.createCtrlTabCross_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','cross.jpg')))
+        self.createCtrlTabCross_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','cross.jpg')))
         self.createCtrlTabCross_but.setIconSize(QtCore.QSize(100,100))
         self.createCtrlTabCross_but.clicked.connect(self.clickCtrlCross_But)
         self.createCtrlTabBall_but = QtWidgets.QToolButton()
-        self.createCtrlTabBall_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','ball.jpg')))
+        self.createCtrlTabBall_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','ball.jpg')))
         self.createCtrlTabBall_but.setIconSize(QtCore.QSize(100,100))
         self.createCtrlTabBall_but.clicked.connect(self.clickCtrlBall_But)
         self.createCtrlTabDiamond_but = QtWidgets.QToolButton()
-        self.createCtrlTabDiamond_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','diamond.jpg')))
+        self.createCtrlTabDiamond_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','diamond.jpg')))
         self.createCtrlTabDiamond_but.setIconSize(QtCore.QSize(100,100))
         self.createCtrlTabDiamond_but.clicked.connect(self.clickCtrlDiamond_But)
         self.createCtrlTabArrow_but = QtWidgets.QToolButton()
-        self.createCtrlTabArrow_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','arrow.jpg')))
+        self.createCtrlTabArrow_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','arrow.jpg')))
         self.createCtrlTabArrow_but.setIconSize(QtCore.QSize(100,100))
         self.createCtrlTabArrow_but.clicked.connect(self.clickCtrlArrow_But)
         self.createCtrlTabLocator_but = QtWidgets.QToolButton()
-        self.createCtrlTabLocator_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH, 'hades','images','locator.jpg')))
+        self.createCtrlTabLocator_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','locator.jpg')))
         self.createCtrlTabLocator_but.setIconSize(QtCore.QSize(100,100))
         self.createCtrlTabLocator_but.clicked.connect(self.clickCtrlLocator_But)
        
