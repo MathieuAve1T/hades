@@ -362,26 +362,44 @@ class Hades(MyUi):
         self.toolZivaPaintAttach_menu = QtWidgets.QMenu(self)
         self.toolZivaPaintAttach_create = self.toolZivaPaintAttach_menu.addAction("create zattachment")
         self.toolZivaPaintAttach_create.triggered.connect(self.clickToolZivaAttachmentCreate)
-        self.toolZivaPaintAttach_select = self.toolZivaPaintAttach_menu.addAction("select zattachment")
-        self.toolZivaPaintAttach_select.triggered.connect(self.clickToolZivaAttachmentSelect)
-        self.toolZivaPaintAttach_paint = self.toolZivaPaintAttach_menu.addAction("paint zattachment")
-        self.toolZivaPaintAttach_paint.triggered.connect(self.clickToolZivaAttachmentPaint)
         self.toolZivaPaintAttach_sliding = self.toolZivaPaintAttach_menu.addAction("set sliding")
         self.toolZivaPaintAttach_sliding.triggered.connect(self.clickToolZivaAttachmentSliding)
         self.toolZivaPaintAttach_fixed = self.toolZivaPaintAttach_menu.addAction("set fixed")
         self.toolZivaPaintAttach_fixed.triggered.connect(self.clickToolZivaAttachmentFixed)
-        self.toolZivaPaintAttach_02 = self.toolZivaPaintAttach_menu.addAction("0.2")
+        self.toolZivaPaintAttachProximity_menu = self.toolZivaPaintAttach_menu.addMenu("paintProximity : ")
+        self.toolZivaPaintAttach_02 = self.toolZivaPaintAttachProximity_menu.addAction("0.2")
         self.toolZivaPaintAttach_02.triggered.connect(self.clickToolZivaAttachment02)
-        self.toolZivaPaintAttach_05 = self.toolZivaPaintAttach_menu.addAction("0.5")
+        self.toolZivaPaintAttach_05 = self.toolZivaPaintAttachProximity_menu.addAction("0.5")
         self.toolZivaPaintAttach_05.triggered.connect(self.clickToolZivaAttachment05)
-        self.toolZivaPaintAttach_1 = self.toolZivaPaintAttach_menu.addAction("1")
+        self.toolZivaPaintAttach_1 = self.toolZivaPaintAttachProximity_menu.addAction("1")
         self.toolZivaPaintAttach_1.triggered.connect(self.clickToolZivaAttachment1)
-        self.toolZivaPaintAttach_2 = self.toolZivaPaintAttach_menu.addAction("2")
+        self.toolZivaPaintAttach_2 = self.toolZivaPaintAttachProximity_menu.addAction("2")
         self.toolZivaPaintAttach_2.triggered.connect(self.clickToolZivaAttachment2)
-        self.toolZivaPaintAttach_5 = self.toolZivaPaintAttach_menu.addAction("5")
+        self.toolZivaPaintAttach_5 = self.toolZivaPaintAttachProximity_menu.addAction("5")
         self.toolZivaPaintAttach_5.triggered.connect(self.clickToolZivaAttachment5)
-        self.toolZivaPaintAttach_10 = self.toolZivaPaintAttach_menu.addAction("10")
+        self.toolZivaPaintAttach_10 = self.toolZivaPaintAttachProximity_menu.addAction("10")
         self.toolZivaPaintAttach_10.triggered.connect(self.clickToolZivaAttachment10)
+        self.toolZivaPaintAttachPower_menu = self.toolZivaPaintAttach_menu.addMenu("power : ")
+        self.toolZivaPaintAttachPower_1 = self.toolZivaPaintAttachPower_menu.addAction("1")
+        self.toolZivaPaintAttachPower_1.triggered.connect(self.clickToolZivaAttachmentPower1)
+        self.toolZivaPaintAttachPower_2 = self.toolZivaPaintAttachPower_menu.addAction("2")
+        self.toolZivaPaintAttachPower_2.triggered.connect(self.clickToolZivaAttachmentPower2)
+        self.toolZivaPaintAttachPower_3 = self.toolZivaPaintAttachPower_menu.addAction("3")
+        self.toolZivaPaintAttachPower_3.triggered.connect(self.clickToolZivaAttachmentPower3)
+        self.toolZivaPaintAttachPower_4 = self.toolZivaPaintAttachPower_menu.addAction("4")
+        self.toolZivaPaintAttachPower_4.triggered.connect(self.clickToolZivaAttachmentPower4)
+        self.toolZivaPaintAttachPower_5 = self.toolZivaPaintAttachPower_menu.addAction("5")
+        self.toolZivaPaintAttachPower_5.triggered.connect(self.clickToolZivaAttachmentPower5)
+        self.toolZivaPaintAttachPower_6 = self.toolZivaPaintAttachPower_menu.addAction("6")
+        self.toolZivaPaintAttachPower_6.triggered.connect(self.clickToolZivaAttachmentPower6)
+        self.toolZivaPaintAttachPower_7 = self.toolZivaPaintAttachPower_menu.addAction("7")
+        self.toolZivaPaintAttachPower_7.triggered.connect(self.clickToolZivaAttachmentPower7)
+        self.toolZivaPaintAttachPower_8 = self.toolZivaPaintAttachPower_menu.addAction("8")
+        self.toolZivaPaintAttachPower_8.triggered.connect(self.clickToolZivaAttachmentPower8)
+        self.toolZivaPaintAttachPower_9 = self.toolZivaPaintAttachPower_menu.addAction("9")
+        self.toolZivaPaintAttachPower_9.triggered.connect(self.clickToolZivaAttachmentPower9)
+        self.toolZivaPaintAttachPower_10 = self.toolZivaPaintAttachPower_menu.addAction("10")
+        self.toolZivaPaintAttachPower_10.triggered.connect(self.clickToolZivaAttachmentPower10)
         self.toolZivaPaintAttach_but = QtWidgets.QPushButton("zAttach")
         self.toolZivaPaintAttach_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','zAttachment.png')))
         self.toolZivaPaintAttach_but.setMenu(self.toolZivaPaintAttach_menu)
@@ -450,8 +468,6 @@ class Hades(MyUi):
 
 
         self.toolZivaPaintTool_menu = QtWidgets.QMenu(self)
-        self.toolZivaPaintTool_open = self.toolZivaPaintTool_menu.addAction("Open")
-        self.toolZivaPaintTool_open.triggered.connect(self.clickToolZivaPaintToolOpen)
         self.toolZivaPaintTool_0 = self.toolZivaPaintTool_menu.addAction("Value 0")
         self.toolZivaPaintTool_0.triggered.connect(self.clickToolZivaPaintTool0)
         self.toolZivaPaintTool_05 = self.toolZivaPaintTool_menu.addAction("Value 0.5")
@@ -464,28 +480,7 @@ class Hades(MyUi):
         self.toolZivaPaintTool_flood1.triggered.connect(self.clickToolZivaPaintToolFlood1)
         self.toolZivaPaintTool_smooth = self.toolZivaPaintTool_menu.addAction("Smooth")
         self.toolZivaPaintTool_smooth.triggered.connect(self.clickToolZivaPaintToolSmooth)
-        self.toolZivaPaintToolAdd_menu = self.toolZivaPaintTool_menu.addMenu("Add")
-        self.toolZivaPaintTool_add001 = self.toolZivaPaintToolAdd_menu.addAction("Value 0.01")
-        self.toolZivaPaintTool_add001.triggered.connect(self.clickToolZivaPaintToolAdd001)
-        self.toolZivaPaintTool_add01 = self.toolZivaPaintToolAdd_menu.addAction("Value 0.1")
-        self.toolZivaPaintTool_add01.triggered.connect(self.clickToolZivaPaintToolAdd01)
-        self.toolZivaPaintTool_add02 = self.toolZivaPaintToolAdd_menu.addAction("Value 0.2")
-        self.toolZivaPaintTool_add02.triggered.connect(self.clickToolZivaPaintToolAdd02)
-        self.toolZivaPaintTool_add05 = self.toolZivaPaintToolAdd_menu.addAction("Value 0.5")
-        self.toolZivaPaintTool_add05.triggered.connect(self.clickToolZivaPaintToolAdd05)
-        self.toolZivaPaintToolSca_menu = self.toolZivaPaintTool_menu.addMenu("Scale")
-        self.toolZivaPaintTool_scale1 = self.toolZivaPaintToolSca_menu.addAction("Value 1")
-        self.toolZivaPaintTool_scale1.triggered.connect(self.clickToolZivaPaintToolScale1)
-        self.toolZivaPaintTool_scale08 = self.toolZivaPaintToolSca_menu.addAction("Value 0.8")
-        self.toolZivaPaintTool_scale08.triggered.connect(self.clickToolZivaPaintToolScale08)
-        self.toolZivaPaintTool_06 = self.toolZivaPaintToolSca_menu.addAction("Value 0.6")
-        self.toolZivaPaintTool_06.triggered.connect(self.clickToolZivaPaintToolScale06)
-        self.toolZivaPaintTool_04 = self.toolZivaPaintToolSca_menu.addAction("Value 0.4")
-        self.toolZivaPaintTool_04.triggered.connect(self.clickToolZivaPaintToolScale04)
-        self.toolZivaPaintTool_02 = self.toolZivaPaintToolSca_menu.addAction("Value 0.2")
-        self.toolZivaPaintTool_02.triggered.connect(self.clickToolZivaPaintToolScale02)
-        self.toolZivaPaintTool_0 = self.toolZivaPaintToolSca_menu.addAction("Value 0")
-        self.toolZivaPaintTool_0.triggered.connect(self.clickToolZivaPaintToolScale0)
+
         self.toolZivaPaintTool_but = QtWidgets.QPushButton("PaintTool")
         self.toolZivaPaintTool_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','paintTool.png')))
         self.toolZivaPaintTool_but.setMenu(self.toolZivaPaintTool_menu)
@@ -510,10 +505,10 @@ class Hades(MyUi):
 
 
         self.toolZivaActivate_menu = QtWidgets.QMenu(self)
-        self.toolZivaActivate_activate = self.toolZivaActivate_menu.addAction("activate zTissue")
+        self.toolZivaActivate_activate = self.toolZivaActivate_menu.addAction("activate/desactivate zTissue")
         self.toolZivaActivate_activate.triggered.connect(self.clickToolZivaActivate)
-        self.toolZivaActivate_desactivate = self.toolZivaActivate_menu.addAction("desactivate zTissue")
-        self.toolZivaActivate_desactivate.triggered.connect(self.clickToolZivaDesativate)
+        self.toolZivaActivate_allActivate = self.toolZivaActivate_menu.addAction("activate all zTissue")
+        self.toolZivaActivate_allActivate.triggered.connect(self.clickToolZivaAllActivate)
         self.toolZivaActivate_but = QtWidgets.QPushButton("On/Off")
         self.toolZivaActivate_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','onOff.png')))
         self.toolZivaActivate_but.setMenu(self.toolZivaActivate_menu)
@@ -923,10 +918,6 @@ class Hades(MyUi):
         hadCore.coreToolZivaBoneCreate()
     def clickToolZivaAttachmentCreate(self):
         hadCore.coreToolZivaAttachmentCreate()
-    def clickToolZivaAttachmentSelect(self):
-        hadCore.coreToolZivaAttachmentSelect()
-    def clickToolZivaAttachmentPaint(self):
-        hadCore.coreToolZivaAttachmentPaint()
     def clickToolZivaAttachmentSliding(self):
         hadCore.coreToolZivaAttachmentSliding()
     def clickToolZivaAttachmentFixed(self):
@@ -943,6 +934,26 @@ class Hades(MyUi):
         hadCore.coreToolZivaAttachment5()
     def clickToolZivaAttachment10(self):
         hadCore.coreToolZivaAttachment10()
+    def clickToolZivaAttachmentPower1(self):
+        hadCore.coreToolZivaAttachmentPower1()
+    def clickToolZivaAttachmentPower2(self):
+        hadCore.coreToolZivaAttachmentPower2()
+    def clickToolZivaAttachmentPower3(self):
+        hadCore.coreToolZivaAttachmentPower3()
+    def clickToolZivaAttachmentPower4(self):
+        hadCore.coreToolZivaAttachmentPower4()
+    def clickToolZivaAttachmentPower5(self):
+        hadCore.coreToolZivaAttachmentPower5()
+    def clickToolZivaAttachmentPower6(self):
+        hadCore.coreToolZivaAttachmentPower6()
+    def clickToolZivaAttachmentPower7(self):
+        hadCore.coreToolZivaAttachmentPower7()
+    def clickToolZivaAttachmentPower8(self):
+        hadCore.coreToolZivaAttachmentPower8()
+    def clickToolZivaAttachmentPower9(self):
+        hadCore.coreToolZivaAttachmentPower9()
+    def clickToolZivaAttachmentPower10(self):
+        hadCore.coreToolZivaAttachmentPower10()
     def clickToolZivaCopy(self):
         hadCore.coreToolZivaCopy()
     def clickToolZivaPaste(self):
@@ -973,8 +984,6 @@ class Hades(MyUi):
         hadCore.coreToolZivaMeshMirror()
     def clickToolZivaMeshTransfer(self):
         hadCore.coreToolZivaMeshTransfer()
-    def clickToolZivaPaintToolOpen(self):
-        hadCore.coreToolZivaPaintToolOpen()
     def clickToolZivaPaintTool0(self):
         hadCore.coreToolZivaPaintTool0()
     def clickToolZivaPaintTool05(self):
@@ -987,26 +996,6 @@ class Hades(MyUi):
         hadCore.coreToolZivaPaintToolFlood1()
     def clickToolZivaPaintToolSmooth(self):
         hadCore.coreToolZivaOPaintToolSmooth()
-    def clickToolZivaPaintToolAdd001(self):
-        hadCore.coreToolZivaPaintToolAdd001()
-    def clickToolZivaPaintToolAdd01(self):
-        hadCore.coreToolZivaPaintToolAdd01()
-    def clickToolZivaPaintToolAdd02(self):
-        hadCore.coreToolZivaPaintToolAdd02()
-    def clickToolZivaPaintToolAdd05(self):
-        hadCore.coreToolZivaPaintToolAdd05()
-    def clickToolZivaPaintToolScale1(self):
-        hadCore.coreToolZivaPaintToolScale1()
-    def clickToolZivaPaintToolScale08(self):
-        hadCore.coreToolZivaPaintToolScale08()
-    def clickToolZivaPaintToolScale06(self):
-        hadCore.coreToolZivaPaintToolScale06()
-    def clickToolZivaPaintToolScale04(self):
-        hadCore.coreToolZivaPaintToolScale04()
-    def clickToolZivaPaintToolScale02(self):
-        hadCore.coreToolZivaPaintToolScale02()    
-    def clickToolZivaPaintToolScale0(self):
-        hadCore.coreToolZivaPaintToolScale0()
     def clickToolZivaMirrorLR(self):
         hadCore.coreToolZivaMirrorLR()
     def clickToolZivaMirrorRL(self):
@@ -1015,8 +1004,8 @@ class Hades(MyUi):
         hadCore.coreToolZivaRename()   
     def clickToolZivaActivate(self):
         hadCore.coreToolZivaActivate()
-    def clickToolZivaDesativate(self):
-        hadCore.coreToolZivaDesativate()
+    def clickToolZivaAllActivate(self):
+        hadCore.coreToolZivaAllActivate()
 
 def show():
     try:

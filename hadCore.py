@@ -434,10 +434,6 @@ def coreToolZivaLOAAddCrv():
 	add_curve_to_loa()	
 def coreToolZivaAttachmentCreate():
 	cmds.select(mel.eval('ziva -a'))	
-def coreToolZivaAttachmentSelect():
-	cmds.select(mel.eval('zQuery -t zAttachment'))	
-def coreToolZivaAttachmentPaint():
-	pass	
 def coreToolZivaAttachmentSliding():
 	def set_sliding(a_list=[],mode=2):
 		if not a_list:
@@ -494,6 +490,26 @@ def coreToolZivaAttachment10():
 	select $obj;
 	zPaintAttachmentsByProximity -min 0.1 -max 10;
 	}	''')
+def coreToolZivaAttachmentPower1():
+	hadLib.setZAttachement(1)
+def coreToolZivaAttachmentPower2():
+	hadLib.setZAttachement(2)
+def coreToolZivaAttachmentPower3():
+	hadLib.setZAttachement(3)
+def coreToolZivaAttachmentPower4():
+	hadLib.setZAttachement(4)
+def coreToolZivaAttachmentPower5():
+	hadLib.setZAttachement(5)
+def coreToolZivaAttachmentPower6():
+	hadLib.setZAttachement(6)
+def coreToolZivaAttachmentPower7():
+	hadLib.setZAttachement(7)
+def coreToolZivaAttachmentPower8():
+	hadLib.setZAttachement(8)
+def coreToolZivaAttachmentPower9():
+	hadLib.setZAttachement(9)
+def coreToolZivaAttachmentPower10():
+	hadLib.setZAttachement(10)
 def coreToolZivaCopy():
 	utility.rig_cut()	
 def coreToolZivaPaste():
@@ -536,8 +552,6 @@ def coreToolZivaMeshMirror():
 def coreToolZivaMeshTransfer():
 	sel=cmds.ls(sl=True)
 	cmds.connectAttr((sel[0] + ".outMesh"),(sel[1] + ".inMesh"),f=True)	
-def coreToolZivaPaintToolOpen():
-	mel.ArtPaintSkinWeightsToolOptions
 def coreToolZivaPaintTool0():
 	mel.eval('''artAttrCtx -e -value 0 `currentCtx`''')
 def coreToolZivaPaintTool05():
@@ -554,76 +568,7 @@ def coreToolZivaOPaintToolSmooth():
 	mel.eval('''artAttrPaintOperation artAttrCtx Smooth
 	artAttrCtx -e -clear `currentCtx`
 	artAttrPaintOperation artAttrCtx Replace'''	)
-def coreToolZivaPaintToolAdd001():
-	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Add
-	artSkinSetSelectionValue 0.01 false artAttrSkinPaintCtx artAttrSkin
-	artAttrSkinValues artAttrSkinContext
-	toolPropertyShow
-	dR_updateToolSettings
-	dR_updateToolSettings''')
-def coreToolZivaPaintToolAdd01():
-	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Add
-	artSkinSetSelectionValue 0.1 false artAttrSkinPaintCtx artAttrSkin
-	artAttrSkinValues artAttrSkinContext
-	toolPropertyShow
-	dR_updateToolSettings
-	dR_updateToolSettings	''')
-def coreToolZivaPaintToolAdd02():
-	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Add
-	artSkinSetSelectionValue 0.2 false artAttrSkinPaintCtx artAttrSkin
-	artAttrSkinValues artAttrSkinContext
-	toolPropertyShow
-	dR_updateToolSettings
-	dR_updateToolSettings	''')
-def coreToolZivaPaintToolAdd05():
-	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Add
-	artSkinSetSelectionValue 0.5 false artAttrSkinPaintCtx artAttrSkin
-	artAttrSkinValues artAttrSkinContext
-	toolPropertyShow
-	dR_updateToolSettings
-	dR_updateToolSettings	''')
-def coreToolZivaPaintToolScale1():
-	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Scale
-	artSkinSetSelectionValue 1 false artAttrSkinPaintCtx artAttrSkin
-	artAttrSkinValues artAttrSkinContext
-	toolPropertyShow
-	dR_updateToolSettings
-	dR_updateToolSettings''')
-def coreToolZivaPaintToolScale08():
-	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Scale
-	artSkinSetSelectionValue 0.8 false artAttrSkinPaintCtx artAttrSkin
-	artAttrSkinValues artAttrSkinContext
-	toolPropertyShow
-	dR_updateToolSettings
-	dR_updateToolSettings	''')
-def coreToolZivaPaintToolScale06():
-	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Scale
-	artSkinSetSelectionValue 0.6 false artAttrSkinPaintCtx artAttrSkin
-	artAttrSkinValues artAttrSkinContext
-	toolPropertyShow
-	dR_updateToolSettings
-	dR_updateToolSettings	''')
-def coreToolZivaPaintToolScale04():
-	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Scale
-	artSkinSetSelectionValue 0.4 false artAttrSkinPaintCtx artAttrSkin
-	artAttrSkinValues artAttrSkinContext
-	toolPropertyShow
-	dR_updateToolSettings
-	dR_updateToolSettings	''')
-def coreToolZivaPaintToolScale02():
-	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Scale
-	artSkinSetSelectionValue 0.2 false artAttrSkinPaintCtx artAttrSkin
-	artAttrSkinValues artAttrSkinContext
-	toolPropertyShow
-	dR_updateToolSettings
-	dR_updateToolSettings	''')
-def coreToolZivaPaintToolScale0():
-	mel.eval('''artAttrPaintOperation artAttrSkinPaintCtx Scale
-	artSkinSetSelectionValue 0 false artAttrSkinPaintCtx artAttrSkin
-	artAttrSkinValues artAttrSkinContext
-	toolPropertyShow
-	dR_updateToolSettings
-	dR_updateToolSettings	''')
+
 def coreToolZivaMirrorLR():
 	selection = cmds.ls(sl = True)
 	for obj in selection :
@@ -655,5 +600,14 @@ def coreToolZivaActivate():
 		for x in geoSele:	
 			zTissueSele = cmds.listConnections( x+".oGeo", s=False, d=True, type="zTissue")
 			cmds.setAttr(zTissueSele[0]+".enable", not cmds.getAttr(zTissueSele[0]+".enable"))	
-def coreToolZivaDesativate():
-	pass	
+def coreToolZivaAllActivate():
+	sele = cmds.ls('*__msh')
+	print(sele)
+	for each in sele:	
+		geoSele = cmds.listConnections( each+".worldMatrix[0]", s=False, d=True) or []	
+		for x in geoSele:	
+			zTissueSele = cmds.listConnections( x+".oGeo", s=False, d=True, type="zTissue")
+			if zTissueSele == None:
+				pass
+			else:
+				cmds.setAttr(zTissueSele[0]+".enable", 1)		

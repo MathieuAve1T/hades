@@ -67,6 +67,11 @@ def freezeScale(object):
     cmds.setAttr( object +'.scaleY', lock=True , keyable = False , channelBox=False )
     cmds.setAttr( object +'.scaleZ', lock=True , keyable = False , channelBox=False )
 
+def setColor(object, side):
+
+    cmds.setAttr( object + ".overrideEnabled", 1)
+    cmds.setAttr( object + ".overrideColor", 6+side) 
+
 
 def createLineDisplay(locaA, locaB):
     tempParentCrv = cmds.curve(name='DisplayLine.'+locaA+locaB, degree=1, point=[(0, 0, 0), (0, 0, 0)], knot=[0,1] )
@@ -171,11 +176,6 @@ def createPoleVector(start, middle, end, locaname, ik, side):
     cmds.parent(tempParentCrv,'Xtra_toHide')
 
     return PoleVectorLeg
-    
-
-
-
-
 
 def createCircle():
 
@@ -358,3 +358,15 @@ def setZMaterial(value, valueEx):
     for each in listZMaterial:
         cmds.setAttr(each+'.youngsModulus',value)
         cmds.setAttr(each+'.youngsModulusExp',valueEx)
+
+def setZAttachement(value):
+    sele = cmds.ls(sl=True, type='zAttachment')[0]
+    if cmds.getAttr(sele+'.stiffness') == 1 and cmds.getAttr(sele+'.stiffnessExp') == value:
+        cmds.setAttr(sele+'.stiffness', 5)
+        cmds.setAttr(sele+'.stiffnessExp', value)
+    else:
+        cmds.setAttr(sele+'.stiffness', 1)
+        cmds.setAttr(sele+'.stiffnessExp', value)
+
+
+
