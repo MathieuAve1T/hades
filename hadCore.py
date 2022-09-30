@@ -142,6 +142,7 @@ def coreMirrorCurves():
 		hadLib.setScale(tempGrp, -1, 1, 1)
 		cmds.parent(x, world=True)
 		cmds.makeIdentity(apply=True, translate=1, rotate=1, scale=1, normal=0, preserveNormals=1 )
+		cmds.delete(tempGrp)
 
 def coreParentCurves():
 	allSele=cmds.ls(selection=True)
