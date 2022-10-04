@@ -436,10 +436,12 @@ class AutoRigGenerateRig(object):
             tempSeleA.reverse()
             tempSeleB.reverse()
 
+            tempSeleC = [tempSeleB[0],tempSeleB[1],tempSeleB[2],tempSeleB[3],tempSeleB[4],tempSeleB[7],tempSeleB[8],tempSeleB[5],tempSeleB[6]]
+
             hadEnv.AUTORIGLISTLEGJOINT = []
             for each in tempSeleA:
                 hadEnv.AUTORIGLISTLEGJOINT.append(each)
-            for each in tempSeleB:
+            for each in tempSeleC:
                 hadEnv.AUTORIGLISTLEGJOINT.append(each)
 
         if hadEnv.AUTORIGLISTARMGUIDE:
@@ -789,9 +791,9 @@ class AutoRigGenerateRig(object):
             tempIkFoot = cmds.ikHandle(name='Ik_Foot'+ hadEnv.DICTMIRROR[side], startJoint=self.jointsListLegIK[2], endEffector=self.jointsListLegIK[3])[0]
             tempIkToe = cmds.ikHandle(name='Ik_Toe'+ hadEnv.DICTMIRROR[side], startJoint=self.jointsListLegIK[3], endEffector=self.jointsListLegIK[4])[0]
 
-            cmds.parent(tempIkAnkle, hadEnv.AUTORIGLISTLEGJOINT[11+step])
+            cmds.parent(tempIkAnkle, hadEnv.AUTORIGLISTLEGJOINT[13+step])
             cmds.parent(tempIkFoot, hadEnv.AUTORIGLISTLEGJOINT[9+step])
-            cmds.parent(tempIkToe, hadEnv.AUTORIGLISTLEGJOINT[13+step])
+            cmds.parent(tempIkToe, hadEnv.AUTORIGLISTLEGJOINT[11+step])
 
             #Create pole vector for legs
 
@@ -825,7 +827,7 @@ class AutoRigGenerateRig(object):
             cmds.connectAttr(ctrlLegIk+'.HeelLift', hadEnv.AUTORIGLISTLEGJOINT[7+step]+'.rotateX')
             cmds.connectAttr(ctrlLegIk+'.ToeSwivel', hadEnv.AUTORIGLISTLEGJOINT[8+step]+'.rotateY')
             cmds.connectAttr(ctrlLegIk+'.BallSwivel', hadEnv.AUTORIGLISTLEGJOINT[9+step]+'.rotateY')
-            cmds.connectAttr(ctrlLegIk+'.ToeTap', hadEnv.AUTORIGLISTLEGJOINT[12+step]+'.rotateY')
+            cmds.connectAttr(ctrlLegIk+'.ToeTap', hadEnv.AUTORIGLISTLEGJOINT[10+step]+'.rotateY')
                 
             #Tilt : 
                 
@@ -874,12 +876,7 @@ class AutoRigGenerateRig(object):
             cmds.setAttr(mulFootRollD + '.operation', 1)
             cmds.setAttr(mulFootRollD + '.input2X', -1)
             cmds.connectAttr(mulFootRollC+'.outputX', mulFootRollD+'.input1X')
-            if side == 6:
-                correctStep = step
-                correctStep = correctStep+2
-            else:
-                correctStep = step
-            cmds.connectAttr(mulFootRollD+'.outputX', hadEnv.AUTORIGLISTLEGJOINT[10+correctStep]+'.rotateZ')           
+            cmds.connectAttr(mulFootRollD+'.outputX', hadEnv.AUTORIGLISTLEGJOINT[12+step]+'.rotateZ')           
             
             mulFootRollE = cmds.createNode('multiplyDivide', name='MultiplyDivide_FootRoolE'+ hadEnv.DICTMIRROR[side], skipSelect=True)
             cmds.setAttr(mulFootRollE + '.operation', 1)
