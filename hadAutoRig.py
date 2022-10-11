@@ -694,19 +694,22 @@ class AutoRigGenerateRig(object):
             
             cmds.skinCluster(jointSpineIklist[0], jointSpineIklist[1], jointSpineIklist[2], crvSpine, tsb=True)
 
+            hadEnv.JOINTIKCHEST = jointSpineIklist
+
             #Create Spine Ctrl IK
 
-            self.ctrlSpineIK = []
+            ctrlSpineIK = []
             grpCtrlSpineIK = []
             for each in jointSpineIklist:
-                self.ctrlSpineIK.append(cmds.curve(n= "Ctrl_" + each, d=1, p=[(0, 1.5, 1.5),(0,1.5,-1.5) ,(0, -1.5, -1.5) ,(0, -1.5, 1.5) ,(0, 1.5, 1.5)], k = [0,1,2,3,4]))
-                grpCtrlSpineIK.append(cmds.group( self.ctrlSpineIK[-1], n= "Grp_"+self.ctrlSpineIK[-1] ))
+                ctrlSpineIK.append(cmds.curve(n= "Ctrl_" + each, d=1, p=[(0, 1.5, 1.5),(0,1.5,-1.5) ,(0, -1.5, -1.5) ,(0, -1.5, 1.5) ,(0, 1.5, 1.5)], k = [0,1,2,3,4]))
+                grpCtrlSpineIK.append(cmds.group( ctrlSpineIK[-1], n= "Grp_"+ctrlSpineIK[-1] ))
                 cmds.matchTransform(grpCtrlSpineIK[-1], each)
-                cmds.parentConstraint(self.ctrlSpineIK[-1], each)
-                hadLib.freezeScale(self.ctrlSpineIK[-1])
-                cmds.setAttr(self.ctrlSpineIK[-1] + ".overrideEnabled", 1)
-                cmds.setAttr(self.ctrlSpineIK[-1] + ".overrideColor", 20)
-                
+                cmds.parentConstraint(ctrlSpineIK[-1], each)
+                hadLib.freezeScale(ctrlSpineIK[-1])
+                cmds.setAttr(ctrlSpineIK[-1] + ".overrideEnabled", 1)
+                cmds.setAttr(ctrlSpineIK[-1] + ".overrideColor", 20)
+
+            cmds.connectAttr(ctrlSpineIK[-1]+".rotateX", ikSpine+".twist")
 
             jointSpineFKlist = [hadEnv.AUTORIGLISTCHESTJOINT[2], hadEnv.AUTORIGLISTCHESTJOINT[5], hadEnv.AUTORIGLISTCHESTJOINT[3], hadEnv.AUTORIGLISTCHESTJOINT[6], hadEnv.AUTORIGLISTCHESTJOINT[4]]
 
@@ -759,7 +762,11 @@ class AutoRigGenerateRig(object):
             cmds.parent(crvSpine, 'Xtra_toHide')
             cmds.parent(grpCtrlRoot, 'ControlObjects')
 
-            hadEnv.CTRLCHEST = self.ctrlSpineIK[-1]
+            print(ctrlSpineIK)
+
+
+            hadEnv.JOINTIKCHEST = jointSpineIklist
+            hadEnv.CTRLIKCHEST = ctrlSpineIK
         
         if hadEnv.AUTORIGLISTHEADJOINT:
             rigHead(self)
@@ -769,7 +776,8 @@ class AutoRigGenerateRig(object):
 
                 cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[4])
                 cmds.parentConstraint(hadEnv.AUTORIGLISTCHESTJOINT[4], self.grpCtrlNeck, maintainOffset=True)
-                #cmds.parent(self.grpCtrlNeck, self.ctrlSpineIK[-1])
+
+                
 
     def autoRigCreateRigWithSide(self, side):
 
@@ -1263,5 +1271,5 @@ class AutoRigGenerateRig(object):
                 else:
                     step = 0
                 cmds.parent(hadEnv.AUTORIGLISTARMJOINT[0+step], hadEnv.AUTORIGLISTCHESTJOINT[4])
-                cmds.parentConstraint(hadEnv.AUTORIGLISTCHESTJOINT[4], self.grpCtrlClavicle, maintainOffset=True)
-
+                cmds.orientConstraint(hadEnv.JOINTIKCHEST[-1], self.grpCtrlClavicle, maintainOffset=True)
+                cmds.parent(self.grpCtrlClavicle, hadEnv.CTRLIKCHEST[-1])

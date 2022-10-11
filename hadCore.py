@@ -5,10 +5,13 @@ import hades.hadLib as hadLib
 import hades.hadEnv as hadEnv
 import hades.hadAutoRig as hadAutoRig
 
-from zBuilder.ui import zUI as sp1 
-from zBuilder.scenePanel2 import main as sp2
-import zBuilder.zMaya as zMaya
-import zBuilder.utils as utility
+try:
+	from zBuilder.ui import zUI as sp1 
+	from zBuilder.scenePanel2 import main as sp2
+	import zBuilder.zMaya as zMaya
+	import zBuilder.utils as utility
+except:
+	pass
 
 
 #AutoRig
@@ -59,7 +62,7 @@ def coreAutoRigGenerator():
 #Tool for maya
 
 def coreDeleteHistory():
-	mel.eval('DeleteAllHistory')
+	mel.eval('DeleteHistory')
 
 def coreFreezeTransform():
 	sele=cmds.ls(selection=True)
