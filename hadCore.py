@@ -137,15 +137,25 @@ def coreReOrientLastJoint():
 		hadLib.setRotate(each, 0, 0, 0)
 
 def coreMirrorCurves():
-	sele=cmds.ls(selection=True)
-	for each in sele:
-		x = cmds.duplicate(each)
-		tempGrp = cmds.createNode('transform')
-		cmds.parent(x, tempGrp)
-		hadLib.setScale(tempGrp, -1, 1, 1)
-		cmds.parent(x, world=True)
-		cmds.makeIdentity(apply=True, translate=1, rotate=1, scale=1, normal=0, preserveNormals=1 )
-		cmds.delete(tempGrp)
+	mel.eval('''
+		//Find selection...
+	string $mirSel[] = `ls -sl`;
+	//Make sure objects are selected...
+	if (size($mirSel) == 0){
+		warning "Select the object(s) to mirror!";
+	} else {
+		//Duplicate object(s)...
+		duplicate -rr;
+		//Group object(s) and place the pivot of the group at the origin...
+		string $wGrp = `group`;
+		xform -os -piv 0 0 0;
+		//Mirror the objects by scaling the group -1 in the X axis...
+		setAttr ($wGrp + ".sx") -1;
+		//Ungroup object(s)...
+		select $wGrp; ungroup;
+		//Freeze the transformations of the object(s)...
+		makeIdentity -apply true -t 1 -r 1 -s 1 -n 0;
+	}''')
 
 def coreParentCurves():
 	allSele=cmds.ls(selection=True)
