@@ -628,6 +628,8 @@ class AutoRigGenerateRig(object):
             cmds.setAttr( self.ctrlGeneral +'.scaleX', lock=True , keyable = False , channelBox=False )
             cmds.setAttr( self.ctrlGeneral +'.scaleZ', lock=True , keyable = False , channelBox=False )  
 
+            hadEnv.CTRLGENERAL = self.ctrlGeneral
+
         ctrlGeneral(self)
         
         def rigHead(self):
@@ -762,9 +764,6 @@ class AutoRigGenerateRig(object):
             cmds.parent(crvSpine, 'Xtra_toHide')
             cmds.parent(grpCtrlRoot, 'ControlObjects')
 
-            print(ctrlSpineIK)
-
-
             hadEnv.JOINTIKCHEST = jointSpineIklist
             hadEnv.CTRLIKCHEST = ctrlSpineIK
         
@@ -777,6 +776,22 @@ class AutoRigGenerateRig(object):
                 cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[4])
                 cmds.parentConstraint(hadEnv.AUTORIGLISTCHESTJOINT[4], self.grpCtrlNeck, maintainOffset=True)
 
+        x = 0
+        for each in hadEnv.AUTORIGLISTCHESTJOINT:
+            print(x, '=', each)
+            x +=1
+        x = 0
+        for each in hadEnv.AUTORIGLISTLEGJOINT:
+            print(x, '=', each)
+            x +=1
+        x = 0
+        for each in hadEnv.AUTORIGLISTHEADJOINT:
+            print(x, '=', each)
+            x +=1
+        x = 0
+        for each in hadEnv.AUTORIGLISTARMJOINT:
+            print(x, '=', each)
+            x +=1
                 
 
     def autoRigCreateRigWithSide(self, side):
@@ -1061,6 +1076,8 @@ class AutoRigGenerateRig(object):
             #Create Ctrl IK Arm  
         
             ctrlWristIK = cmds.curve(name = "Ctrl_Wrist" + hadEnv.DICTMIRROR[side], degree=1, point=[(0, 1, 1),(0,1,-1) ,(0, -1, -1) ,(0, -1, 1) ,(0, 1, 1)], knot = [0,1,2,3,4])        
+            cmds.addAttr( shortName='Stretch', longName='Stretch', defaultValue=0, minValue=0, maxValue=1 , keyable = True)
+            cmds.addAttr( shortName='Squash', longName='Squash', defaultValue=0, minValue=0, maxValue=1 , keyable = True)
             grpCtrlWristIK = cmds.group( ctrlWristIK, name= "Grp_"+ctrlWristIK ) 
             cmds.setAttr( ctrlWristIK + ".overrideEnabled", 1)
             cmds.setAttr( ctrlWristIK + ".overrideColor", 6+side)         
@@ -1239,6 +1256,104 @@ class AutoRigGenerateRig(object):
             cmds.connectAttr(mulSpreadFingersB+'.outputX', grpOffsetFingers[10]+'.rotateZ')
             cmds.connectAttr(mulSpreadFingersA+'.outputX', grpOffsetFingers[13]+'.rotateZ')
 
+            #twist joints
+
+            x, y, z = hadLib.getTranslate(hadEnv.AUTORIGLISTARMJOINT[3+step])
+            lenWrist = x/4
+            x, y, z = hadLib.getTranslate(hadEnv.AUTORIGLISTARMJOINT[2+step])
+            lenElbow = x/4
+
+            listTwistArm = []
+
+            listTwistArm.append(cmds.createNode('joint', name='Bs_twist_UpperArm_Compensate'+ hadEnv.DICTMIRROR[side], skipSelect=True))
+
+            for each in ['A','B','C']:
+
+                listTwistArm.append(cmds.createNode('joint', name='Bs_twist_UpperArm_'+ each+ hadEnv.DICTMIRROR[side], skipSelect=True))
+                listTwistArm.append(cmds.createNode('joint', name='Bs_twist_LowerArm_'+ each+ hadEnv.DICTMIRROR[side], skipSelect=True))
+            for each in listTwistArm:
+                print(each)
+
+            for each in [0,1]:
+
+                cmds.parent(listTwistArm[5+each], listTwistArm[3+each])
+                cmds.parent(listTwistArm[3+each], listTwistArm[1+each])
+                cmds.parent(listTwistArm[1+each],hadEnv.AUTORIGLISTARMJOINT[1+each+step])
+
+                hadLib.setTranslate(listTwistArm[0+each+each], 0, 0, 0)
+                hadLib.setRotateOrient(listTwistArm[0+each+each], 0, 0, 0)
+
+                cmds.setAttr(listTwistArm[5]+'.translateX', lenElbow)
+                cmds.setAttr(listTwistArm[3]+'.translateX', lenElbow)
+                cmds.setAttr(listTwistArm[1]+'.translateX', lenElbow)
+                
+                cmds.setAttr(listTwistArm[6]+'.translateX', lenWrist)
+                cmds.setAttr(listTwistArm[4]+'.translateX', lenWrist)
+                cmds.setAttr(listTwistArm[2]+'.translateX', lenWrist)
+
+            cmds.parent(listTwistArm[0],hadEnv.AUTORIGLISTARMJOINT[1+step])
+            cmds.parent(listTwistArm[1],listTwistArm[0])
+            hadLib.setTranslate(listTwistArm[0], 0, 0, 0)
+            hadLib.setRotateOrient(listTwistArm[0], 0, 0, 0)
+            hadLib.setTranslate(listTwistArm[1], lenElbow, 0, 0)
+            hadLib.setRotateOrient(listTwistArm[1], 0, 0, 0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             #Clean
 
             cmds.parent(hadEnv.AUTORIGLISTARMJOINT[0+step], 'Joints')
@@ -1249,6 +1364,99 @@ class AutoRigGenerateRig(object):
             cmds.parent(GrpctrlLArmIKFK , 'ControlObjects')
             cmds.parent(grpFingers[3] , 'ControlObjects')
             cmds.parent(grpFingers[0] , 'ControlObjects')
+
+            #Stretch
+
+            if hadEnv.AUTORIGSTRETCH:
+
+                locatorsArm = []
+                locatorsArmShape = []
+                distanceArm = []
+
+                for each in jointsListArmIK:
+                    tempLoca = cmds.spaceLocator(name= 'Loc_'+each)
+                    cmds.delete(cmds.parentConstraint(each, tempLoca))
+                    dist= cmds.createNode('distanceBetween', name = 'DistanceBetween'+each, skipSelect=True)
+                    locatorsArm.append(tempLoca)
+                    locatorsArmShape.append(cmds.listRelatives(locatorsArm[-1], shapes=True)[0])
+                    distanceArm.append(dist)
+
+                cmds.pointConstraint(jointsListArmIK[0], locatorsArm[0])
+                cmds.pointConstraint(jointsListArmIK[1], locatorsArm[1])
+                cmds.parent( locatorsArm[2], ctrlWristIK)
+
+                listA = [locatorsArmShape[1], locatorsArmShape[1], locatorsArmShape[0]]
+                listB = [locatorsArmShape[2], locatorsArmShape[0], locatorsArmShape[2]]
+                x = 0
+                for locA, locB in zip(listA, listB):
+                    cmds.connectAttr(locA+'.worldPosition[0]', distanceArm[x]+'.point1')  #distanceBetween Shouler/wrist
+                    cmds.connectAttr(locB+'.worldPosition[0]', distanceArm[x]+'.point2')
+                    x += 1
+
+                distanceShoulElb = cmds.getAttr(distanceArm[0]+'.distance')
+                distanceElbWri = cmds.getAttr(distanceArm[1]+'.distance')
+                distanceMax = distanceShoulElb + distanceElbWri
+                cmds.delete(distanceArm[0])
+                cmds.delete(distanceArm[1])
+
+                mulScaleFactorArm = cmds.createNode('multiplyDivide', name= 'ScaleFactor_Arm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                cmds.setAttr(mulScaleFactorArm + '.operation', 1)
+                cmds.connectAttr(hadEnv.CTRLGENERAL+'.scaleY', mulScaleFactorArm+'.input1X')
+                cmds.setAttr(mulScaleFactorArm + '.input2X', distanceMax)
+
+                mulStretchFactorArm = cmds.createNode('multiplyDivide', name= 'StretchFactor_Arm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                cmds.setAttr(mulStretchFactorArm + '.operation', 2)
+                cmds.connectAttr(mulScaleFactorArm+'.outputX', mulStretchFactorArm+'.input2X')
+                cmds.connectAttr(distanceArm[2]+'.distance', mulStretchFactorArm+'.input1X')
+
+                conditionArm= cmds.createNode('condition',name= 'ConditionStretch_Arm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                cmds.setAttr(conditionArm+'.operation', 2)
+                cmds.connectAttr(mulScaleFactorArm+'.outputX', conditionArm+'.secondTerm')
+                cmds.connectAttr(distanceArm[2]+'.distance', conditionArm+'.firstTerm')
+
+                setRangeArm= cmds.createNode('setRange', name= 'SetRangeStretch_Arm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                cmds.setAttr(setRangeArm+'.minX', 1)
+                cmds.setAttr(setRangeArm+'.oldMaxX', 1)
+
+                cmds.connectAttr(mulStretchFactorArm+'.outputX', setRangeArm+'.maxX')
+                cmds.connectAttr(ctrlWristIK+'.Stretch', setRangeArm+'.valueX')
+
+                cmds.connectAttr(setRangeArm+'.outValueX', conditionArm+'.colorIfTrueR')
+
+                cmds.connectAttr(conditionArm+'.outColorR', jointsListArmIK[0]+'.scaleX')
+                cmds.connectAttr(conditionArm+'.outColorR', jointsListArmIK[1]+'.scaleX')
+
+                #Squash
+
+                squashFactorArm = cmds.createNode('multiplyDivide', name= 'SquashFactor'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                cmds.setAttr(squashFactorArm+'.operation', 3)
+                cmds.connectAttr(conditionArm+'.outColorR', squashFactorArm+'.input1X')
+
+
+                multiSquashArm = cmds.createNode('multiplyDivide', name= 'SquashMultiply'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                cmds.setAttr(multiSquashArm + '.operation', 1)
+                cmds.setAttr(multiSquashArm+'.input2X', -1)
+                
+                cmds.connectAttr(ctrlWristIK+'.Squash', multiSquashArm+'.input1X')
+
+                cmds.connectAttr(multiSquashArm+'.outputX', squashFactorArm+'.input2X')
+                cmds.connectAttr(squashFactorArm+'.outputX', jointsListArmIK[0]+'.scaleY')
+                cmds.connectAttr(squashFactorArm+'.outputX', jointsListArmIK[0]+'.scaleZ')
+                cmds.connectAttr(squashFactorArm+'.outputX', jointsListArmIK[1]+'.scaleY')
+                cmds.connectAttr(squashFactorArm+'.outputX', jointsListArmIK[1]+'.scaleZ')
+
+                x = 0
+                for jointSK, jointIK, jointFK in zip(jointsListArmSK, jointsListArmIK , jointsListArmFK): 
+                    if x == 0:
+                        x = 1
+                    else:
+                        blendColorArm= cmds.createNode('blendColors', name='blendColorsArm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                        cmds.connectAttr(jointFK+'.scale', blendColorArm+'.color1')
+                        cmds.connectAttr(jointIK+'.scale', blendColorArm+'.color2')
+                        cmds.connectAttr(ctrlLArmIKFK+'.SwitchIKFK', blendColorArm+'.blender')
+                        cmds.connectAttr(blendColorArm+'.output', jointSK+'.scale')
+
+
 
         if hadEnv.AUTORIGLISTLEGJOINT:
             rigLegs(side)
@@ -1273,3 +1481,4 @@ class AutoRigGenerateRig(object):
                 cmds.parent(hadEnv.AUTORIGLISTARMJOINT[0+step], hadEnv.AUTORIGLISTCHESTJOINT[4])
                 cmds.orientConstraint(hadEnv.JOINTIKCHEST[-1], self.grpCtrlClavicle, maintainOffset=True)
                 cmds.parent(self.grpCtrlClavicle, hadEnv.CTRLIKCHEST[-1])
+
