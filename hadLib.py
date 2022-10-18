@@ -203,12 +203,12 @@ def createTriangle():
     x = False
     r = hadEnv.CTRLSIZEVALUE
     if cmds.ls(selection=True):
-        sele = cmds.ls(selection=True)[0]
+        sele = cmds.ls(selection=True)
         x = True
     else:
         sele=['']
     for each in sele:
-        tempCrv = cmds.circle( normal=(1, 0, 0), center=(0, 0, 0), radius=r, degree=1, sections=1,name="Ctrl_"+sele, constructionHistory=False)[0] 
+        tempCrv = cmds.circle( normal=(1, 0, 0), center=(0, 0, 0), radius=r, degree=1, sections=1,name="Ctrl_"+each, constructionHistory=False)[0] 
         if hadEnv.CTRLGRPVALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
@@ -224,12 +224,12 @@ def createSquare():
     x = False
     r = hadEnv.CTRLSIZEVALUE
     if cmds.ls(selection=True):
-        sele = cmds.ls(selection=True)[0]
+        sele = cmds.ls(selection=True)
         x = True
     else:
         sele=['']
     for each in sele:
-        tempCrv = cmds.curve(name="Ctrl_"+sele, degree=1, point=[(-r, 0, r), (r, 0, r), (r, 0, -r), (-r, 0, -r), (-r, 0, r)] ) 
+        tempCrv = cmds.curve(name="Ctrl_"+each, degree=1, point=[(-r, 0, r), (r, 0, r), (r, 0, -r), (-r, 0, -r), (-r, 0, r)] ) 
         if hadEnv.CTRLGRPVALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
@@ -245,12 +245,12 @@ def createCross():
     x = False
     r = hadEnv.CTRLSIZEVALUE
     if cmds.ls(selection=True):
-        sele = cmds.ls(selection=True)[0]
+        sele = cmds.ls(selection=True)
         x = True
     else:
         sele=['']
     for each in sele:
-        tempCrv = cmds.curve(name="Ctrl_"+sele, degree=1, point=[(-2*r, 0, -1*r), (-1*r, 0, -1*r), (-1*r, 0, -2*r), (1*r, 0, -2*r), (1*r, 0, -1*r), (2*r, 0, -1*r), (2*r, 0, 1*r), (1*r, 0, 1*r), (1*r, 0, 2*r), (-1*r, 0, 2*r), (-1*r, 0, 1*r), (-2*r, 0, 1*r), (-2*r, 0, -1*r), (-1*r, 0, -1*r)])
+        tempCrv = cmds.curve(name="Ctrl_"+each, degree=1, point=[(-2*r, 0, -1*r), (-1*r, 0, -1*r), (-1*r, 0, -2*r), (1*r, 0, -2*r), (1*r, 0, -1*r), (2*r, 0, -1*r), (2*r, 0, 1*r), (1*r, 0, 1*r), (1*r, 0, 2*r), (-1*r, 0, 2*r), (-1*r, 0, 1*r), (-2*r, 0, 1*r), (-2*r, 0, -1*r), (-1*r, 0, -1*r)])
         if hadEnv.CTRLGRPVALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
@@ -266,12 +266,12 @@ def createBox():
     x = False
     r = hadEnv.CTRLSIZEVALUE
     if cmds.ls(selection=True):
-        sele = cmds.ls(selection=True)[0]
+        sele = cmds.ls(selection=True)
         x = True
     else:
         sele=['']
     for each in sele:
-        tempCrv = cmds.curve(name="Ctrl_"+sele, degree=1, point=[(-r, -r, r), (-r, r, r), (r, r, r), (r, -r, r), (-r, -r, r), (-r, -r, -r), (-r, r, -r), (-r, r, r), (r, r, r), (r, r, -r), (r, -r, -r), (r, -r, r), (r, -r, -r), (-r, -r, -r), (-r, r, -r), (r, r, -r)] )
+        tempCrv = cmds.curve(name="Ctrl_"+each, degree=1, point=[(-r, -r, r), (-r, r, r), (r, r, r), (r, -r, r), (-r, -r, r), (-r, -r, -r), (-r, r, -r), (-r, r, r), (r, r, r), (r, r, -r), (r, -r, -r), (r, -r, r), (r, -r, -r), (-r, -r, -r), (-r, r, -r), (r, r, -r)] )
         if hadEnv.CTRLGRPVALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
@@ -287,12 +287,12 @@ def createDiamond():
     x = False
     r = hadEnv.CTRLSIZEVALUE
     if cmds.ls(selection=True):
-        sele = cmds.ls(selection=True)[0]
+        sele = cmds.ls(selection=True)
         x = True
     else:
         sele=['']
     for each in sele:
-        tempCrv = cmds.curve(name="Ctrl_"+sele, degree=1, point = [( r, 0, 0 ), ( 0, 0, -r ), ( -r, 0, 0 ),( 0, 0, r, ), ( 0, -r, 0 ), ( 0, 0, -r ),( 0, r, 0 ), ( -r, 0, 0 ), ( 0, -r, 0 ),( r, 0, 0 ), ( 0, r, 0 ), ( 0, 0, r ),( r, 0, 0 )],knot = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] )
+        tempCrv = cmds.curve(name="Ctrl_"+each, degree=1, point = [( r, 0, 0 ), ( 0, 0, -r ), ( -r, 0, 0 ),( 0, 0, r, ), ( 0, -r, 0 ), ( 0, 0, -r ),( 0, r, 0 ), ( -r, 0, 0 ), ( 0, -r, 0 ),( r, 0, 0 ), ( 0, r, 0 ), ( 0, 0, r ),( r, 0, 0 )],knot = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] )
         if hadEnv.CTRLGRPVALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
@@ -308,12 +308,12 @@ def createBall():
     x = False
     r = hadEnv.CTRLSIZEVALUE
     if cmds.ls(selection=True):
-        sele = cmds.ls(selection=True)[0]
+        sele = cmds.ls(selection=True)
         x = True
     else:
         sele=['']
     for each in sele:
-        tempCrv = cmds.curve(name="Ctrl_"+sele, degree=3, point=[	(0.5*r, 0.0, 0.0), (0.462*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r),(0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (-0.19*r, 0.0, 0.46*r),(-0.35*r, 0.0, 0.35*r), (-0.46*r, 0.0, 0.19*r), (-0.5*r, 0.0, 0.0),(-0.46*r, 0.0, -0.19*r), (-0.35*r, 0.0, -0.35*r), (-0.19*r, 0.0, -0.46*r),(0.0, 0.0, -0.5*r), (0.19*r, 0.0, -0.46*r), (0.35*r, 0.0, -0.35*r),(0.46*r, 0.0, -0.19*r), (0.5*r, 0.0, 0.0), (0.46*r, -0.19*r, 0.0*r),(0.35*r, -0.35*r, 0.0), (0.19*r, -0.46*r, 0.0), (0.0, -0.5*r, 0.0), (-0.19*r, -0.46*r, 0.0), (-0.35*r, -0.35*r, 0.0), (-0.46*r, -0.19*r, 0.0), (-0.5*r, 0.0, 0.0), (-0.46*r, 0.19*r, 0.0), (-0.35*r, 0.35*r, 0.0), (-0.19*r, 0.46*r, 0.0), (0.0, 0.5*r, 0.0), (0.19*r, 0.46*r, 0.0), (0.35*r, 0.35*r, 0.0), (0.46*r, 0.19*r, 0.0), (0.5*r, 0.0, 0.0), (0.46*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r), (0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (0.0, 0.24*r, 0.44*r), (0.0, 0.44*r, 0.24*r), (0.0, 0.5*r, 0.0), (0.0, 0.44*r, -0.24*r), (0.0, 0.24*r, -0.44*r), (0.0, 0.0, -0.5*r), (0.0, -0.24*r, -0.44*r), (0.0, -0.44*r, -0.24*r), (0.0, -0.5*r, 0.0), (0.0, -0.44*r, 0.24*r), (0.0, -0.24*r, 0.44*r), (0.0, 0.0, 0.5*r)] )
+        tempCrv = cmds.curve(name="Ctrl_"+each, degree=3, point=[	(0.5*r, 0.0, 0.0), (0.462*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r),(0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (-0.19*r, 0.0, 0.46*r),(-0.35*r, 0.0, 0.35*r), (-0.46*r, 0.0, 0.19*r), (-0.5*r, 0.0, 0.0),(-0.46*r, 0.0, -0.19*r), (-0.35*r, 0.0, -0.35*r), (-0.19*r, 0.0, -0.46*r),(0.0, 0.0, -0.5*r), (0.19*r, 0.0, -0.46*r), (0.35*r, 0.0, -0.35*r),(0.46*r, 0.0, -0.19*r), (0.5*r, 0.0, 0.0), (0.46*r, -0.19*r, 0.0*r),(0.35*r, -0.35*r, 0.0), (0.19*r, -0.46*r, 0.0), (0.0, -0.5*r, 0.0), (-0.19*r, -0.46*r, 0.0), (-0.35*r, -0.35*r, 0.0), (-0.46*r, -0.19*r, 0.0), (-0.5*r, 0.0, 0.0), (-0.46*r, 0.19*r, 0.0), (-0.35*r, 0.35*r, 0.0), (-0.19*r, 0.46*r, 0.0), (0.0, 0.5*r, 0.0), (0.19*r, 0.46*r, 0.0), (0.35*r, 0.35*r, 0.0), (0.46*r, 0.19*r, 0.0), (0.5*r, 0.0, 0.0), (0.46*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r), (0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (0.0, 0.24*r, 0.44*r), (0.0, 0.44*r, 0.24*r), (0.0, 0.5*r, 0.0), (0.0, 0.44*r, -0.24*r), (0.0, 0.24*r, -0.44*r), (0.0, 0.0, -0.5*r), (0.0, -0.24*r, -0.44*r), (0.0, -0.44*r, -0.24*r), (0.0, -0.5*r, 0.0), (0.0, -0.44*r, 0.24*r), (0.0, -0.24*r, 0.44*r), (0.0, 0.0, 0.5*r)] )
         if hadEnv.CTRLGRPVALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
@@ -329,12 +329,12 @@ def createArrow():
     x = False
     r = hadEnv.CTRLSIZEVALUE
     if cmds.ls(selection=True):
-        sele = cmds.ls(selection=True)[0]
+        sele = cmds.ls(selection=True)
         x = True
     else:
         sele=['']
     for each in sele:
-        tempCrv = cmds.curve(name="Ctrl_"+sele, degree=1, point=[(0, 0, 0), (0, 0, -0.44*r), (0, 0, -0.9*r), (0, 0, -1.23*r), (-0.21*r, 0, -1.37*r), (-0.44*r, 0, -2*r), (0, 0, -2.2*r), (0.44*r, 0, -2*r), (0.21*r, 0, -1.37*r), (0, 0, -1.23*r), (0, 0.21*r, -1.37*r), (0, 0.44*r, -2*r), (0, 0, -2.2*r), (0, -0.44*r, -2*r), (0, -0.21*r, -1.37*r), (0, 0, -1.23*r)] )
+        tempCrv = cmds.curve(name="Ctrl_"+each, degree=1, point=[(0, 0, 0), (0, 0, -0.44*r), (0, 0, -0.9*r), (0, 0, -1.23*r), (-0.21*r, 0, -1.37*r), (-0.44*r, 0, -2*r), (0, 0, -2.2*r), (0.44*r, 0, -2*r), (0.21*r, 0, -1.37*r), (0, 0, -1.23*r), (0, 0.21*r, -1.37*r), (0, 0.44*r, -2*r), (0, 0, -2.2*r), (0, -0.44*r, -2*r), (0, -0.21*r, -1.37*r), (0, 0, -1.23*r)] )
         if hadEnv.CTRLGRPVALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
@@ -350,12 +350,12 @@ def createLocator():
     x = False
     r = hadEnv.CTRLSIZEVALUE
     if cmds.ls(selection=True):
-        sele = cmds.ls(selection=True)[0]
+        sele = cmds.ls(selection=True)
         x = True
     else:
         sele=['']
     for each in sele:
-        tempCrv = cmds.curve(name="Ctrl_"+sele, degree=1, point=[(0, 0, r), (0, 0, -r), (0, 0, 0), (r, 0, 0), (-r, 0, 0), (0, 0, 0), (0, r, 0), (0, -r, 0)] )
+        tempCrv = cmds.curve(name="Ctrl_"+each, degree=1, point=[(0, 0, r), (0, 0, -r), (0, 0, 0), (r, 0, 0), (-r, 0, 0), (0, 0, 0), (0, r, 0), (0, -r, 0)] )
         if hadEnv.CTRLGRPVALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
