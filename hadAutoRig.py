@@ -1298,61 +1298,61 @@ class AutoRigGenerateRig(object):
             hadLib.setTranslate(listTwistArm[1], lenElbow, 0, 0)
             hadLib.setRotateOrient(listTwistArm[1], 0, 0, 0)
 
+            #TwistJoints Base
 
+            tempListBaseArm = []
 
+            for nameA, posA in zip(['UpperArm_twistEnd','UpperArm_twistBase','LowerArm_twistBase','LowerArm_twistEnd'],[1,2,2,3]):
+                tempListBaseArm.append(cmds.createNode('joint', name='Bdrv_'+nameA+ hadEnv.DICTMIRROR[side], skipSelect=True))
+                cmds.matchTransform(tempListBaseArm[-1], hadEnv.AUTORIGLISTARMJOINT[posA+step])
+                cmds.setAttr(tempListBaseArm[-1]+'.visibility', 0)
 
+            cmds.parent(tempListBaseArm[0],tempListBaseArm[1])
+            cmds.parent(tempListBaseArm[3],tempListBaseArm[2])
 
+            for each in tempListBaseArm:
+                x, y, z = hadLib.getRotate(each)
+                hadLib.setRotateOrient(each, x, y, z)
+                hadLib.setRotate(each, 0, 0, 0)
 
+            for each in [tempListBaseArm[1],tempListBaseArm[2]]:
+                cmds.select(each)
+                cmds.select(hierarchy=True)
+                cmds.joint(edit=True, zeroScaleOrient=True, orientJoint="xyz", secondaryAxisOrient="zdown")
 
+            TempEndJoint = [tempListBaseArm[0], tempListBaseArm[3]]
+            for each in TempEndJoint:
+                for attr in [".jointOrientX", ".jointOrientY", ".jointOrientZ"]:
+                    cmds.setAttr(each+attr, 0)
 
+            tempIkUpperArm = cmds.ikHandle(name='Ik_UpperArm_twist'+ hadEnv.DICTMIRROR[side], startJoint=tempListBaseArm[1], endEffector=tempListBaseArm[0])[0]
+            tempIkLowerArm = cmds.ikHandle(name='Ik_LowerArm_twist'+ hadEnv.DICTMIRROR[side], startJoint=tempListBaseArm[2], endEffector=tempListBaseArm[3])[0]
 
+            cmds.parent(tempIkUpperArm, hadEnv.AUTORIGLISTARMJOINT[0+step])
+            cmds.parent(tempIkLowerArm, hadEnv.AUTORIGLISTARMJOINT[3+step])
 
+            #twistJoints rotation
 
+            x=0
+            for nameB, stepB, sideB in zip(['UpperArm', 'LowerArm'], [1,2], [4,4]):
 
+                mulRotateArm = cmds.createNode('multiplyDivide', name='MultiplyDivide_Rotate'+nameB+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                cmds.setAttr(mulRotateArm + '.operation', 2)
+                cmds.setAttr(mulRotateArm + '.input2X', sideB )
+                cmds.connectAttr(tempListBaseArm[stepB]+'.rotateX', mulRotateArm + '.input1X', force=True)
+                cmds.connectAttr(mulRotateArm +'.outputX', listTwistArm[1+x]+'.rotateX', force=True)
+                cmds.connectAttr(mulRotateArm +'.outputX', listTwistArm[3+x]+'.rotateX', force=True)
+                cmds.connectAttr(mulRotateArm +'.outputX', listTwistArm[5+x]+'.rotateX', force=True)
+                x+=1
 
+            cmds.parent(tempListBaseArm[1],hadEnv.AUTORIGLISTARMJOINT[1+step])
+            cmds.parent(tempListBaseArm[2],hadEnv.AUTORIGLISTARMJOINT[2+step])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            mulCompensateArm = cmds.createNode('multiplyDivide', name='MultiplyDivide_CompensateArm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            cmds.setAttr(mulCompensateArm + '.operation', 1)
+            cmds.setAttr(mulCompensateArm + '.input2X', 1)
+            cmds.connectAttr(hadEnv.AUTORIGLISTARMJOINT[1+stepB]+'.rotateX', mulCompensateArm+'.input1X', force=True)
+            cmds.connectAttr(mulCompensateArm+'.outputX', listTwistArm[0]+'.rotateX', force=True)
 
             #Clean
 
@@ -1423,9 +1423,6 @@ class AutoRigGenerateRig(object):
 
                 cmds.connectAttr(setRangeArm+'.outValueX', conditionArm+'.colorIfTrueR')
 
-                cmds.connectAttr(conditionArm+'.outColorR', jointsListArmIK[0]+'.scaleX')
-                cmds.connectAttr(conditionArm+'.outColorR', jointsListArmIK[1]+'.scaleX')
-
                 #Squash
 
                 squashFactorArm = cmds.createNode('multiplyDivide', name= 'SquashFactor'+ hadEnv.DICTMIRROR[side], skipSelect=True)
@@ -1440,21 +1437,24 @@ class AutoRigGenerateRig(object):
                 cmds.connectAttr(ctrlWristIK+'.Squash', multiSquashArm+'.input1X')
 
                 cmds.connectAttr(multiSquashArm+'.outputX', squashFactorArm+'.input2X')
-                cmds.connectAttr(squashFactorArm+'.outputX', jointsListArmIK[0]+'.scaleY')
-                cmds.connectAttr(squashFactorArm+'.outputX', jointsListArmIK[0]+'.scaleZ')
-                cmds.connectAttr(squashFactorArm+'.outputX', jointsListArmIK[1]+'.scaleY')
-                cmds.connectAttr(squashFactorArm+'.outputX', jointsListArmIK[1]+'.scaleZ')
+
+                for each in [jointsListArmIK[0],jointsListArmIK[1],listTwistArm[0],listTwistArm[1],listTwistArm[2],listTwistArm[3],listTwistArm[4],listTwistArm[5],listTwistArm[6]]:
+                    cmds.connectAttr(conditionArm+'.outColorR', each+'.scaleX')
+                    cmds.connectAttr(squashFactorArm+'.outputX', each+'.scaleY')
+                    cmds.connectAttr(squashFactorArm+'.outputX', each+'.scaleZ')
 
                 x = 0
                 for jointSK, jointIK, jointFK in zip(jointsListArmSK, jointsListArmIK , jointsListArmFK): 
-                    if x == 0:
-                        x = 1
-                    else:
                         blendColorArm= cmds.createNode('blendColors', name='blendColorsArm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
                         cmds.connectAttr(jointFK+'.scale', blendColorArm+'.color1')
                         cmds.connectAttr(jointIK+'.scale', blendColorArm+'.color2')
                         cmds.connectAttr(ctrlLArmIKFK+'.SwitchIKFK', blendColorArm+'.blender')
                         cmds.connectAttr(blendColorArm+'.output', jointSK+'.scale')
+
+                #clean
+
+                for each in locatorsArm:
+                    cmds.parent(each,"Xtra_toHide")
 
 
 
