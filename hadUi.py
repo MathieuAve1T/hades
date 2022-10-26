@@ -1,16 +1,20 @@
 # Use PySide2 or PyQt5.
-try: from PySide2 import QtCore, QtGui, QtWidgets
-except: from PyQt5 import QtCore, QtGui, QtWidgets
-finally: __qt_binding__ = QtCore.__name__.partition('.')[0]
+# try: from PySide2 import QtCore, QtGui, QtWidgets
+# except: from PyQt5 import QtCore, QtGui, QtWidgets
+# finally: __qt_binding__ = QtCore.__name__.partition('.')[0]
 
-if __qt_binding__ == 'PySide2':
-    Signal = QtCore.Signal
-    Slot = QtCore.Slot
-    Property = QtCore.Property
-else:
-    Signal = QtCore.pyqtSignal
-    Slot = QtCore.pyqtSlot
-    Property = QtCore.pyqtProperty
+from Qt import QtWidgets
+from Qt import QtCore
+from Qt import QtGui
+
+#if __qt_binding__ == 'PySide2':
+#    Signal = QtCore.Signal
+#    Slot = QtCore.Slot
+#    Property = QtCore.Property
+#else:
+#    Signal = QtCore.pyqtSignal
+#    Slot = QtCore.pyqtSlot
+#    Property = QtCore.pyqtProperty
 
 import hades.hadEnv as hadEnv
 import hades.hadCore as hadCore
@@ -55,7 +59,7 @@ class MyUi(QtWidgets.QMainWindow):
     def __init__(self):
         super(MyUi, self).__init__() 
         self.setWindowFlags(self.windowFlags() |QtCore.Qt.WindowStaysOnTopHint)   #pour l'inverse , remplacer | par &~
-        self.setWindowTitle('Hades_V.1.1.3')
+        self.setWindowTitle('Hades_'+hadEnv.VERSION)
         self.resize(400, 300)
 
         #file = QtCore.QFile(hadEnv.PATH + '{0}hades{0}Combinear.qss'.format(os.sep))
@@ -89,9 +93,9 @@ class Hades(MyUi):
         self.autoRig_but.clicked.connect(self.clickAutoRig_But)
         self.autoRig_l = QtWidgets.QLabel("AutoRig basic for biped character")
 
-        self.autoRigSkin_but = QtWidgets.QPushButton("AutoSkin")
-        self.autoRigSkin_but.clicked.connect(self.clickAutoRigSkin_But)
-        self.autoRigSkin_l = QtWidgets.QLabel("[Coming soon]")
+        self.skinTool_but = QtWidgets.QPushButton("SkinTool")
+        self.skinTool_but.clicked.connect(self.clickSkinTool_But)
+        self.skinTool_l = QtWidgets.QLabel("[Coming soon]")
 
         self.toolMaya_but = QtWidgets.QPushButton("Tools for Maya")
         self.toolMaya_but.clicked.connect(self.clickToolMaya_But)
@@ -107,7 +111,7 @@ class Hades(MyUi):
 
         self.masterTab = QtWidgets.QWidget()
         self.autoRigTab = QtWidgets.QWidget()
-        self.autoRigSkinTab = QtWidgets.QWidget()
+        self.skinToolTab = QtWidgets.QWidget()
         self.toolMayaTab = QtWidgets.QWidget()
         self.createCtrlTab = QtWidgets.QWidget()
         self.toolZivaTab = QtWidgets.QWidget()
@@ -137,10 +141,58 @@ class Hades(MyUi):
         self.autoRig_createRig_but = QtWidgets.QPushButton("Create Rig")
         self.autoRig_createRig_but.clicked.connect(self.clickAutoRigGenerator_But)
 
-        #autoRigSkin_tab
+        #skinTool_tab
 
-        self.autoRigSkin_scene_l = QtWidgets.QLabel("Do you want to setup the scene ?")
-        self.autoRigSkin_scene_but = QtWidgets.QPushButton("Create BaseMesh")
+        self.skinTool_shrink_but = QtWidgets.QPushButton("Shrink")
+        self.skinTool_grow_but = QtWidgets.QPushButton("Grow")
+        self.skinTool_ring_but = QtWidgets.QPushButton("Ring")
+        self.skinTool_loop_but = QtWidgets.QPushButton("Loop")
+        self.skinTool_0_but = QtWidgets.QPushButton("0")
+        self.skinTool_01_but = QtWidgets.QPushButton(".1")
+        self.skinTool_025_but = QtWidgets.QPushButton(".25")
+        self.skinTool_05_but = QtWidgets.QPushButton(".5")
+        self.skinTool_075_but = QtWidgets.QPushButton(".75")
+        self.skinTool_09_but = QtWidgets.QPushButton(".9")
+        self.skinTool_1_but = QtWidgets.QPushButton("1")
+        self.skinTool_setWeight_but = QtWidgets.QPushButton("Set Weight")
+        self.skinTool_setWeight_sb = QtWidgets.QDoubleSpinBox()
+        self.skinTool_setWeight_sb.setValue(0.5)
+        self.skinTool_setWeight_sb.setMinimum(0)
+        self.skinTool_setWeight_sb.setMaximum(1)
+        self.skinTool_setWeight_sb.setSingleStep(0.05)
+        self.skinTool_setWeightAdd_but = QtWidgets.QPushButton("+")
+        self.skinTool_setWeightSub_but = QtWidgets.QPushButton("-")
+        self.skinTool_scaleWeight_but = QtWidgets.QPushButton("Scale Weight")
+        self.skinTool_scaleWeight_sb = QtWidgets.QDoubleSpinBox()
+        self.skinTool_scaleWeight_sb.setValue(0.95)
+        self.skinTool_scaleWeight_sb.setMinimum(0.001)
+        self.skinTool_scaleWeight_sb.setMaximum(5)
+        self.skinTool_scaleWeight_sb.setSingleStep(0.05)
+        self.skinTool_scaleWeightAdd_but = QtWidgets.QPushButton("+")
+        self.skinTool_scaleWeightSub_but = QtWidgets.QPushButton("-")
+        self.skinTool_copy_but = QtWidgets.QPushButton("Copy")
+        self.skinTool_paste_but = QtWidgets.QPushButton("Paste")
+        self.skinTool_pastePos_but = QtWidgets.QPushButton("Paste-Pos")
+        self.skinTool_blend_but = QtWidgets.QPushButton("Blend")
+        self.skinTool_pastePosTol_l = QtWidgets.QLabel('Paste-Pos Tolerance')
+        self.skinTool_pastePosTol_sb = QtWidgets.QDoubleSpinBox()
+        self.skinTool_pastePosTol_sb.setValue(0.1)
+        self.skinTool_pastePosTol_sb.setMinimum(0)
+        self.skinTool_pastePosTol_sb.setMaximum(10)
+        self.skinTool_pastePosTol_sb.setSingleStep(0.1)
+        self.skinTool_verCopyBuffer_l = QtWidgets.QLabel(hadEnv.SKINVERTICEMEMORY+" Vertices In Copy Buffer")
+        self.skinTool_verSelected_l = QtWidgets.QLabel(hadEnv.SKINVERTICESELECTED+" Vertices Selected")
+
+        self.skinTool_tree = QtWidgets.QTreeWidget()
+        self.skinTool_tree.setColumnCount(2)
+        self.skinTool_tree.setHeaderLabels(["Value", "Joints"])
+
+
+        for joint, value in hadEnv.SKINVALUES.iteritems():
+
+            skinToolItem_tree = QtWidgets.QTreeWidgetItem([value,joint])
+            self.skinTool_tree.addTopLevelItem(skinToolItem_tree)
+
 
         #tools_for_Maya
 
@@ -566,9 +618,9 @@ class Hades(MyUi):
         self.autoRig_layout.addWidget(self.autoRig_but)
         self.autoRig_layout.addWidget(self.autoRig_l)
 
-        autoRigSkin_layout = QtWidgets.QVBoxLayout() 
-        autoRigSkin_layout.addWidget(self.autoRigSkin_but)
-        autoRigSkin_layout.addWidget(self.autoRigSkin_l)
+        skinTool_layout = QtWidgets.QVBoxLayout() 
+        skinTool_layout.addWidget(self.skinTool_but)
+        skinTool_layout.addWidget(self.skinTool_l)
 
         toolMaya_layout = QtWidgets.QVBoxLayout()
         toolMaya_layout.addWidget(self.toolMaya_but)
@@ -585,7 +637,7 @@ class Hades(MyUi):
         master_layout = QtWidgets.QVBoxLayout(self.masterTab)
         master_layout.addWidget(self.title_l)
         master_layout.addLayout(self.autoRig_layout)
-        master_layout.addLayout(autoRigSkin_layout)
+        master_layout.addLayout(skinTool_layout)
         master_layout.addLayout(toolMaya_layout)
         master_layout.addLayout(createCrv_layout)
         master_layout.addLayout(toolZiva_layout)
@@ -606,11 +658,61 @@ class Hades(MyUi):
         self.autoRigTab_layout.addWidget(self.autoRig_createRig_l)
         self.autoRigTab_layout.addWidget(self.autoRig_createRig_but)
 
-        #autoRigSkin_tab
+        #skinTool_tab
 
-        self.autoRigSkin_layout = QtWidgets.QVBoxLayout(self.autoRigSkinTab)
-        self.autoRigSkin_layout.addWidget(self.autoRigSkin_scene_l)
-        self.autoRigSkin_layout.addWidget(self.autoRigSkin_scene_but)
+        self.skinTool_layoutA = QtWidgets.QHBoxLayout()
+        self.skinTool_layoutA.addWidget(self.skinTool_shrink_but)
+        self.skinTool_layoutA.addWidget(self.skinTool_grow_but)
+        self.skinTool_layoutA.addWidget(self.skinTool_ring_but)
+        self.skinTool_layoutA.addWidget(self.skinTool_loop_but)
+
+        self.skinTool_layoutB = QtWidgets.QHBoxLayout()
+        self.skinTool_layoutB.addWidget(self.skinTool_0_but)
+        self.skinTool_layoutB.addWidget(self.skinTool_01_but)
+        self.skinTool_layoutB.addWidget(self.skinTool_025_but)
+        self.skinTool_layoutB.addWidget(self.skinTool_05_but)
+        self.skinTool_layoutB.addWidget(self.skinTool_075_but)
+        self.skinTool_layoutB.addWidget(self.skinTool_09_but)
+        self.skinTool_layoutB.addWidget(self.skinTool_1_but)
+
+        self.skinTool_layoutC = QtWidgets.QHBoxLayout()
+        self.skinTool_layoutC.addWidget(self.skinTool_setWeight_but)
+        self.skinTool_layoutC.addWidget(self.skinTool_setWeight_sb)
+        self.skinTool_layoutC.addWidget(self.skinTool_setWeightAdd_but)
+        self.skinTool_layoutC.addWidget(self.skinTool_setWeightSub_but)
+
+        self.skinTool_layoutD = QtWidgets.QHBoxLayout()
+        self.skinTool_layoutD.addWidget(self.skinTool_scaleWeight_but)
+        self.skinTool_layoutD.addWidget(self.skinTool_scaleWeight_sb)
+        self.skinTool_layoutD.addWidget(self.skinTool_scaleWeightAdd_but)
+        self.skinTool_layoutD.addWidget(self.skinTool_scaleWeightSub_but)
+
+        self.skinTool_layoutE = QtWidgets.QHBoxLayout()
+        self.skinTool_layoutE.addWidget(self.skinTool_copy_but)
+        self.skinTool_layoutE.addWidget(self.skinTool_paste_but)
+        self.skinTool_layoutE.addWidget(self.skinTool_pastePos_but)
+        self.skinTool_layoutE.addWidget(self.skinTool_blend_but)
+
+        self.skinTool_layoutF = QtWidgets.QHBoxLayout()
+        self.skinTool_layoutF.addWidget(self.skinTool_pastePosTol_l)
+        self.skinTool_layoutF.addWidget(self.skinTool_pastePosTol_sb)
+
+        self.skinTool_layoutG = QtWidgets.QHBoxLayout()
+        self.skinTool_layoutG.addWidget(self.skinTool_verSelected_l)
+        self.skinTool_layoutG.addWidget(self.skinTool_verCopyBuffer_l)
+
+        self.skinTool_layoutH = QtWidgets.QHBoxLayout()
+        self.skinTool_layoutH.addWidget(self.skinTool_tree)
+
+        self.skinTool_layout = QtWidgets.QVBoxLayout(self.skinToolTab)
+        self.skinTool_layout.addLayout(self.skinTool_layoutA)
+        self.skinTool_layout.addLayout(self.skinTool_layoutB)
+        self.skinTool_layout.addLayout(self.skinTool_layoutC)
+        self.skinTool_layout.addLayout(self.skinTool_layoutD)
+        self.skinTool_layout.addLayout(self.skinTool_layoutE)
+        self.skinTool_layout.addLayout(self.skinTool_layoutF)
+        self.skinTool_layout.addLayout(self.skinTool_layoutG)
+        self.skinTool_layout.addLayout(self.skinTool_layoutH)
 
         #tool_for_maya_tab
 
@@ -699,8 +801,8 @@ class Hades(MyUi):
         self.tabMaster.addTab(self.autoRigTab,'AutoRig')
         self.tabMaster.setCurrentIndex(1)
 
-    def clickAutoRigSkin_But(self):
-        self.tabMaster.addTab(self.autoRigSkinTab,'AutoRigSkin')
+    def clickSkinTool_But(self):
+        self.tabMaster.addTab(self.skinToolTab,'SkinTool')
         self.tabMaster.setCurrentIndex(1)
 
     def clickToolMaya_But(self):

@@ -1,5 +1,5 @@
 PATH = ''
-
+VERSION = "V.1.2.3"
 
 WINDOWCHECK = True
 
@@ -43,3 +43,14 @@ CTRLFKCHEST = False
 CTRLFKNECK = False
 
 CTRLGENERAL = False
+
+
+
+
+
+
+
+SKINVERTICEMEMORY = "0"
+SKINVERTICESELECTED = "1"
+
+SKINVALUES = {"JointA": "0.5","JointB": "0.3","JointC": "0.2"}
