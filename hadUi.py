@@ -6,6 +6,8 @@
 from Qt import QtWidgets
 from Qt import QtCore
 from Qt import QtGui
+from Qt import QtCompat
+from maya import OpenMayaUI as omui
 
 #if __qt_binding__ == 'PySide2':
 #    Signal = QtCore.Signal
@@ -51,16 +53,24 @@ ui.show()
 
 '''
 
+def maya_main_window():
+    window_ptr = omui.MQtUtil.mainWindow()
+    return QtCompat.wrapInstance(long(window_ptr), QtWidgets.QWidget)
+
 class MyLineEdit(QtWidgets.QLineEdit):
     def __init__(self, text='', parent=None):
         super(MyLineEdit, self).__init__(text, parent)
 
 class MyUi(QtWidgets.QMainWindow):
     def __init__(self):
-        super(MyUi, self).__init__() 
-        self.setWindowFlags(self.windowFlags() |QtCore.Qt.WindowStaysOnTopHint)   #pour l'inverse , remplacer | par &~
+        super(MyUi, self).__init__(maya_main_window()) 
+        #self.setWindowFlags(self.windowFlags() |QtCore.Qt.WindowStaysOnTopHint)   #pour l'inverse , remplacer | par &~
         self.setWindowTitle('Hades_'+hadEnv.VERSION)
-        self.resize(400, 300)
+        self.resize(400, 400)
+        self.setMinimumSize(300,300)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
 
         #file = QtCore.QFile(hadEnv.PATH + '{0}hades{0}Combinear.qss'.format(os.sep))
         file = QtCore.QFile(os.path.join(hadEnv.PATH,'Combinear.qss'))
@@ -80,6 +90,10 @@ class MyUi(QtWidgets.QMainWindow):
 
     def create_connections(self):
         print("TODO: Create my connections")
+
+    def closeEvent(self,event):
+        hadCore.endEventSelection()
+        super(MyUi, self).closeEvent(event)
 
 class Hades(MyUi):
     def create_widgets(self):
@@ -180,19 +194,14 @@ class Hades(MyUi):
         self.skinTool_pastePosTol_sb.setMinimum(0)
         self.skinTool_pastePosTol_sb.setMaximum(10)
         self.skinTool_pastePosTol_sb.setSingleStep(0.1)
-        self.skinTool_verCopyBuffer_l = QtWidgets.QLabel(hadEnv.SKINVERTICEMEMORY+" Vertices In Copy Buffer")
-        self.skinTool_verSelected_l = QtWidgets.QLabel(hadEnv.SKINVERTICESELECTED+" Vertices Selected")
-
-        self.skinTool_tree = QtWidgets.QTreeWidget()
+        hadEnv.LABELVERTICEMEMORY = self.skinTool_verCopyBuffer_l = QtWidgets.QLabel("0 Vertices In Copy Buffer")
+        hadEnv.LABELVERTICESELECTED = self.skinTool_verSelected_l = QtWidgets.QLabel("0 Vertices Selected")
+        hadEnv.TREESKINVALUES = self.skinTool_tree = QtWidgets.QTreeWidget()
         self.skinTool_tree.setColumnCount(2)
-        self.skinTool_tree.setHeaderLabels(["Value", "Joints"])
-
-
-        for joint, value in hadEnv.SKINVALUES.iteritems():
-
-            skinToolItem_tree = QtWidgets.QTreeWidgetItem([value,joint])
-            self.skinTool_tree.addTopLevelItem(skinToolItem_tree)
-
+        self.skinTool_tree.setHeaderLabels(["Vertice","Value", "Joints"])
+        #self.skinTool_tree.setStretchLastSection(False)
+        #self.skinTool_tree.setSectionResizeMode(5, QtWidgets.QHeaderView.Stretch)
+        #self.skinTool_tree.itemSelectionChanged.connect(hadCore.selectionJoint)
 
         #tools_for_Maya
 
@@ -794,7 +803,7 @@ class Hades(MyUi):
             self.tabMaster.removeTab(1)
         else:
             pass
-        self.resize(400, 300)
+        hadCore.endEventSelection()
 
     def clickAutoRig_But(self):
 
@@ -804,6 +813,7 @@ class Hades(MyUi):
     def clickSkinTool_But(self):
         self.tabMaster.addTab(self.skinToolTab,'SkinTool')
         self.tabMaster.setCurrentIndex(1)
+        hadCore.startEventSelection(self)
 
     def clickToolMaya_But(self):
         self.tabMaster.addTab(self.toolMayaTab,'Maya Tools')

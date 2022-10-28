@@ -1,5 +1,6 @@
 import maya.cmds as cmds
 import maya.mel as mel
+import maya.api.OpenMaya as OpenMaya
 
 import hades.hadLib as hadLib
 import hades.hadEnv as hadEnv
@@ -58,6 +59,120 @@ def coreAutoRigGenerator():
 		armAutoRig.autoRigCreateRigWithSide(side)
 
 	cmds.select(clear=True)
+
+#Skin tool
+
+__myGlobalVar = None
+
+def startEventSelection(self):
+
+	global __myGlobalVar
+
+	if __myGlobalVar is not None:
+		return
+
+	__myGlobalVar = OpenMaya.MEventMessage.addEventCallback("SelectionChanged", refreshSelection)
+	refreshSelection(self)
+
+def endEventSelection():
+
+	global __myGlobalVar 
+
+	if __myGlobalVar:
+		OpenMaya.MMessage.removeCallback(__myGlobalVar)
+		__myGlobalVar = None
+		#print('event a ete kill')
+
+#def selectionJoint():
+	#import maya.cmds as cmds
+	#selected_joints = hadEnv.TREESKINVALUES.currentItem()
+	#if selected_joints.text(1):
+		#cmds.select(hadEnv.CURRENTSELECTION)
+		#cmds.select(selected_joints.text(1), add=True)
+	#else:
+		#cmds.select(hadEnv.CURRENTSELECTION)
+
+
+def refreshSelection(self,*args, **kwargs):
+
+	import maya.cmds as cmds
+	import maya.mel as mel
+	import hades.hadEnv as hadEnv
+	from Qt import QtWidgets
+
+	# label selection vertices
+
+	listSelection = []
+	lenVertices = 0
+	listSelection = cmds.ls(selection=True)
+	if listSelection:
+		onlyVertices = cmds.filterExpand(listSelection, sm=31) or []
+		lenVertices = len(onlyVertices)
+		if lenVertices:
+			labelVertices = str(lenVertices)+" Vertices Selected"
+			hadEnv.LABELVERTICESELECTED.setText(labelVertices)
+	else:
+		hadEnv.LABELVERTICESELECTED.setText("0 Vertices Selected")
+	hadEnv.CURRENTSELECTION = listSelection
+
+	# list joints
+
+	hadEnv.TREESKINVALUES.clear()
+	listSelection = cmds.ls(selection=True,flatten=True)
+	if listSelection:
+		meshObject = cmds.ls(listSelection[0], o=True)
+		skinCluster = mel.eval('findRelatedSkinCluster ' + meshObject[0])
+		if skinCluster:
+			joints = cmds.skinCluster(skinCluster, query=True, inf=True)
+			SkinDict = {}
+			for vtx in onlyVertices:
+				influenceVals = cmds.skinPercent(skinCluster, vtx, query=1, value=1, ignoreBelow=0.000001)
+				influenceNames = cmds.skinPercent(skinCluster, vtx, transform=None, query=1, ignoreBelow=0.000001)
+				SkinDict[vtx] = [influenceNames, (influenceVals)]
+			for vtx in SkinDict:
+				for joint, value in zip(SkinDict[vtx][0],SkinDict[vtx][1]):
+					value = format(value, '.4f')
+					value = str(value)
+					vertice = str(vtx)
+					skinToolItem_tree = QtWidgets.QTreeWidgetItem([vertice,value,joint])
+					hadEnv.TREESKINVALUES.addTopLevelItem(skinToolItem_tree)
+					hadEnv.TREESKINVALUES.resizeColumnToContents(0)
+		else:
+			raise RuntimeError("Selected mesh has no skinCluster")
+
+	'''
+	hadEnv.TREESKINVALUES.clear()
+	listSelection = cmds.ls(selection=True,flatten=True)
+	if listSelection:
+		meshObject = cmds.ls(listSelection[0], o=True)
+		print('meshObject =',meshObject)
+		skinCluster = mel.eval('findRelatedSkinCluster ' + meshObject[0])
+		print('skinCluster =',skinCluster)
+		if skinCluster:
+			joints = cmds.skinCluster(skinCluster, query=True, inf=True)
+			print('joint=',joints)
+			for each in listSelection:
+				jointList = list()
+				weightList = list()
+				try:
+					if joints is None:
+						weight = cmds.skinPercent(skinCluster, each, ignoreBelow=0.0001, query=True, value=True)
+					else:
+						weight = [cmds.skinPercent(skinCluster, each, transform=joint, ignoreBelow=0.0001, query=True, value=True)]
+					weightList = weight
+
+					joints = cmds.skinPercent(skinCluster, each, ignoreBelow=0.0001, query=True, transform=None)
+					if len(joints):
+						jointList = joints
+					jointList = None
+				except:
+					pass
+				print('jointList=',jointList)
+				print('weighList=',weightList)
+			for joint,value in zip(jointList,weightList):
+				skinToolItem_tree = QtWidgets.QTreeWidgetItem([value,joint])
+				hadEnv.TREESKINVALUES.addTopLevelItem(skinToolItem_tree)
+	'''
 
 #Tool for maya
 
