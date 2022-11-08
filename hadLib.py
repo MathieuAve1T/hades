@@ -1,4 +1,5 @@
 import maya.cmds as cmds
+import maya.mel as mel
 import hades.hadEnv as hadEnv
 
 def setScale(object, x, y, z):
@@ -72,6 +73,23 @@ def setColor(object, side):
     cmds.setAttr( object + ".overrideEnabled", 1)
     cmds.setAttr( object + ".overrideColor", 6+side) 
 
+
+def applyWeight(value):
+
+    if hadEnv.CURRENTJOINT:
+        pass
+    else:
+        selectedJoint = hadEnv.TREESKINVALUES.currentItem()
+        hadEnv.CURRENTJOINT = selectedJoint.text(2)	
+    listSelection = cmds.ls(selection=True,flatten=True)
+    if listSelection:
+        meshObject = cmds.ls(listSelection[0], o=True)
+        onlyVertices = cmds.filterExpand(listSelection, sm=31) or []
+        skinCluster = mel.eval('findRelatedSkinCluster ' + meshObject[0])
+        if skinCluster:
+            for vtx in onlyVertices:
+                cmds.skinPercent(skinCluster, vtx, transformValue=[(hadEnv.CURRENTJOINT, value)])
+            
 
 def createLineDisplay(locaA, locaB):
     tempParentCrv = cmds.curve(name='DisplayLine.'+locaA+locaB, degree=1, point=[(0, 0, 0), (0, 0, 0)], knot=[0,1] )

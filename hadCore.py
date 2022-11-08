@@ -70,9 +70,17 @@ def startEventSelection(self):
 
 	if __myGlobalVar is not None:
 		return
-
 	__myGlobalVar = OpenMaya.MEventMessage.addEventCallback("SelectionChanged", refreshSelection)
 	refreshSelection(self)
+
+	if hadEnv.MESHSKIN:
+		if cmds.getAttr(hadEnv.MESHSKIN+".displayColors"):
+			cmds.select(hadEnv.MESHSKIN)
+			try:
+				cmds.polyColorPerVertex(remove=True)
+			except:
+				pass
+		
 
 def endEventSelection():
 
@@ -81,16 +89,93 @@ def endEventSelection():
 	if __myGlobalVar:
 		OpenMaya.MMessage.removeCallback(__myGlobalVar)
 		__myGlobalVar = None
-		#print('event a ete kill')
 
-#def selectionJoint():
-	#import maya.cmds as cmds
-	#selected_joints = hadEnv.TREESKINVALUES.currentItem()
-	#if selected_joints.text(1):
-		#cmds.select(hadEnv.CURRENTSELECTION)
-		#cmds.select(selected_joints.text(1), add=True)
-	#else:
-		#cmds.select(hadEnv.CURRENTSELECTION)
+	if hadEnv.MESHSKIN:
+		cmds.setAttr(hadEnv.MESHSKIN+".displayColors", 0)
+
+def selectionJoint():
+	import maya.cmds as cmds
+	import maya.api.OpenMaya as OpenMaya
+
+	global __myGlobalVar 
+
+	if __myGlobalVar:
+		OpenMaya.MMessage.removeCallback(__myGlobalVar)
+		__myGlobalVar = None
+
+	selectedJoint = hadEnv.TREESKINVALUES.currentItem()	
+
+	hadEnv.CURRENTJOINT = selectedJoint.text(2)
+
+	seleVtx = cmds.ls(selection=True, flatten=True)[0]
+	#print('seleVtx', seleVtx)
+
+	if hadEnv.CURRENTSHAPE:
+		seleShape = hadEnv.CURRENTSHAPE
+	else:
+		seleShape = cmds.listRelatives(seleVtx, parent=True, type='shape')[0]
+		hadEnv.CURRENTSHAPE = seleShape
+
+	if hadEnv.CURRENTSKINCLUS:
+		sCluster = hadEnv.CURRENTSKINCLUS
+	else:
+		sCluster = cmds.listConnections(seleShape, type = "skinCluster")
+		hadEnv.CURRENTSKINCLUS = sCluster
+	#print('sCluster', sCluster)
+	skinInfluences = cmds.skinCluster(sCluster[0],query=True,influence=True)
+	#print('skinInfluences',skinInfluences)
+	listeA =[]
+	for influence in skinInfluences:
+		if hadEnv.CURRENTJOINT == influence:
+			cmds.skinCluster(sCluster[0], edit=True, selectInfluenceVerts = influence)
+			listeA = (cmds.ls(selection=True,flatten=True))
+			break
+
+	if cmds.getAttr(seleShape+".displayColors"):
+		cmds.select(seleShape)
+		try:
+			cmds.polyColorPerVertex(remove=True)
+		except:
+			pass
+	else:
+		cmds.setAttr(seleShape+".displayColors", 1)	
+	for vtx in listeA:
+		tempValue = (cmds.skinPercent( sCluster[0], vtx, transform=selectedJoint.text(2), query=True ))
+		cmds.select(vtx)
+		if 0 < tempValue < 0.1 :
+			cmds.polyColorPerVertex( rgb=(0.0, 0.0, 1) )
+		elif 0.1 <= tempValue < 0.2:
+			cmds.polyColorPerVertex( rgb=(0.1, 0.5, 1) )
+		elif 0.2 <= tempValue < 0.3:
+			cmds.polyColorPerVertex( rgb=(0.1, 1, 0.9) )
+		elif 0.3 <= tempValue < 0.4:
+			cmds.polyColorPerVertex( rgb=(0.1, 1, 0.4) )
+		elif 0.4 <= tempValue < 0.5:
+			cmds.polyColorPerVertex( rgb=(0.4, 1, 0.1) )
+		elif 0.5 <= tempValue < 0.6:
+			cmds.polyColorPerVertex( rgb=(0.8, 1, 0.1) )
+		elif 0.6 <= tempValue < 0.7:
+			cmds.polyColorPerVertex( rgb=(1, 0.7, 0.1) )
+		elif 0.7 <= tempValue < 0.8:
+			cmds.polyColorPerVertex( rgb=(1, 0.3, 0.1) )
+		elif 0.8 <= tempValue < 0.9:
+			cmds.polyColorPerVertex( rgb=(1, 0.1, 0.2) )
+		elif 0.9 <= tempValue < 1:
+			cmds.polyColorPerVertex( rgb=(1, 0.0, 0.7) )
+
+
+	seleMesh = cmds.listRelatives(seleShape,parent=True, type='transform')
+	mel.eval('doMenuComponentSelectionExt({}, "vertex", 0);'.format(seleMesh))
+	mel.eval('if (`currentCtx` == "ShowManips") SelectTool;')
+	
+
+	cmds.select(hadEnv.CURRENTSELECTION)
+
+	if __myGlobalVar is not None:
+		return
+	__myGlobalVar = OpenMaya.MEventMessage.addEventCallback("SelectionChanged", refreshSelection)
+
+	hadEnv.MESHSKIN = seleShape
 
 
 def refreshSelection(self,*args, **kwargs):
@@ -102,6 +187,15 @@ def refreshSelection(self,*args, **kwargs):
 
 	# label selection vertices
 
+
+	if hadEnv.MESHSKIN:
+		cmds.setAttr(hadEnv.MESHSKIN+".displayColors", 1)
+	else:
+		hadEnv.MESHSKIN = cmds.ls(selection=True, shapes=True) or []
+		if hadEnv.MESHSKIN:
+			cmds.setAttr(hadEnv.MESHSKIN+".displayColors", 1)
+
+
 	listSelection = []
 	lenVertices = 0
 	listSelection = cmds.ls(selection=True)
@@ -109,11 +203,12 @@ def refreshSelection(self,*args, **kwargs):
 		onlyVertices = cmds.filterExpand(listSelection, sm=31) or []
 		lenVertices = len(onlyVertices)
 		if lenVertices:
-			labelVertices = str(lenVertices)+" Vertices Selected"
+			labelVertices = str(lenVertices)+ " Vertices Selected"
 			hadEnv.LABELVERTICESELECTED.setText(labelVertices)
 	else:
 		hadEnv.LABELVERTICESELECTED.setText("0 Vertices Selected")
-	hadEnv.CURRENTSELECTION = listSelection
+	hadEnv.CURRENTSELECTION = cmds.ls(selection=True,flatten=True)
+
 
 	# list joints
 
@@ -140,39 +235,89 @@ def refreshSelection(self,*args, **kwargs):
 		else:
 			raise RuntimeError("Selected mesh has no skinCluster")
 
-	'''
-	hadEnv.TREESKINVALUES.clear()
-	listSelection = cmds.ls(selection=True,flatten=True)
-	if listSelection:
-		meshObject = cmds.ls(listSelection[0], o=True)
-		print('meshObject =',meshObject)
-		skinCluster = mel.eval('findRelatedSkinCluster ' + meshObject[0])
-		print('skinCluster =',skinCluster)
-		if skinCluster:
-			joints = cmds.skinCluster(skinCluster, query=True, inf=True)
-			print('joint=',joints)
-			for each in listSelection:
-				jointList = list()
-				weightList = list()
-				try:
-					if joints is None:
-						weight = cmds.skinPercent(skinCluster, each, ignoreBelow=0.0001, query=True, value=True)
-					else:
-						weight = [cmds.skinPercent(skinCluster, each, transform=joint, ignoreBelow=0.0001, query=True, value=True)]
-					weightList = weight
 
-					joints = cmds.skinPercent(skinCluster, each, ignoreBelow=0.0001, query=True, transform=None)
-					if len(joints):
-						jointList = joints
-					jointList = None
-				except:
-					pass
-				print('jointList=',jointList)
-				print('weighList=',weightList)
-			for joint,value in zip(jointList,weightList):
-				skinToolItem_tree = QtWidgets.QTreeWidgetItem([value,joint])
-				hadEnv.TREESKINVALUES.addTopLevelItem(skinToolItem_tree)
-	'''
+
+def coreSkinToolShrink():
+	mel.eval('PolySelectTraverse 2')
+
+def coreSkinToolGrow():
+	mel.eval('PolySelectTraverse 1')
+
+def coreSkinToolRing():
+	cmds.polySelectSp(ring=True)
+
+def coreSkinToolLoop():
+	cmds.polySelectSp(loop=True)
+
+def coreSkinTool0(self):
+	hadLib.applyWeight(0)
+	refreshSelection(self)
+
+def coreSkinTool01(self):
+	hadLib.applyWeight(0.1)
+	refreshSelection(self)
+
+def coreSkinTool025(self):
+	hadLib.applyWeight(0.25)
+	refreshSelection(self)
+
+def coreSkinTool05(self):
+	hadLib.applyWeight(0.5)
+	refreshSelection(self)
+
+def coreSkinTool075(self):
+	hadLib.applyWeight(0.75)
+	refreshSelection(self)
+
+def coreSkinTool09(self):
+	hadLib.applyWeight(0.9)
+	refreshSelection(self)
+
+def coreSkinTool1(self):
+	hadLib.applyWeight(1)
+	refreshSelection(self)
+
+def coreSkinToolSetWeight():
+	pass
+
+def coreSkinToolSetWeightAdd():
+	pass
+
+def coreSkinToolSetWeightSub():
+	pass
+
+def coreSkinToolScaleWeight():
+	pass
+
+def coreSkinToolScaleWeightAdd():
+	pass
+
+def coreSkinToolScaleWeightSub():
+	pass
+
+def coreSkinToolCopy():
+	mel.eval('artAttrSkinWeightCopy;')
+	listSelection = []
+	lenVertices = 0
+	listSelection = cmds.ls(selection=True)
+	if listSelection:
+		onlyVertices = cmds.filterExpand(listSelection, sm=31) or []
+		lenVertices = len(onlyVertices)
+		if lenVertices:
+			labelVertices = str(lenVertices)+" Vertices In Copy Buffer"
+			hadEnv.LABELVERTICEMEMORY.setText(labelVertices)
+
+
+def coreSkinToolPaste():
+	mel.eval('artAttrSkinWeightPaste;')
+
+def coreSkinTooPastePos():
+	pass
+
+def coreSkinToolBlend():
+	pass
+
+
 
 #Tool for maya
 

@@ -158,50 +158,69 @@ class Hades(MyUi):
         #skinTool_tab
 
         self.skinTool_shrink_but = QtWidgets.QPushButton("Shrink")
+        self.skinTool_shrink_but.clicked.connect(self.clickSkinToolShrink_But)
         self.skinTool_grow_but = QtWidgets.QPushButton("Grow")
+        self.skinTool_grow_but.clicked.connect(self.clickSkinToolGrow_But)
         self.skinTool_ring_but = QtWidgets.QPushButton("Ring")
+        self.skinTool_ring_but.clicked.connect(self.clickSkinToolRing_But)
         self.skinTool_loop_but = QtWidgets.QPushButton("Loop")
+        self.skinTool_loop_but.clicked.connect(self.clickSkinToolLoop_But)
         self.skinTool_0_but = QtWidgets.QPushButton("0")
+        self.skinTool_0_but.clicked.connect(self.clickSkinTool0_But)
         self.skinTool_01_but = QtWidgets.QPushButton(".1")
+        self.skinTool_01_but.clicked.connect(self.clickSkinTool01_But)
         self.skinTool_025_but = QtWidgets.QPushButton(".25")
+        self.skinTool_025_but.clicked.connect(self.clickSkinTool025_But)
         self.skinTool_05_but = QtWidgets.QPushButton(".5")
+        self.skinTool_05_but.clicked.connect(self.clickSkinTool05_But)
         self.skinTool_075_but = QtWidgets.QPushButton(".75")
+        self.skinTool_075_but.clicked.connect(self.clickSkinTool075_But)
         self.skinTool_09_but = QtWidgets.QPushButton(".9")
+        self.skinTool_09_but.clicked.connect(self.clickSkinTool09_But)
         self.skinTool_1_but = QtWidgets.QPushButton("1")
+        self.skinTool_1_but.clicked.connect(self.clickSkinTool1_But)
         self.skinTool_setWeight_but = QtWidgets.QPushButton("Set Weight")
+        self.skinTool_setWeight_but.clicked.connect(self.clickSkinToolSetWeight_But)
         self.skinTool_setWeight_sb = QtWidgets.QDoubleSpinBox()
         self.skinTool_setWeight_sb.setValue(0.5)
         self.skinTool_setWeight_sb.setMinimum(0)
         self.skinTool_setWeight_sb.setMaximum(1)
         self.skinTool_setWeight_sb.setSingleStep(0.05)
         self.skinTool_setWeightAdd_but = QtWidgets.QPushButton("+")
+        self.skinTool_setWeight_but.clicked.connect(self.clickSkinToolSetWeightAdd_But)
         self.skinTool_setWeightSub_but = QtWidgets.QPushButton("-")
+        self.skinTool_setWeightSub_but.clicked.connect(self.clickSkinToolSetWeightSub_But)
         self.skinTool_scaleWeight_but = QtWidgets.QPushButton("Scale Weight")
+        self.skinTool_scaleWeight_but.clicked.connect(self.clickSkinToolScaleWeight_But)
         self.skinTool_scaleWeight_sb = QtWidgets.QDoubleSpinBox()
         self.skinTool_scaleWeight_sb.setValue(0.95)
         self.skinTool_scaleWeight_sb.setMinimum(0.001)
         self.skinTool_scaleWeight_sb.setMaximum(5)
         self.skinTool_scaleWeight_sb.setSingleStep(0.05)
         self.skinTool_scaleWeightAdd_but = QtWidgets.QPushButton("+")
+        self.skinTool_scaleWeightAdd_but.clicked.connect(self.clickSkinToolScaleWeightAdd_But)
         self.skinTool_scaleWeightSub_but = QtWidgets.QPushButton("-")
+        self.skinTool_scaleWeightSub_but.clicked.connect(self.clickSkinToolScaleWeightSub_But)
         self.skinTool_copy_but = QtWidgets.QPushButton("Copy")
+        self.skinTool_copy_but.clicked.connect(self.clickSkinToolCopy_But)
         self.skinTool_paste_but = QtWidgets.QPushButton("Paste")
+        self.skinTool_paste_but.clicked.connect(self.clickSkinToolPaste_But)
         self.skinTool_pastePos_but = QtWidgets.QPushButton("Paste-Pos")
+        self.skinTool_pastePos_but.clicked.connect(self.clickSkinToolPastePos_But)
         self.skinTool_blend_but = QtWidgets.QPushButton("Blend")
+        self.skinTool_blend_but.clicked.connect(self.clickSkinToolBlend_But)
         self.skinTool_pastePosTol_l = QtWidgets.QLabel('Paste-Pos Tolerance')
         self.skinTool_pastePosTol_sb = QtWidgets.QDoubleSpinBox()
         self.skinTool_pastePosTol_sb.setValue(0.1)
         self.skinTool_pastePosTol_sb.setMinimum(0)
         self.skinTool_pastePosTol_sb.setMaximum(10)
         self.skinTool_pastePosTol_sb.setSingleStep(0.1)
-        hadEnv.LABELVERTICEMEMORY = self.skinTool_verCopyBuffer_l = QtWidgets.QLabel("0 Vertices In Copy Buffer")
-        hadEnv.LABELVERTICESELECTED = self.skinTool_verSelected_l = QtWidgets.QLabel("0 Vertices Selected")
+        hadEnv.LABELVERTICEMEMORY = self.skinTool_verCopyBuffer_l = QtWidgets.QLabel("0 Vertice In Copy Buffer")
+        hadEnv.LABELVERTICESELECTED = self.skinTool_verSelected_l = QtWidgets.QLabel("0 Vertice Selected")
         hadEnv.TREESKINVALUES = self.skinTool_tree = QtWidgets.QTreeWidget()
         self.skinTool_tree.setColumnCount(2)
         self.skinTool_tree.setHeaderLabels(["Vertice","Value", "Joints"])
-        #self.skinTool_tree.setStretchLastSection(False)
-        #self.skinTool_tree.setSectionResizeMode(5, QtWidgets.QHeaderView.Stretch)
-        #self.skinTool_tree.itemSelectionChanged.connect(hadCore.selectionJoint)
+        self.skinTool_tree.itemSelectionChanged.connect(hadCore.selectionJoint)
 
         #tools_for_Maya
 
@@ -840,6 +859,72 @@ class Hades(MyUi):
         hadEnv.AUTORIGSTRETCH = self.autoRig_stretch_chk.isChecked()
         hadEnv.AUTORIGMIRROR = self.autoRig_mirror_chk.isChecked()
         hadCore.coreAutoRigGenerator()
+
+    #SkinTool
+
+    def clickSkinToolShrink_But(self):
+        hadCore.coreSkinToolShrink()
+
+    def clickSkinToolGrow_But(self):
+        hadCore.coreSkinToolGrow()
+
+    def clickSkinToolRing_But(self):
+        hadCore.coreSkinToolRing()
+
+    def clickSkinToolLoop_But(self):
+        hadCore.coreSkinToolLoop()
+
+    def clickSkinTool0_But(self):
+        hadCore.coreSkinTool0(self)
+
+    def clickSkinTool01_But(self):
+        hadCore.coreSkinTool01(self)
+
+    def clickSkinTool025_But(self):
+        hadCore.coreSkinTool025(self)
+
+    def clickSkinTool05_But(self):
+        hadCore.coreSkinTool05(self)
+
+    def clickSkinTool075_But(self):
+        hadCore.coreSkinTool075(self)
+
+    def clickSkinTool09_But(self):
+        hadCore.coreSkinTool09(self)
+
+    def clickSkinTool1_But(self):
+        hadCore.coreSkinTool1(self)
+
+    def clickSkinToolSetWeight_But(self):
+        hadCore.coreSkinToolSetWeight()
+
+    def clickSkinToolSetWeightAdd_But(self):
+        hadCore.coreSkinToolSetWeightAdd()
+
+    def clickSkinToolSetWeightSub_But(self):
+        hadCore.coreSkinToolSetWeightSub()
+
+    def clickSkinToolScaleWeight_But(self):
+        hadCore.coreSkinToolScaleWeight()
+
+    def clickSkinToolScaleWeightAdd_But(self):
+        hadCore.coreSkinToolScaleWeightAdd()
+
+    def clickSkinToolScaleWeightSub_But(self):
+        hadCore.coreSkinToolScaleWeightSub()
+
+    def clickSkinToolCopy_But(self):
+        hadCore.coreSkinToolCopy()
+
+    def clickSkinToolPaste_But(self):
+        hadCore.coreSkinToolPaste()
+
+    def clickSkinToolPastePos_But(self):
+        hadCore.coreSkinTooPastePos()
+
+    def clickSkinToolBlend_But(self):
+        hadCore.coreSkinToolBlend()
+
 
     #Tool for maya
 
