@@ -14,6 +14,15 @@ try:
 except:
 	pass
 
+# Use PySide2 or PyQt5.
+try: from PySide2 import QtCore, QtGui, QtWidgets
+except: from PyQt5 import QtCore, QtGui, QtWidgets
+finally: __qt_binding__ = QtCore.__name__.partition('.')[0]
+
+import sys
+import os
+
+
 
 #AutoRig
 
@@ -22,21 +31,21 @@ def coreAutoRigGuide():
 	preAutoRig = hadAutoRig.AutoRigCreateGuide()
 	preAutoRig.autoRigPreModule()
 
-	if hadEnv.AUTORIGCHEST:
+	if hadEnv.AUTO_RIG_CHEST:
 		chestAutoRig = hadAutoRig.AutoRigCreateGuide()
-		chestAutoRig.autoRigChestModule()
+		chestAutoRig.AUTO_RIG_CHESTModule()
 
-	if hadEnv.AUTORIGARM:
+	if hadEnv.AUTO_RIG_ARM:
 		armAutoRig = hadAutoRig.AutoRigCreateGuide()
-		armAutoRig.autoRigArmModule()
+		armAutoRig.AUTO_RIG_ARMModule()
 	
-	if hadEnv.AUTORIGLEG:
+	if hadEnv.AUTO_RIG_LEG:
 		legAutoRig = hadAutoRig.AutoRigCreateGuide()
-		legAutoRig.autoRigLegModule()
+		legAutoRig.AUTO_RIG_LEGModule()
 		
-	if hadEnv.AUTORIGHEAD:
+	if hadEnv.AUTO_RIG_HEAD:
 		headAutoRig = hadAutoRig.AutoRigCreateGuide()
-		headAutoRig.autoRigHeadModule()	
+		headAutoRig.AUTO_RIG_HEADModule()	
 
 	cmds.select(clear=True)
 
@@ -45,7 +54,7 @@ def coreAutoRigGenerator():
 	armAutoRig = hadAutoRig.AutoRigGenerateRig()
 	armAutoRig.autoRigCreateJoints()
 
-	if hadEnv.AUTORIGMIRROR:
+	if hadEnv.AUTO_RIG_MIRROR:
 		armAutoRig.autoRigCheckMirror()
 		LeftRight = [0,6]
 	else:
@@ -64,85 +73,171 @@ def coreAutoRigGenerator():
 
 __myGlobalVar = None
 
-def startEventSelection(self):
+def startEventSelection():
 
 	global __myGlobalVar
-
+ 	
 	if __myGlobalVar is not None:
 		return
-	__myGlobalVar = OpenMaya.MEventMessage.addEventCallback("SelectionChanged", refreshSelection)
-	refreshSelection(self)
-
-	if hadEnv.MESHSKIN:
-		if cmds.getAttr(hadEnv.MESHSKIN+".displayColors"):
-			cmds.select(hadEnv.MESHSKIN)
+	__myGlobalVar = OpenMaya.MEventMessage.addEventCallback("SelectionChanged", refreshSelectionVtx)
+	refreshSelectionVtx()#Variable global qui active lactualisation du treeview en fonction des vertex selectiones
+	if hadEnv.SHAPE:
+		if cmds.getAttr(hadEnv.SHAPE+".displayColors"):
+			cmds.select(hadEnv.SHAPE)
 			try:
 				cmds.polyColorPerVertex(remove=True)
 			except:
 				pass
-		
+	#Retire la colorisation des vertexs	
 
 def endEventSelection():
 
-	global __myGlobalVar 
+	global __myGlobalVar
+ 	
 
 	if __myGlobalVar:
 		OpenMaya.MMessage.removeCallback(__myGlobalVar)
 		__myGlobalVar = None
+	#Supression de la variable global
+	if hadEnv.SHAPE:
+		cmds.setAttr(hadEnv.SHAPE+".displayColors", 0)
+		cmds.listConnection(hadEnv.SHAPE, type = "polyColorPerVertex")
+	#Cache la colorisation des vertexs
 
-	if hadEnv.MESHSKIN:
-		cmds.setAttr(hadEnv.MESHSKIN+".displayColors", 0)
+def refreshSelectionVtx(obsoleteArg=None):
+	"""_summary_
+
+	Args:
+		obsoleteArg (None, optional): Use to avoid error on CallBack in startEventSelection and endEventSelection. Defaults to None.
+	"""    
+ 
+    #Fonction qui se lance a chaque fois que la selection change
+
+
+	# import maya.cmds as cmds
+	# import maya.mel as mel
+	# import hades.hadEnv as hadEnv
+	# try: from PySide2 import QtCore, QtGui, QtWidgets
+	# except: from PyQt5 import QtCore, QtGui, QtWidgets
+	# finally: __qt_binding__ = QtCore.__name__.partition('.')[0]
+
+	# label selection vertices
+
+	if hadEnv.SHAPE:
+     	#Selectionne et sauvegarde la shape du mesh selectionne et active sa couleur
+		cmds.setAttr(hadEnv.SHAPE+".displayColors", 1)
+		print("TrueMesh", hadEnv.SHAPE)
+	else:
+		temp = cmds.ls(selection=True, flatten=True)[0]
+		print("temp",temp)
+		hadEnv.SHAPE = cmds.listRelatives(temp, parent=True, shapes=True)[0] or []
+		if hadEnv.SHAPE:
+			cmds.setAttr(hadEnv.SHAPE+".displayColors", 1)
+		print("FalseMesh", hadEnv.SHAPE)
+ 
+
+	listSelection = []
+	lenVertices = 0
+	listSelection = cmds.ls(selection=True)
+	if listSelection:
+		onlyVertices = cmds.filterExpand(listSelection, sm=31) or []#Filtre pour selectionne seulement les vertexs
+		lenVertices = len(onlyVertices)
+		if lenVertices:
+			labelVertices = str(lenVertices)+ " Vertices Selected"
+			hadEnv.LABEL_VERTICE_SELECTED.setText(labelVertices)
+   		#Affiche le nombre de vertex selectionne
+	else:
+		hadEnv.LABEL_VERTICE_SELECTED.setText("0 Vertices Selected")
+		return
+	hadEnv.CURRENT_SELECTION = onlyVertices
+ 	#Sauvegarde le nombre de vertex de selectionne
+
+	# list joints
+
+	hadEnv.TREE_SKIN_VALUES.clear()#vide le treeview
+ 
+	if hadEnv.CURRENT_SELECTION:#recupere un vtx
+		refreshSelectionValue()
+
+def refreshSelectionValue(obsoleteArg=None):
+    
+	if hadEnv.CURRENT_SKIN_CLUS:#Recupere le skin cluester et le sauvegarde
+		skinCluster = hadEnv.CURRENT_SKIN_CLUS
+	else:
+		print("SHAPE" , hadEnv.SHAPE)
+
+		skinCluster = hadLib.get_skinCluster(hadEnv.SHAPE)#recupre le skin cluster
+		hadEnv.CURRENT_SKIN_CLUS = skinCluster
+
+ 
+	print(skinCluster)
+	if skinCluster:
+		SkinDict = {}
+		for vtx in hadEnv.CURRENT_SELECTION:#pour chaque vtx de la selection, recupere ses joints influences et les influences et les mets dans un dictionnaire
+			influenceVals = cmds.skinPercent(skinCluster, vtx, query=1, value=1, ignoreBelow=0.000001)
+			influenceNames = cmds.skinPercent(skinCluster, vtx, transform=None, query=1, ignoreBelow=0.000001)
+			SkinDict[vtx] = [influenceNames, (influenceVals)]
+		for vtx in SkinDict:#pour chaque vtx dans ce dico, les ajoutes dans le treeview
+			for joint, value in zip(SkinDict[vtx][0],SkinDict[vtx][1]):
+				value = format(value, '.4f')
+				value = str(value)
+				vertice = str(vtx)
+				skinToolItem_tree = QtWidgets.QTreeWidgetItem([vertice,value,joint])
+				hadEnv.TREE_SKIN_VALUES.addTopLevelItem(skinToolItem_tree)
+				hadEnv.TREE_SKIN_VALUES.resizeColumnToContents(0)
+	else:
+		raise RuntimeError("Selected mesh has no skinCluster")
+
+    
 
 def selectionJoint():
-	import maya.cmds as cmds
-	import maya.api.OpenMaya as OpenMaya
+	# import maya.cmds as cmds
+	# import maya.api.OpenMaya as OpenMaya
 
 	global __myGlobalVar 
 
-	if __myGlobalVar:
+	if __myGlobalVar:#Desactive la variable global pour evite dactualise inutilement et perdre la selection
 		OpenMaya.MMessage.removeCallback(__myGlobalVar)
 		__myGlobalVar = None
 
-	selectedJoint = hadEnv.TREESKINVALUES.currentItem()	
+	selectedJoint = hadEnv.TREE_SKIN_VALUES.currentItem()#Recupere le joint quon aura selectioner	
 
-	hadEnv.CURRENTJOINT = selectedJoint.text(2)
+	hadEnv.CURRENT_JOINT = selectedJoint.text(2)#sauvegarde le nom de ce joint
 
-	seleVtx = cmds.ls(selection=True, flatten=True)[0]
-	#print('seleVtx', seleVtx)
-
-	if hadEnv.CURRENTSHAPE:
-		seleShape = hadEnv.CURRENTSHAPE
+	if hadEnv.CURRENT_SHAPE:#Recupere et sauvegarde la shape du mesh
+		seleShape = hadEnv.CURRENT_SHAPE
 	else:
-		seleShape = cmds.listRelatives(seleVtx, parent=True, type='shape')[0]
-		hadEnv.CURRENTSHAPE = seleShape
+		
+		seleShape = hadEnv.SHAPE
+		hadEnv.CURRENT_SHAPE = seleShape
 
-	if hadEnv.CURRENTSKINCLUS:
-		sCluster = hadEnv.CURRENTSKINCLUS
+	if hadEnv.CURRENT_SKIN_CLUS:#Recupere le skin cluester et le sauvegarde
+		sCluster = hadEnv.CURRENT_SKIN_CLUS
 	else:
-		sCluster = cmds.listConnections(seleShape, type = "skinCluster")
-		hadEnv.CURRENTSKINCLUS = sCluster
-	#print('sCluster', sCluster)
-	skinInfluences = cmds.skinCluster(sCluster[0],query=True,influence=True)
-	#print('skinInfluences',skinInfluences)
-	listeA =[]
+		sCluster = hadLib.get_skinCluster(hadEnv.SHAPE)
+		hadEnv.CURRENT_SKIN_CLUS = sCluster
+  
+	skinInfluences = cmds.skinCluster(sCluster,query=True,influence=True)#recupere tous les joints de ce skincluster
+
+	listeVtx =[]
 	for influence in skinInfluences:
-		if hadEnv.CURRENTJOINT == influence:
-			cmds.skinCluster(sCluster[0], edit=True, selectInfluenceVerts = influence)
-			listeA = (cmds.ls(selection=True,flatten=True))
+		if hadEnv.CURRENT_JOINT == influence:
+			cmds.skinCluster(sCluster, edit=True, selectInfluenceVerts = influence)#pour le joint selectionne, selectionne tous les vtx qui ont une influence avec lui
+			listeVtx = (cmds.ls(selection=True,flatten=True))
 			break
 
-	if cmds.getAttr(seleShape+".displayColors"):
+	if cmds.getAttr(seleShape+".displayColors"):#enleve la couleur si il en a
 		cmds.select(seleShape)
 		try:
 			cmds.polyColorPerVertex(remove=True)
 		except:
 			pass
 	else:
-		cmds.setAttr(seleShape+".displayColors", 1)	
-	for vtx in listeA:
-		tempValue = (cmds.skinPercent( sCluster[0], vtx, transform=selectedJoint.text(2), query=True ))
-		cmds.select(vtx)
-		if 0 < tempValue < 0.1 :
+		cmds.setAttr(seleShape+".displayColors", 1)	#active la couleur
+	for vtx in listeVtx:#pour chaque vtx de ce joint...
+		tempValue = (cmds.skinPercent( sCluster, vtx, transform=selectedJoint.text(2), query=True ))#...recupere sa valeur d influence...
+		cmds.select(vtx)#...puis le selectionne...
+		if 0 < tempValue < 0.1 :#...et applique la bonne couleur
 			cmds.polyColorPerVertex( rgb=(0.0, 0.0, 1) )
 		elif 0.1 <= tempValue < 0.2:
 			cmds.polyColorPerVertex( rgb=(0.1, 0.5, 1) )
@@ -162,81 +257,31 @@ def selectionJoint():
 			cmds.polyColorPerVertex( rgb=(1, 0.1, 0.2) )
 		elif 0.9 <= tempValue < 1:
 			cmds.polyColorPerVertex( rgb=(1, 0.0, 0.7) )
-
-
-	seleMesh = cmds.listRelatives(seleShape,parent=True, type='transform')
-	mel.eval('doMenuComponentSelectionExt({}, "vertex", 0);'.format(seleMesh))
-	mel.eval('if (`currentCtx` == "ShowManips") SelectTool;')
 	
+	cmds.selectMode(component=True)#force la selectione de vtx
+	cmds.select(hadEnv.CURRENT_SELECTION)#reselectione les vtx du debut
 
-	cmds.select(hadEnv.CURRENTSELECTION)
 
-	if __myGlobalVar is not None:
+	tempMesh = cmds.listRelatives(hadEnv.SHAPE, parent=True)
+	cmds.select(tempMesh, replace=True)
+
+	cmds.selectMode(component=True)
+	cmds.selectType(allComponents=False, vertex=True)
+
+	cmds.select(hadEnv.CURRENT_SELECTION)
+
+
+
+
+
+
+
+
+	if __myGlobalVar is not None:#reactive la variable global
 		return
-	__myGlobalVar = OpenMaya.MEventMessage.addEventCallback("SelectionChanged", refreshSelection)
+	__myGlobalVar = OpenMaya.MEventMessage.addEventCallback("SelectionChanged", refreshSelectionVtx)
 
-	hadEnv.MESHSKIN = seleShape
-
-
-def refreshSelection(self,*args, **kwargs):
-
-	import maya.cmds as cmds
-	import maya.mel as mel
-	import hades.hadEnv as hadEnv
-	from Qt import QtWidgets
-
-	# label selection vertices
-
-
-	if hadEnv.MESHSKIN:
-		cmds.setAttr(hadEnv.MESHSKIN+".displayColors", 1)
-	else:
-		hadEnv.MESHSKIN = cmds.ls(selection=True, shapes=True) or []
-		if hadEnv.MESHSKIN:
-			cmds.setAttr(hadEnv.MESHSKIN+".displayColors", 1)
-
-
-	listSelection = []
-	lenVertices = 0
-	listSelection = cmds.ls(selection=True)
-	if listSelection:
-		onlyVertices = cmds.filterExpand(listSelection, sm=31) or []
-		lenVertices = len(onlyVertices)
-		if lenVertices:
-			labelVertices = str(lenVertices)+ " Vertices Selected"
-			hadEnv.LABELVERTICESELECTED.setText(labelVertices)
-	else:
-		hadEnv.LABELVERTICESELECTED.setText("0 Vertices Selected")
-	hadEnv.CURRENTSELECTION = cmds.ls(selection=True,flatten=True)
-
-
-	# list joints
-
-	hadEnv.TREESKINVALUES.clear()
-	listSelection = cmds.ls(selection=True,flatten=True)
-	if listSelection:
-		meshObject = cmds.ls(listSelection[0], o=True)
-		skinCluster = mel.eval('findRelatedSkinCluster ' + meshObject[0])
-		if skinCluster:
-			joints = cmds.skinCluster(skinCluster, query=True, inf=True)
-			SkinDict = {}
-			for vtx in onlyVertices:
-				influenceVals = cmds.skinPercent(skinCluster, vtx, query=1, value=1, ignoreBelow=0.000001)
-				influenceNames = cmds.skinPercent(skinCluster, vtx, transform=None, query=1, ignoreBelow=0.000001)
-				SkinDict[vtx] = [influenceNames, (influenceVals)]
-			for vtx in SkinDict:
-				for joint, value in zip(SkinDict[vtx][0],SkinDict[vtx][1]):
-					value = format(value, '.4f')
-					value = str(value)
-					vertice = str(vtx)
-					skinToolItem_tree = QtWidgets.QTreeWidgetItem([vertice,value,joint])
-					hadEnv.TREESKINVALUES.addTopLevelItem(skinToolItem_tree)
-					hadEnv.TREESKINVALUES.resizeColumnToContents(0)
-		else:
-			raise RuntimeError("Selected mesh has no skinCluster")
-
-
-
+ 
 def coreSkinToolShrink():
 	mel.eval('PolySelectTraverse 2')
 
@@ -251,31 +296,31 @@ def coreSkinToolLoop():
 
 def coreSkinTool0(self):
 	hadLib.applyWeight(0)
-	refreshSelection(self)
+	refreshSelectionValue(self)
 
 def coreSkinTool01(self):
 	hadLib.applyWeight(0.1)
-	refreshSelection(self)
+	refreshSelectionValue(self)
 
 def coreSkinTool025(self):
 	hadLib.applyWeight(0.25)
-	refreshSelection(self)
+	refreshSelectionValue(self)
 
 def coreSkinTool05(self):
 	hadLib.applyWeight(0.5)
-	refreshSelection(self)
+	refreshSelectionValue(self)
 
 def coreSkinTool075(self):
 	hadLib.applyWeight(0.75)
-	refreshSelection(self)
+	refreshSelectionValue(self)
 
 def coreSkinTool09(self):
 	hadLib.applyWeight(0.9)
-	refreshSelection(self)
+	refreshSelectionValue(self)
 
 def coreSkinTool1(self):
 	hadLib.applyWeight(1)
-	refreshSelection(self)
+	refreshSelectionValue(self)
 
 def coreSkinToolSetWeight():
 	pass
@@ -305,7 +350,7 @@ def coreSkinToolCopy():
 		lenVertices = len(onlyVertices)
 		if lenVertices:
 			labelVertices = str(lenVertices)+" Vertices In Copy Buffer"
-			hadEnv.LABELVERTICEMEMORY.setText(labelVertices)
+			hadEnv.LABEL_VERTICE_MEMORY.setText(labelVertices)
 
 
 def coreSkinToolPaste():
@@ -342,7 +387,7 @@ def coreLocalRotationAxis():
 	mel.eval('ToggleLocalRotationAxes')
 
 def coreCharacterGroup():
-	ctrlGeneral = cmds.circle(normal=(0, 1, 0), center=(0, 0, 0), radius=7, name= "Ctrl_General", constructionHistory=False)[0]
+	CTRL_GENERAL = cmds.circle(normal=(0, 1, 0), center=(0, 0, 0), radius=7, name= "Ctrl_General", constructionHistory=False)[0]
 
 	cmds.group( em=True, name="Rig_by_Hades" )
 	cmds.group( em=True, name="GlobalMove" )
@@ -367,21 +412,21 @@ def coreCharacterGroup():
 	cmds.parent("ControlObjects", "GlobalMove")
 	cmds.parent("ExtraNodes", "Rig_by_Hades")
 	
-	cmds.parent(ctrlGeneral, "Rig_by_Hades")
+	cmds.parent(CTRL_GENERAL, "Rig_by_Hades")
 	
-	cmds.connectAttr(ctrlGeneral + ".translate", "GlobalMove.translate")
-	cmds.connectAttr(ctrlGeneral + ".rotate", "GlobalMove.rotate")
+	cmds.connectAttr(CTRL_GENERAL + ".translate", "GlobalMove.translate")
+	cmds.connectAttr(CTRL_GENERAL + ".rotate", "GlobalMove.rotate")
 	
 	cmds.connectAttr("GlobalMove.scaleY", "GlobalMove.scaleX")
 	cmds.connectAttr("GlobalMove.scaleY", "GlobalMove.scaleZ")
 	
-	cmds.connectAttr(ctrlGeneral + ".scaleY", ctrlGeneral +".scaleZ")
-	cmds.connectAttr(ctrlGeneral + ".scaleY", ctrlGeneral +".scaleX")
+	cmds.connectAttr(CTRL_GENERAL + ".scaleY", CTRL_GENERAL +".scaleZ")
+	cmds.connectAttr(CTRL_GENERAL + ".scaleY", CTRL_GENERAL +".scaleX")
 	
-	cmds.connectAttr(ctrlGeneral + ".scaleX", "GlobalMove.scaleY")
+	cmds.connectAttr(CTRL_GENERAL + ".scaleX", "GlobalMove.scaleY")
 	
-	cmds.setAttr( ctrlGeneral +'.scaleX', lock=True , keyable = False , channelBox=False )
-	cmds.setAttr( ctrlGeneral +'.scaleZ', lock=True , keyable = False , channelBox=False ) 
+	cmds.setAttr( CTRL_GENERAL +'.scaleX', lock=True , keyable = False , channelBox=False )
+	cmds.setAttr( CTRL_GENERAL +'.scaleZ', lock=True , keyable = False , channelBox=False ) 
 
 def coreMirrorJoints():
 	mel.eval('MirrorJointOptions')

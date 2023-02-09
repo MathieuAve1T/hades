@@ -1,44 +1,45 @@
 # Use PySide2 or PyQt5.
-# try: from PySide2 import QtCore, QtGui, QtWidgets
-# except: from PyQt5 import QtCore, QtGui, QtWidgets
-# finally: __qt_binding__ = QtCore.__name__.partition('.')[0]
+try: from PySide2 import QtCore, QtGui, QtWidgets
+except: from PyQt5 import QtCore, QtGui, QtWidgets
+finally: __qt_binding__ = QtCore.__name__.partition('.')[0]
 
-from Qt import QtWidgets
-from Qt import QtCore
-from Qt import QtGui
-from Qt import QtCompat
-from maya import OpenMayaUI as omui
+#from Qt import QtWidgets
+#from Qt import QtCore
+#from Qt import QtGui
+#from Qt import QtCompat
 
-#if __qt_binding__ == 'PySide2':
-#    Signal = QtCore.Signal
-#    Slot = QtCore.Slot
-#    Property = QtCore.Property
-#else:
-#    Signal = QtCore.pyqtSignal
-#    Slot = QtCore.pyqtSlot
-#    Property = QtCore.pyqtProperty
+
+if __qt_binding__ == 'PySide2':
+    Signal = QtCore.Signal
+    Slot = QtCore.Slot
+    Property = QtCore.Property
+else:
+    Signal = QtCore.pyqtSignal
+    Slot = QtCore.pyqtSlot
+    Property = QtCore.pyqtProperty
 
 import hades.hadEnv as hadEnv
 import hades.hadCore as hadCore
 import sys
 import os
+from shiboken2 import wrapInstance
+from maya import OpenMayaUI as omui
+from maya.OpenMayaUI import MQtUtil
 
 '''
 #In maya
 
 import sys
 
-path = r'C:\Users\MKR\MyProject\pandemonium\src'
+path = r'M:\Code'
 
 sys.path.append(path)
 
-import my_utils
-
-my_utils.reload_module('hades')
+for k in sys.modules.keys():        #Delete in publish
+    if 'hades' in k:
+        del sys.modules[k]
 
 import hades
-
-reload(hades)
 
 from hades import hadUi
 from hades import hadEnv
@@ -54,8 +55,7 @@ ui.show()
 '''
 
 def maya_main_window():
-    window_ptr = omui.MQtUtil.mainWindow()
-    return QtCompat.wrapInstance(long(window_ptr), QtWidgets.QWidget)
+    return wrapInstance(long(MQtUtil.mainWindow()), QtWidgets.QWidget)
 
 class MyLineEdit(QtWidgets.QLineEdit):
     def __init__(self, text='', parent=None):
@@ -64,7 +64,6 @@ class MyLineEdit(QtWidgets.QLineEdit):
 class MyUi(QtWidgets.QMainWindow):
     def __init__(self):
         super(MyUi, self).__init__(maya_main_window()) 
-        #self.setWindowFlags(self.windowFlags() |QtCore.Qt.WindowStaysOnTopHint)   #pour l'inverse , remplacer | par &~
         self.setWindowTitle('Hades_'+hadEnv.VERSION)
         self.resize(400, 400)
         self.setMinimumSize(300,300)
@@ -215,9 +214,9 @@ class Hades(MyUi):
         self.skinTool_pastePosTol_sb.setMinimum(0)
         self.skinTool_pastePosTol_sb.setMaximum(10)
         self.skinTool_pastePosTol_sb.setSingleStep(0.1)
-        hadEnv.LABELVERTICEMEMORY = self.skinTool_verCopyBuffer_l = QtWidgets.QLabel("0 Vertice In Copy Buffer")
-        hadEnv.LABELVERTICESELECTED = self.skinTool_verSelected_l = QtWidgets.QLabel("0 Vertice Selected")
-        hadEnv.TREESKINVALUES = self.skinTool_tree = QtWidgets.QTreeWidget()
+        hadEnv.LABEL_VERTICE_MEMORY = self.skinTool_verCopyBuffer_l = QtWidgets.QLabel("0 Vertice In Copy Buffer")
+        hadEnv.LABEL_VERTICE_SELECTED = self.skinTool_verSelected_l = QtWidgets.QLabel("0 Vertice Selected")
+        hadEnv.TREE_SKIN_VALUES = self.skinTool_tree = QtWidgets.QTreeWidget()
         self.skinTool_tree.setColumnCount(2)
         self.skinTool_tree.setHeaderLabels(["Vertice","Value", "Joints"])
         self.skinTool_tree.itemSelectionChanged.connect(hadCore.selectionJoint)
@@ -832,7 +831,7 @@ class Hades(MyUi):
     def clickSkinTool_But(self):
         self.tabMaster.addTab(self.skinToolTab,'SkinTool')
         self.tabMaster.setCurrentIndex(1)
-        hadCore.startEventSelection(self)
+        hadCore.startEventSelection()
 
     def clickToolMaya_But(self):
         self.tabMaster.addTab(self.toolMayaTab,'Maya Tools')
@@ -849,15 +848,15 @@ class Hades(MyUi):
     #AutoRig
 
     def clickAutoRigGuide_But(self):
-        hadEnv.AUTORIGARM = self.autoRig_arm_chk.isChecked()
-        hadEnv.AUTORIGLEG = self.autoRig_leg_chk.isChecked()
-        hadEnv.AUTORIGCHEST = self.autoRig_chest_chk.isChecked()
-        hadEnv.AUTORIGHEAD = self.autoRig_head_chk.isChecked()
+        hadEnv.AUTO_RIG_ARM = self.autoRig_arm_chk.isChecked()
+        hadEnv.AUTO_RIG_LEG = self.autoRig_leg_chk.isChecked()
+        hadEnv.AUTO_RIG_CHEST = self.autoRig_chest_chk.isChecked()
+        hadEnv.AUTO_RIG_HEAD = self.autoRig_head_chk.isChecked()
         hadCore.coreAutoRigGuide()
 
     def clickAutoRigGenerator_But(self):
-        hadEnv.AUTORIGSTRETCH = self.autoRig_stretch_chk.isChecked()
-        hadEnv.AUTORIGMIRROR = self.autoRig_mirror_chk.isChecked()
+        hadEnv.AUTO_RIG_STRETCH = self.autoRig_stretch_chk.isChecked()
+        hadEnv.AUTO_RIG_MIRROR = self.autoRig_mirror_chk.isChecked()
         hadCore.coreAutoRigGenerator()
 
     #SkinTool
@@ -1003,40 +1002,40 @@ class Hades(MyUi):
     #Create ctrl connection
 
     def clickCtrlCircle_But(self):
-        hadEnv.CTRLSIZEVALUE = self.createCtrlSize_sb.value()
-        hadEnv.CTRLGRPVALUE = self.createCtrlGrp_chx.isChecked()
+        hadEnv.CTRL_SIZE_VALUE = self.createCtrlSize_sb.value()
+        hadEnv.CTRL_GRP_VALUE = self.createCtrlGrp_chx.isChecked()
         hadCore.coreCreateCircle() 
     def clickCtrlTriangle_But(self):
-        hadEnv.CTRLSIZEVALUE = self.createCtrlSize_sb.value()
-        hadEnv.CTRLGRPVALUE = self.createCtrlGrp_chx.isChecked()
+        hadEnv.CTRL_SIZE_VALUE = self.createCtrlSize_sb.value()
+        hadEnv.CTRL_GRP_VALUE = self.createCtrlGrp_chx.isChecked()
         hadCore.coreCreateTriangle() 
     def clickCtrlSquare_But(self):
-        hadEnv.CTRLSIZEVALUE = self.createCtrlSize_sb.value()
-        hadEnv.CTRLGRPVALUE = self.createCtrlGrp_chx.isChecked()
+        hadEnv.CTRL_SIZE_VALUE = self.createCtrlSize_sb.value()
+        hadEnv.CTRL_GRP_VALUE = self.createCtrlGrp_chx.isChecked()
         hadCore.coreCreateSquare() 
     def clickCtrlCross_But(self):
-        hadEnv.CTRLSIZEVALUE = self.createCtrlSize_sb.value()
-        hadEnv.CTRLGRPVALUE = self.createCtrlGrp_chx.isChecked()
+        hadEnv.CTRL_SIZE_VALUE = self.createCtrlSize_sb.value()
+        hadEnv.CTRL_GRP_VALUE = self.createCtrlGrp_chx.isChecked()
         hadCore.coreCreateCross() 
     def clickCtrlBox_But(self):
-        hadEnv.CTRLSIZEVALUE = self.createCtrlSize_sb.value()
-        hadEnv.CTRLGRPVALUE = self.createCtrlGrp_chx.isChecked()
+        hadEnv.CTRL_SIZE_VALUE = self.createCtrlSize_sb.value()
+        hadEnv.CTRL_GRP_VALUE = self.createCtrlGrp_chx.isChecked()
         hadCore.coreCreateBox() 
     def clickCtrlDiamond_But(self):
-        hadEnv.CTRLSIZEVALUE = self.createCtrlSize_sb.value()
-        hadEnv.CTRLGRPVALUE = self.createCtrlGrp_chx.isChecked()
+        hadEnv.CTRL_SIZE_VALUE = self.createCtrlSize_sb.value()
+        hadEnv.CTRL_GRP_VALUE = self.createCtrlGrp_chx.isChecked()
         hadCore.coreCreateDiamond() 
     def clickCtrlBall_But(self):
-        hadEnv.CTRLSIZEVALUE = self.createCtrlSize_sb.value()
-        hadEnv.CTRLGRPVALUE = self.createCtrlGrp_chx.isChecked()
+        hadEnv.CTRL_SIZE_VALUE = self.createCtrlSize_sb.value()
+        hadEnv.CTRL_GRP_VALUE = self.createCtrlGrp_chx.isChecked()
         hadCore.coreCreateBall() 
     def clickCtrlArrow_But(self):
-        hadEnv.CTRLSIZEVALUE = self.createCtrlSize_sb.value()
-        hadEnv.CTRLGRPVALUE = self.createCtrlGrp_chx.isChecked()
+        hadEnv.CTRL_SIZE_VALUE = self.createCtrlSize_sb.value()
+        hadEnv.CTRL_GRP_VALUE = self.createCtrlGrp_chx.isChecked()
         hadCore.coreCreateArrow() 
     def clickCtrlLocator_But(self):
-        hadEnv.CTRLSIZEVALUE = self.createCtrlSize_sb.value()
-        hadEnv.CTRLGRPVALUE = self.createCtrlGrp_chx.isChecked()
+        hadEnv.CTRL_SIZE_VALUE = self.createCtrlSize_sb.value()
+        hadEnv.CTRL_GRP_VALUE = self.createCtrlGrp_chx.isChecked()
         hadCore.coreCreateLocator() 
 
     #Tools for Ziva

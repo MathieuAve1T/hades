@@ -72,15 +72,65 @@ def setColor(object, side):
 
     cmds.setAttr( object + ".overrideEnabled", 1)
     cmds.setAttr( object + ".overrideColor", 6+side) 
+    
+def get_skinCluster(mesh):
+
+    histList = cmds.listHistory(mesh)
+    if histList:
+        for histItem in histList:
+            if cmds.objectType(histItem) == "skinCluster":
+                return histItem    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
 def applyWeight(value):
 
-    if hadEnv.CURRENTJOINT:
+    if hadEnv.CURRENT_JOINT:
         pass
     else:
-        selectedJoint = hadEnv.TREESKINVALUES.currentItem()
-        hadEnv.CURRENTJOINT = selectedJoint.text(2)	
+        selectedJoint = hadEnv.TREE_SKIN_VALUES.currentItem()
+        hadEnv.CURRENT_JOINT = selectedJoint.text(2)	
     listSelection = cmds.ls(selection=True,flatten=True)
     if listSelection:
         meshObject = cmds.ls(listSelection[0], o=True)
@@ -88,7 +138,7 @@ def applyWeight(value):
         skinCluster = mel.eval('findRelatedSkinCluster ' + meshObject[0])
         if skinCluster:
             for vtx in onlyVertices:
-                cmds.skinPercent(skinCluster, vtx, transformValue=[(hadEnv.CURRENTJOINT, value)])
+                cmds.skinPercent(skinCluster, vtx, transformValue=[(hadEnv.CURRENT_JOINT, value)])
             
 
 def createLineDisplay(locaA, locaB):
@@ -123,9 +173,9 @@ def createFKJoints(object):
 
 def createPoleVector(start, middle, end, locaname, ik, side):
 
-    bTStart = cmds.createNode('joint', name= "Start_Temp" +hadEnv.DICTMIRROR[side], skipSelect=True)
+    bTStart = cmds.createNode('joint', name= "Start_Temp" +hadEnv.DICT_MIRROR[side], skipSelect=True)
     cmds.matchTransform(bTStart , start, position=True, rotation=False, scale=False)
-    bTEnd = cmds.createNode('joint', name= "End_Temp" +hadEnv.DICTMIRROR[side], skipSelect=True)
+    bTEnd = cmds.createNode('joint', name= "End_Temp" +hadEnv.DICT_MIRROR[side], skipSelect=True)
     cmds.matchTransform(bTEnd , end, position=True, rotation=False, scale=False)
    
     cmds.parent(bTEnd, bTStart)
@@ -143,9 +193,9 @@ def createPoleVector(start, middle, end, locaname, ik, side):
 
     cmds.setAttr(bTEnd + ".translateX", tempX)
 
-    bTEnd2 = cmds.createNode('joint', name= "End2_Temp" +hadEnv.DICTMIRROR[side], skipSelect=True)
+    bTEnd2 = cmds.createNode('joint', name= "End2_Temp" +hadEnv.DICT_MIRROR[side], skipSelect=True)
     cmds.matchTransform(bTEnd2 , bTEnd, position=True, rotation=False, scale=False)
-    bTMiddle2 = cmds.createNode('joint', name= "Middle2_Temp" +hadEnv.DICTMIRROR[side], skipSelect=True)
+    bTMiddle2 = cmds.createNode('joint', name= "Middle2_Temp" +hadEnv.DICT_MIRROR[side], skipSelect=True)
     cmds.matchTransform(bTMiddle2 , middle, position=True, rotation=False, scale=False)
         
     cmds.connectJoint( bTMiddle2, bTEnd2, pm=True )
@@ -157,10 +207,10 @@ def createPoleVector(start, middle, end, locaname, ik, side):
     cmds.setAttr(bTMiddle2 + ".jointOrientZ", 0)
     cmds.setAttr(bTMiddle2 + ".translateX", tempX)
 
-    TempLocatorEnd = (cmds.listRelatives(cmds.createNode('locator', name='Loc_End'+ locaname + hadEnv.DICTMIRROR[side], skipSelect=True), parent=True)[0])
+    TempLocatorEnd = (cmds.listRelatives(cmds.createNode('locator', name='Loc_End'+ locaname + hadEnv.DICT_MIRROR[side], skipSelect=True), parent=True)[0])
     tempLocaShapeEnd = cmds.listRelatives(TempLocatorEnd, children=True)[0]
     TempLocatorEnd = cmds.rename(TempLocatorEnd, 'Locator'+tempLocaShapeEnd)    
-    TempLocatorStart = (cmds.listRelatives(cmds.createNode('locator', name='Loc_Start'+ locaname + hadEnv.DICTMIRROR[side], skipSelect=True), parent=True)[0]) 
+    TempLocatorStart = (cmds.listRelatives(cmds.createNode('locator', name='Loc_Start'+ locaname + hadEnv.DICT_MIRROR[side], skipSelect=True), parent=True)[0]) 
     tempLocaShapeStart = cmds.listRelatives(TempLocatorStart, children=True)[0]
     TempLocatorStart = cmds.rename(TempLocatorStart, 'Locator'+tempLocaShapeStart)  
     cmds.setAttr(TempLocatorEnd +".visibility", 0)
@@ -173,7 +223,7 @@ def createPoleVector(start, middle, end, locaname, ik, side):
     cmds.delete(bTStart)
     cmds.delete(bTEnd2)
             
-    PoleVectorLeg = cmds.curve(name="Ctrl_"+locaname + hadEnv.DICTMIRROR[side], degree=1, point=[(0, 1, 0) ,(0, 0, 1) ,(0, -1, 0) ,(0, 0, -1) ,(0, 1, 0) ,(-1, 0, 0) ,(0, -1, 0) ,(1, 0, 0) ,(0, 1, 0) ,(-1, 0, 0) ,(0, 0, 1) ,(1, 0, 0) ,(0, 0, -1) ,(-1, 0, 0)], knot = [0,1,2,3,4,5,6,7,8,9,10,11,12,13])
+    PoleVectorLeg = cmds.curve(name="Ctrl_"+locaname + hadEnv.DICT_MIRROR[side], degree=1, point=[(0, 1, 0) ,(0, 0, 1) ,(0, -1, 0) ,(0, 0, -1) ,(0, 1, 0) ,(-1, 0, 0) ,(0, -1, 0) ,(1, 0, 0) ,(0, 1, 0) ,(-1, 0, 0) ,(0, 0, 1) ,(1, 0, 0) ,(0, 0, -1) ,(-1, 0, 0)], knot = [0,1,2,3,4,5,6,7,8,9,10,11,12,13])
     GrpPoleVectorLeg = cmds.group(PoleVectorLeg, name='Grp*'+PoleVectorLeg)
     
     cmds.matchTransform(GrpPoleVectorLeg, TempLocatorEnd)
@@ -198,7 +248,7 @@ def createPoleVector(start, middle, end, locaname, ik, side):
 def createCircle():
 
     x = False
-    r = hadEnv.CTRLSIZEVALUE
+    r = hadEnv.CTRL_SIZE_VALUE
     if cmds.ls(selection=True):
         sele = cmds.ls(selection=True)
         x = True
@@ -206,20 +256,20 @@ def createCircle():
         sele=['']
     for each in sele:
         tempCrv = cmds.circle(normal=(1, 0, 0), center=(0, 0, 0), radius=r, name= "Ctrl_"+each, constructionHistory=False)[0]
-        if hadEnv.CTRLGRPVALUE:
+        if hadEnv.CTRL_GRP_VALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
             tempGrp2 = cmds.createNode('transform', name='Offset_'+each, skipSelect=True)
             cmds.parent(tempGrp, tempGrp2)
-        if x == True and hadEnv.CTRLGRPVALUE:
+        if x == True and hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempGrp2, each)
-        elif x == True and not hadEnv.CTRLGRPVALUE:
+        elif x == True and not hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempCrv, each)
 
 def createTriangle():
 
     x = False
-    r = hadEnv.CTRLSIZEVALUE
+    r = hadEnv.CTRL_SIZE_VALUE
     if cmds.ls(selection=True):
         sele = cmds.ls(selection=True)
         x = True
@@ -227,20 +277,20 @@ def createTriangle():
         sele=['']
     for each in sele:
         tempCrv = cmds.circle( normal=(1, 0, 0), center=(0, 0, 0), radius=r, degree=1, sections=1,name="Ctrl_"+each, constructionHistory=False)[0] 
-        if hadEnv.CTRLGRPVALUE:
+        if hadEnv.CTRL_GRP_VALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
             tempGrp2 = cmds.createNode('transform', name='Offset_'+each, skipSelect=True)
             cmds.parent(tempGrp, tempGrp2)
-        if x == True and hadEnv.CTRLGRPVALUE:
+        if x == True and hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempGrp2, each)
-        elif x == True and not hadEnv.CTRLGRPVALUE:
+        elif x == True and not hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempCrv, each)
 
 def createSquare():
 
     x = False
-    r = hadEnv.CTRLSIZEVALUE
+    r = hadEnv.CTRL_SIZE_VALUE
     if cmds.ls(selection=True):
         sele = cmds.ls(selection=True)
         x = True
@@ -248,20 +298,20 @@ def createSquare():
         sele=['']
     for each in sele:
         tempCrv = cmds.curve(name="Ctrl_"+each, degree=1, point=[(-r, 0, r), (r, 0, r), (r, 0, -r), (-r, 0, -r), (-r, 0, r)] ) 
-        if hadEnv.CTRLGRPVALUE:
+        if hadEnv.CTRL_GRP_VALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
             tempGrp2 = cmds.createNode('transform', name='Offset_'+each, skipSelect=True)
             cmds.parent(tempGrp, tempGrp2)
-        if x == True and hadEnv.CTRLGRPVALUE:
+        if x == True and hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempGrp2, each)
-        elif x == True and not hadEnv.CTRLGRPVALUE:
+        elif x == True and not hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempCrv, each)
 
 def createCross():
 
     x = False
-    r = hadEnv.CTRLSIZEVALUE
+    r = hadEnv.CTRL_SIZE_VALUE
     if cmds.ls(selection=True):
         sele = cmds.ls(selection=True)
         x = True
@@ -269,20 +319,20 @@ def createCross():
         sele=['']
     for each in sele:
         tempCrv = cmds.curve(name="Ctrl_"+each, degree=1, point=[(-2*r, 0, -1*r), (-1*r, 0, -1*r), (-1*r, 0, -2*r), (1*r, 0, -2*r), (1*r, 0, -1*r), (2*r, 0, -1*r), (2*r, 0, 1*r), (1*r, 0, 1*r), (1*r, 0, 2*r), (-1*r, 0, 2*r), (-1*r, 0, 1*r), (-2*r, 0, 1*r), (-2*r, 0, -1*r), (-1*r, 0, -1*r)])
-        if hadEnv.CTRLGRPVALUE:
+        if hadEnv.CTRL_GRP_VALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
             tempGrp2 = cmds.createNode('transform', name='Offset_'+each, skipSelect=True)
             cmds.parent(tempGrp, tempGrp2)
-        if x == True and hadEnv.CTRLGRPVALUE:
+        if x == True and hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempGrp2, each)
-        elif x == True and not hadEnv.CTRLGRPVALUE:
+        elif x == True and not hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempCrv, each)
 
 def createBox():
 
     x = False
-    r = hadEnv.CTRLSIZEVALUE
+    r = hadEnv.CTRL_SIZE_VALUE
     if cmds.ls(selection=True):
         sele = cmds.ls(selection=True)
         x = True
@@ -290,20 +340,20 @@ def createBox():
         sele=['']
     for each in sele:
         tempCrv = cmds.curve(name="Ctrl_"+each, degree=1, point=[(-r, -r, r), (-r, r, r), (r, r, r), (r, -r, r), (-r, -r, r), (-r, -r, -r), (-r, r, -r), (-r, r, r), (r, r, r), (r, r, -r), (r, -r, -r), (r, -r, r), (r, -r, -r), (-r, -r, -r), (-r, r, -r), (r, r, -r)] )
-        if hadEnv.CTRLGRPVALUE:
+        if hadEnv.CTRL_GRP_VALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
             tempGrp2 = cmds.createNode('transform', name='Offset_'+each, skipSelect=True)
             cmds.parent(tempGrp, tempGrp2)
-        if x == True and hadEnv.CTRLGRPVALUE:
+        if x == True and hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempGrp2, each)
-        elif x == True and not hadEnv.CTRLGRPVALUE:
+        elif x == True and not hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempCrv, each)
 
 def createDiamond():
 
     x = False
-    r = hadEnv.CTRLSIZEVALUE
+    r = hadEnv.CTRL_SIZE_VALUE
     if cmds.ls(selection=True):
         sele = cmds.ls(selection=True)
         x = True
@@ -311,20 +361,20 @@ def createDiamond():
         sele=['']
     for each in sele:
         tempCrv = cmds.curve(name="Ctrl_"+each, degree=1, point = [( r, 0, 0 ), ( 0, 0, -r ), ( -r, 0, 0 ),( 0, 0, r, ), ( 0, -r, 0 ), ( 0, 0, -r ),( 0, r, 0 ), ( -r, 0, 0 ), ( 0, -r, 0 ),( r, 0, 0 ), ( 0, r, 0 ), ( 0, 0, r ),( r, 0, 0 )],knot = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] )
-        if hadEnv.CTRLGRPVALUE:
+        if hadEnv.CTRL_GRP_VALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
             tempGrp2 = cmds.createNode('transform', name='Offset_'+each, skipSelect=True)
             cmds.parent(tempGrp, tempGrp2)
-        if x == True and hadEnv.CTRLGRPVALUE:
+        if x == True and hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempGrp2, each)
-        elif x == True and not hadEnv.CTRLGRPVALUE:
+        elif x == True and not hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempCrv, each)   
 
 def createBall():
 
     x = False
-    r = hadEnv.CTRLSIZEVALUE
+    r = hadEnv.CTRL_SIZE_VALUE
     if cmds.ls(selection=True):
         sele = cmds.ls(selection=True)
         x = True
@@ -332,20 +382,20 @@ def createBall():
         sele=['']
     for each in sele:
         tempCrv = cmds.curve(name="Ctrl_"+each, degree=3, point=[	(0.5*r, 0.0, 0.0), (0.462*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r),(0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (-0.19*r, 0.0, 0.46*r),(-0.35*r, 0.0, 0.35*r), (-0.46*r, 0.0, 0.19*r), (-0.5*r, 0.0, 0.0),(-0.46*r, 0.0, -0.19*r), (-0.35*r, 0.0, -0.35*r), (-0.19*r, 0.0, -0.46*r),(0.0, 0.0, -0.5*r), (0.19*r, 0.0, -0.46*r), (0.35*r, 0.0, -0.35*r),(0.46*r, 0.0, -0.19*r), (0.5*r, 0.0, 0.0), (0.46*r, -0.19*r, 0.0*r),(0.35*r, -0.35*r, 0.0), (0.19*r, -0.46*r, 0.0), (0.0, -0.5*r, 0.0), (-0.19*r, -0.46*r, 0.0), (-0.35*r, -0.35*r, 0.0), (-0.46*r, -0.19*r, 0.0), (-0.5*r, 0.0, 0.0), (-0.46*r, 0.19*r, 0.0), (-0.35*r, 0.35*r, 0.0), (-0.19*r, 0.46*r, 0.0), (0.0, 0.5*r, 0.0), (0.19*r, 0.46*r, 0.0), (0.35*r, 0.35*r, 0.0), (0.46*r, 0.19*r, 0.0), (0.5*r, 0.0, 0.0), (0.46*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r), (0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (0.0, 0.24*r, 0.44*r), (0.0, 0.44*r, 0.24*r), (0.0, 0.5*r, 0.0), (0.0, 0.44*r, -0.24*r), (0.0, 0.24*r, -0.44*r), (0.0, 0.0, -0.5*r), (0.0, -0.24*r, -0.44*r), (0.0, -0.44*r, -0.24*r), (0.0, -0.5*r, 0.0), (0.0, -0.44*r, 0.24*r), (0.0, -0.24*r, 0.44*r), (0.0, 0.0, 0.5*r)] )
-        if hadEnv.CTRLGRPVALUE:
+        if hadEnv.CTRL_GRP_VALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
             tempGrp2 = cmds.createNode('transform', name='Offset_'+each, skipSelect=True)
             cmds.parent(tempGrp, tempGrp2)
-        if x == True and hadEnv.CTRLGRPVALUE:
+        if x == True and hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempGrp2, each)
-        elif x == True and not hadEnv.CTRLGRPVALUE:
+        elif x == True and not hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempCrv, each)  
 
 def createArrow():
 
     x = False
-    r = hadEnv.CTRLSIZEVALUE
+    r = hadEnv.CTRL_SIZE_VALUE
     if cmds.ls(selection=True):
         sele = cmds.ls(selection=True)
         x = True
@@ -353,20 +403,20 @@ def createArrow():
         sele=['']
     for each in sele:
         tempCrv = cmds.curve(name="Ctrl_"+each, degree=1, point=[(0, 0, 0), (0, 0, -0.44*r), (0, 0, -0.9*r), (0, 0, -1.23*r), (-0.21*r, 0, -1.37*r), (-0.44*r, 0, -2*r), (0, 0, -2.2*r), (0.44*r, 0, -2*r), (0.21*r, 0, -1.37*r), (0, 0, -1.23*r), (0, 0.21*r, -1.37*r), (0, 0.44*r, -2*r), (0, 0, -2.2*r), (0, -0.44*r, -2*r), (0, -0.21*r, -1.37*r), (0, 0, -1.23*r)] )
-        if hadEnv.CTRLGRPVALUE:
+        if hadEnv.CTRL_GRP_VALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
             tempGrp2 = cmds.createNode('transform', name='Offset_'+each, skipSelect=True)
             cmds.parent(tempGrp, tempGrp2)
-        if x == True and hadEnv.CTRLGRPVALUE:
+        if x == True and hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempGrp2, each)
-        elif x == True and not hadEnv.CTRLGRPVALUE:
+        elif x == True and not hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempCrv, each)    
 
 def createLocator():
 
     x = False
-    r = hadEnv.CTRLSIZEVALUE
+    r = hadEnv.CTRL_SIZE_VALUE
     if cmds.ls(selection=True):
         sele = cmds.ls(selection=True)
         x = True
@@ -374,14 +424,14 @@ def createLocator():
         sele=['']
     for each in sele:
         tempCrv = cmds.curve(name="Ctrl_"+each, degree=1, point=[(0, 0, r), (0, 0, -r), (0, 0, 0), (r, 0, 0), (-r, 0, 0), (0, 0, 0), (0, r, 0), (0, -r, 0)] )
-        if hadEnv.CTRLGRPVALUE:
+        if hadEnv.CTRL_GRP_VALUE:
             tempGrp = cmds.createNode('transform', name='Extra_'+each, skipSelect=True)
             cmds.parent(tempCrv, tempGrp)
             tempGrp2 = cmds.createNode('transform', name='Offset_'+each, skipSelect=True)
             cmds.parent(tempGrp, tempGrp2)
-        if x == True and hadEnv.CTRLGRPVALUE:
+        if x == True and hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempGrp2, each)
-        elif x == True and not hadEnv.CTRLGRPVALUE:
+        elif x == True and not hadEnv.CTRL_GRP_VALUE:
             cmds.matchTransform(tempCrv, each)   
 
 def setZMaterial(value, valueEx):

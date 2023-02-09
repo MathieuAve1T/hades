@@ -7,52 +7,52 @@ class AutoRigCreateGuide(object):
 
     def autoRigPreModule(self):
 
-        hadEnv.GUIDELINEGRP = cmds.createNode('transform', name='Grp_GuideLine', skipSelect=True)
+        hadEnv.GUIDE_LINE_GRP = cmds.createNode('transform', name='Grp_GuideLine', skipSelect=True)
 
-    def autoRigChestModule(self):
+    def AUTO_RIG_CHESTModule(self):
 
-        if hadEnv.AUTORIGLISTCHESTGUIDE:
-            cmds.delete(cmds.listRelatives(hadEnv.AUTORIGLISTCHESTGUIDE[0], parent=True)[0])
-            for each in hadEnv.AUTORIGLISTCHESTGUIDELINE:
+        if hadEnv.AUTO_RIG_LIST_CHEST_GUIDE:
+            cmds.delete(cmds.listRelatives(hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[0], parent=True)[0])
+            for each in hadEnv.AUTO_RIG_LIST_CHEST_GUIDELINE:
                 cmds.delete(each)
-            hadEnv.AUTORIGLISTCHESTGUIDE = []
-            hadEnv.AUTORIGLISTCHESTGUIDELINE = []
+            hadEnv.AUTO_RIG_LIST_CHEST_GUIDE = []
+            hadEnv.AUTO_RIG_LIST_CHEST_GUIDELINE = []
         
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Root', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[0, 11, -0.434], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTCHESTGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_CHEST_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Hip', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[0, 11, 0.295], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTCHESTGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_CHEST_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='SpineA', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[0, 12.448, -0.735], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTCHESTGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_CHEST_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='SpineC', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[0, 13.867, -0.828], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTCHESTGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_CHEST_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Chest', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[0, 15.135, -1.096], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTCHESTGUIDE.append(tempLoca)       
+        hadEnv.AUTO_RIG_LIST_CHEST_GUIDE.append(tempLoca)       
 
-        for each in hadEnv.AUTORIGLISTCHESTGUIDE:
+        for each in hadEnv.AUTO_RIG_LIST_CHEST_GUIDE:
             r=0.25
             tempCrv = cmds.curve(name="Guide_"+each, degree=3, point=[	(0.5*r, 0.0, 0.0), (0.462*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r),(0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (-0.19*r, 0.0, 0.46*r),(-0.35*r, 0.0, 0.35*r), (-0.46*r, 0.0, 0.19*r), (-0.5*r, 0.0, 0.0),(-0.46*r, 0.0, -0.19*r), (-0.35*r, 0.0, -0.35*r), (-0.19*r, 0.0, -0.46*r),(0.0, 0.0, -0.5*r), (0.19*r, 0.0, -0.46*r), (0.35*r, 0.0, -0.35*r),(0.46*r, 0.0, -0.19*r), (0.5*r, 0.0, 0.0), (0.46*r, -0.19*r, 0.0*r),(0.35*r, -0.35*r, 0.0), (0.19*r, -0.46*r, 0.0), (0.0, -0.5*r, 0.0), (-0.19*r, -0.46*r, 0.0), (-0.35*r, -0.35*r, 0.0), (-0.46*r, -0.19*r, 0.0), (-0.5*r, 0.0, 0.0), (-0.46*r, 0.19*r, 0.0), (-0.35*r, 0.35*r, 0.0), (-0.19*r, 0.46*r, 0.0), (0.0, 0.5*r, 0.0), (0.19*r, 0.46*r, 0.0), (0.35*r, 0.35*r, 0.0), (0.46*r, 0.19*r, 0.0), (0.5*r, 0.0, 0.0), (0.46*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r), (0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (0.0, 0.24*r, 0.44*r), (0.0, 0.44*r, 0.24*r), (0.0, 0.5*r, 0.0), (0.0, 0.44*r, -0.24*r), (0.0, 0.24*r, -0.44*r), (0.0, 0.0, -0.5*r), (0.0, -0.24*r, -0.44*r), (0.0, -0.44*r, -0.24*r), (0.0, -0.5*r, 0.0), (0.0, -0.44*r, 0.24*r), (0.0, -0.24*r, 0.44*r), (0.0, 0.0, 0.5*r)] )
             cmds.matchTransform(tempCrv, each)
             cmds.parent(each, tempCrv)
             cmds.setAttr(each+".visibility", 0)
         
-        listLocaA = [hadEnv.AUTORIGLISTCHESTGUIDE[0],hadEnv.AUTORIGLISTCHESTGUIDE[0],hadEnv.AUTORIGLISTCHESTGUIDE[2],hadEnv.AUTORIGLISTCHESTGUIDE[3]]
-        listLocaB = [hadEnv.AUTORIGLISTCHESTGUIDE[1],hadEnv.AUTORIGLISTCHESTGUIDE[2],hadEnv.AUTORIGLISTCHESTGUIDE[3],hadEnv.AUTORIGLISTCHESTGUIDE[4]]
+        listLocaA = [hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[0],hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[0],hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[2],hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[3]]
+        listLocaB = [hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[1],hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[2],hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[3],hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[4]]
        
         for parentLocaA, parentLocaB in zip(listLocaA, listLocaB):
 
@@ -64,25 +64,25 @@ class AutoRigCreateGuide(object):
 
             cmds.parent(masterLocaB, masterLocaA)
         
-            hadEnv.AUTORIGLISTCHESTGUIDELINE.append(hadLib.createLineDisplay(locaA, locaB))
+            hadEnv.AUTO_RIG_LIST_CHEST_GUIDELINE.append(hadLib.createLineDisplay(locaA, locaB))
 
-            cmds.parent(hadEnv.AUTORIGLISTCHESTGUIDELINE[-1], hadEnv.GUIDELINEGRP)
+            cmds.parent(hadEnv.AUTO_RIG_LIST_CHEST_GUIDELINE[-1], hadEnv.GUIDE_LINE_GRP)
 
  
 
-    def autoRigArmModule(self, *args):  
+    def AUTO_RIG_ARMModule(self, *args):  
 
-        if hadEnv.AUTORIGLISTARMGUIDE and not hadEnv.AUTORIGLISTCHESTGUIDE:
-            cmds.delete(cmds.listRelatives(hadEnv.AUTORIGLISTARMGUIDE[0], parent=True)[0])
-            for each in hadEnv.AUTORIGLISTARMGUIDELINE:
+        if hadEnv.AUTO_RIG_LIST_ARM_GUIDE and not hadEnv.AUTO_RIG_LIST_CHEST_GUIDE:
+            cmds.delete(cmds.listRelatives(hadEnv.AUTO_RIG_LIST_ARM_GUIDE[0], parent=True)[0])
+            for each in hadEnv.AUTO_RIG_LIST_ARM_GUIDELINE:
                 cmds.delete(each)
-            hadEnv.AUTORIGLISTARMGUIDE = []
-            hadEnv.AUTORIGLISTARMGUIDELINE = []
-        elif hadEnv.AUTORIGLISTARMGUIDE and hadEnv.AUTORIGLISTCHESTGUIDE:
-            for each in hadEnv.AUTORIGLISTARMGUIDELINE:
+            hadEnv.AUTO_RIG_LIST_ARM_GUIDE = []
+            hadEnv.AUTO_RIG_LIST_ARM_GUIDELINE = []
+        elif hadEnv.AUTO_RIG_LIST_ARM_GUIDE and hadEnv.AUTO_RIG_LIST_CHEST_GUIDE:
+            for each in hadEnv.AUTO_RIG_LIST_ARM_GUIDELINE:
                 cmds.delete(each)
-            hadEnv.AUTORIGLISTARMGUIDE = []
-            hadEnv.AUTORIGLISTARMGUIDELINE = []
+            hadEnv.AUTO_RIG_LIST_ARM_GUIDE = []
+            hadEnv.AUTO_RIG_LIST_ARM_GUIDELINE = []
         else:
             pass
 
@@ -90,104 +90,104 @@ class AutoRigCreateGuide(object):
         cmds.xform(tempLoca, translation=[0.488, 15.281, 0.17], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Shoulder', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[1.49, 15.212, -0.668], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Elbow', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[3.46, 13.554, -0.931], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Wrist', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[5.323, 11.897, 0.283], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='ThumbA', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[5.388, 11.459, 0.759], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='ThumbB', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[5.339, 11.178, 1.044], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='ThumbC', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[5.362, 10.839, 1.111], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Metacarp', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[5.531, 11.708, 0.405], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='IndexA', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[6.04, 11.002, 1.156], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='IndexB', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[6.175, 10.742, 1.22], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='IndexC', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[6.144, 10.443, 1.238], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='MidA', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[6.204, 11.078, 0.858], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='MidB', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[6.312, 10.663, 0.954], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='MidC', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[6.295, 10.36, 0.969], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='RingA', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[6.242, 11.017, 0.556], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='RingB', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[6.335, 10.62, 0.655], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='RingC', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[6.311, 10.339, 0.708], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='PinkyA', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[6.166, 11.019, 0.304], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='PinkyB', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[6.306, 10.659, 0.371], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='PinkyC', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[6.272, 10.417, 0.412], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTARMGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_ARM_GUIDE.append(tempLoca)
 
-        for each in hadEnv.AUTORIGLISTARMGUIDE:
+        for each in hadEnv.AUTO_RIG_LIST_ARM_GUIDE:
             tempChild = cmds.listRelatives(each, children=True)[0]
             r=0.25
             tempCrv = cmds.curve(name="Guide_"+tempChild, degree=3, point=[	(0.5*r, 0.0, 0.0), (0.462*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r),(0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (-0.19*r, 0.0, 0.46*r),(-0.35*r, 0.0, 0.35*r), (-0.46*r, 0.0, 0.19*r), (-0.5*r, 0.0, 0.0),(-0.46*r, 0.0, -0.19*r), (-0.35*r, 0.0, -0.35*r), (-0.19*r, 0.0, -0.46*r),(0.0, 0.0, -0.5*r), (0.19*r, 0.0, -0.46*r), (0.35*r, 0.0, -0.35*r),(0.46*r, 0.0, -0.19*r), (0.5*r, 0.0, 0.0), (0.46*r, -0.19*r, 0.0*r),(0.35*r, -0.35*r, 0.0), (0.19*r, -0.46*r, 0.0), (0.0, -0.5*r, 0.0), (-0.19*r, -0.46*r, 0.0), (-0.35*r, -0.35*r, 0.0), (-0.46*r, -0.19*r, 0.0), (-0.5*r, 0.0, 0.0), (-0.46*r, 0.19*r, 0.0), (-0.35*r, 0.35*r, 0.0), (-0.19*r, 0.46*r, 0.0), (0.0, 0.5*r, 0.0), (0.19*r, 0.46*r, 0.0), (0.35*r, 0.35*r, 0.0), (0.46*r, 0.19*r, 0.0), (0.5*r, 0.0, 0.0), (0.46*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r), (0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (0.0, 0.24*r, 0.44*r), (0.0, 0.44*r, 0.24*r), (0.0, 0.5*r, 0.0), (0.0, 0.44*r, -0.24*r), (0.0, 0.24*r, -0.44*r), (0.0, 0.0, -0.5*r), (0.0, -0.24*r, -0.44*r), (0.0, -0.44*r, -0.24*r), (0.0, -0.5*r, 0.0), (0.0, -0.44*r, 0.24*r), (0.0, -0.24*r, 0.44*r), (0.0, 0.0, 0.5*r)] )
@@ -195,12 +195,12 @@ class AutoRigCreateGuide(object):
             cmds.parent(each, tempCrv)
             cmds.setAttr(each+".visibility", 0)
         
-        listLocaA = [hadEnv.AUTORIGLISTARMGUIDE[0],hadEnv.AUTORIGLISTARMGUIDE[1],hadEnv.AUTORIGLISTARMGUIDE[2],hadEnv.AUTORIGLISTARMGUIDE[3],hadEnv.AUTORIGLISTARMGUIDE[4],hadEnv.AUTORIGLISTARMGUIDE[5],hadEnv.AUTORIGLISTARMGUIDE[3],hadEnv.AUTORIGLISTARMGUIDE[7],hadEnv.AUTORIGLISTARMGUIDE[8],hadEnv.AUTORIGLISTARMGUIDE[9],hadEnv.AUTORIGLISTARMGUIDE[7],hadEnv.AUTORIGLISTARMGUIDE[11],hadEnv.AUTORIGLISTARMGUIDE[12],hadEnv.AUTORIGLISTARMGUIDE[7],hadEnv.AUTORIGLISTARMGUIDE[14],hadEnv.AUTORIGLISTARMGUIDE[15],hadEnv.AUTORIGLISTARMGUIDE[7],hadEnv.AUTORIGLISTARMGUIDE[17],hadEnv.AUTORIGLISTARMGUIDE[18]]
-        listLocaB = [hadEnv.AUTORIGLISTARMGUIDE[1],hadEnv.AUTORIGLISTARMGUIDE[2],hadEnv.AUTORIGLISTARMGUIDE[3],hadEnv.AUTORIGLISTARMGUIDE[4],hadEnv.AUTORIGLISTARMGUIDE[5],hadEnv.AUTORIGLISTARMGUIDE[6],hadEnv.AUTORIGLISTARMGUIDE[7],hadEnv.AUTORIGLISTARMGUIDE[8],hadEnv.AUTORIGLISTARMGUIDE[9],hadEnv.AUTORIGLISTARMGUIDE[10],hadEnv.AUTORIGLISTARMGUIDE[11],hadEnv.AUTORIGLISTARMGUIDE[12],hadEnv.AUTORIGLISTARMGUIDE[13],hadEnv.AUTORIGLISTARMGUIDE[14],hadEnv.AUTORIGLISTARMGUIDE[15],hadEnv.AUTORIGLISTARMGUIDE[16],hadEnv.AUTORIGLISTARMGUIDE[17],hadEnv.AUTORIGLISTARMGUIDE[18],hadEnv.AUTORIGLISTARMGUIDE[19]]
+        listLocaA = [hadEnv.AUTO_RIG_LIST_ARM_GUIDE[0],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[1],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[2],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[3],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[4],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[5],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[3],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[7],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[8],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[9],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[7],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[11],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[12],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[7],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[14],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[15],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[7],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[17],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[18]]
+        listLocaB = [hadEnv.AUTO_RIG_LIST_ARM_GUIDE[1],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[2],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[3],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[4],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[5],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[6],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[7],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[8],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[9],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[10],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[11],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[12],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[13],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[14],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[15],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[16],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[17],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[18],hadEnv.AUTO_RIG_LIST_ARM_GUIDE[19]]
         
-        if hadEnv.AUTORIGCHEST:
-            listLocaA.append(hadEnv.AUTORIGLISTCHESTGUIDE[4])
-            listLocaB.append(hadEnv.AUTORIGLISTARMGUIDE[0])
+        if hadEnv.AUTO_RIG_CHEST:
+            listLocaA.append(hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[4])
+            listLocaB.append(hadEnv.AUTO_RIG_LIST_ARM_GUIDE[0])
 
         for parentLocaA, parentLocaB in zip(listLocaA, listLocaB):
 
@@ -212,25 +212,25 @@ class AutoRigCreateGuide(object):
 
             cmds.parent(masterLocaB, masterLocaA)
         
-            hadEnv.AUTORIGLISTARMGUIDELINE.append(hadLib.createLineDisplay(locaA, locaB))
+            hadEnv.AUTO_RIG_LIST_ARM_GUIDELINE.append(hadLib.createLineDisplay(locaA, locaB))
 
-            cmds.parent(hadEnv.AUTORIGLISTARMGUIDELINE[-1], hadEnv.GUIDELINEGRP)
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_GUIDELINE[-1], hadEnv.GUIDE_LINE_GRP)
 
 
 
-    def autoRigLegModule(self):
+    def AUTO_RIG_LEGModule(self):
 
-        if hadEnv.AUTORIGLISTLEGGUIDE and not hadEnv.AUTORIGLISTCHESTGUIDE:
-            cmds.delete(cmds.listRelatives(hadEnv.AUTORIGLISTLEGGUIDE[-1], parent=True)[0])
-            for each in hadEnv.AUTORIGLISTLEGGUIDELINE:
+        if hadEnv.AUTO_RIG_LIST_LEG_GUIDE and not hadEnv.AUTO_RIG_LIST_CHEST_GUIDE:
+            cmds.delete(cmds.listRelatives(hadEnv.AUTO_RIG_LIST_LEG_GUIDE[-1], parent=True)[0])
+            for each in hadEnv.AUTO_RIG_LIST_LEG_GUIDELINE:
                 cmds.delete(each)
-            hadEnv.AUTORIGLISTLEGGUIDE = []
-            hadEnv.AUTORIGLISTLEGGUIDELINE = []
-        elif hadEnv.AUTORIGLISTLEGGUIDE and hadEnv.AUTORIGLISTCHESTGUIDE:
-            for each in hadEnv.AUTORIGLISTLEGGUIDELINE:
+            hadEnv.AUTO_RIG_LIST_LEG_GUIDE = []
+            hadEnv.AUTO_RIG_LIST_LEG_GUIDELINE = []
+        elif hadEnv.AUTO_RIG_LIST_LEG_GUIDE and hadEnv.AUTO_RIG_LIST_CHEST_GUIDE:
+            for each in hadEnv.AUTO_RIG_LIST_LEG_GUIDELINE:
                 cmds.delete(each)
-            hadEnv.AUTORIGLISTLEGGUIDE = []
-            hadEnv.AUTORIGLISTLEGGUIDELINE = []
+            hadEnv.AUTO_RIG_LIST_LEG_GUIDE = []
+            hadEnv.AUTO_RIG_LIST_LEG_GUIDELINE = []
         else:
             pass
         
@@ -238,56 +238,56 @@ class AutoRigCreateGuide(object):
         cmds.xform(tempLoca, translation=[1.681, 0, -1.373], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTLEGGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_LEG_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Toe', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[1.857, 0.5, 1.238], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTLEGGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_LEG_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='TiltIn', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[1.288, 0, 0.137], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTLEGGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_LEG_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='TiltOut', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[2.425, 0, 0.137], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTLEGGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_LEG_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Foot', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[1.768, 0.5, 0.108], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTLEGGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_LEG_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Ankle', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[1.681, 1.309, -0.773], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTLEGGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_LEG_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Knee', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[1.369, 5.728, -0.229], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTLEGGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_LEG_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Thigh', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[1.092, 10.583, -0.239], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTLEGGUIDE.append(tempLoca)       
+        hadEnv.AUTO_RIG_LIST_LEG_GUIDE.append(tempLoca)       
 
-        for each in hadEnv.AUTORIGLISTLEGGUIDE:
+        for each in hadEnv.AUTO_RIG_LIST_LEG_GUIDE:
             r=0.25
             tempCrv = cmds.curve(name="Guide_"+each, degree=3, point=[	(0.5*r, 0.0, 0.0), (0.462*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r),(0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (-0.19*r, 0.0, 0.46*r),(-0.35*r, 0.0, 0.35*r), (-0.46*r, 0.0, 0.19*r), (-0.5*r, 0.0, 0.0),(-0.46*r, 0.0, -0.19*r), (-0.35*r, 0.0, -0.35*r), (-0.19*r, 0.0, -0.46*r),(0.0, 0.0, -0.5*r), (0.19*r, 0.0, -0.46*r), (0.35*r, 0.0, -0.35*r),(0.46*r, 0.0, -0.19*r), (0.5*r, 0.0, 0.0), (0.46*r, -0.19*r, 0.0*r),(0.35*r, -0.35*r, 0.0), (0.19*r, -0.46*r, 0.0), (0.0, -0.5*r, 0.0), (-0.19*r, -0.46*r, 0.0), (-0.35*r, -0.35*r, 0.0), (-0.46*r, -0.19*r, 0.0), (-0.5*r, 0.0, 0.0), (-0.46*r, 0.19*r, 0.0), (-0.35*r, 0.35*r, 0.0), (-0.19*r, 0.46*r, 0.0), (0.0, 0.5*r, 0.0), (0.19*r, 0.46*r, 0.0), (0.35*r, 0.35*r, 0.0), (0.46*r, 0.19*r, 0.0), (0.5*r, 0.0, 0.0), (0.46*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r), (0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (0.0, 0.24*r, 0.44*r), (0.0, 0.44*r, 0.24*r), (0.0, 0.5*r, 0.0), (0.0, 0.44*r, -0.24*r), (0.0, 0.24*r, -0.44*r), (0.0, 0.0, -0.5*r), (0.0, -0.24*r, -0.44*r), (0.0, -0.44*r, -0.24*r), (0.0, -0.5*r, 0.0), (0.0, -0.44*r, 0.24*r), (0.0, -0.24*r, 0.44*r), (0.0, 0.0, 0.5*r)] )
             cmds.matchTransform(tempCrv, each)
             cmds.parent(each, tempCrv)
             cmds.setAttr(each+".visibility", 0)
         
-        listLocaA = [hadEnv.AUTORIGLISTLEGGUIDE[4],hadEnv.AUTORIGLISTLEGGUIDE[4],hadEnv.AUTORIGLISTLEGGUIDE[4],hadEnv.AUTORIGLISTLEGGUIDE[4],hadEnv.AUTORIGLISTLEGGUIDE[5],hadEnv.AUTORIGLISTLEGGUIDE[6],hadEnv.AUTORIGLISTLEGGUIDE[7]]
-        listLocaB = [hadEnv.AUTORIGLISTLEGGUIDE[0],hadEnv.AUTORIGLISTLEGGUIDE[1],hadEnv.AUTORIGLISTLEGGUIDE[2],hadEnv.AUTORIGLISTLEGGUIDE[3],hadEnv.AUTORIGLISTLEGGUIDE[4],hadEnv.AUTORIGLISTLEGGUIDE[5],hadEnv.AUTORIGLISTLEGGUIDE[6]]
+        listLocaA = [hadEnv.AUTO_RIG_LIST_LEG_GUIDE[4],hadEnv.AUTO_RIG_LIST_LEG_GUIDE[4],hadEnv.AUTO_RIG_LIST_LEG_GUIDE[4],hadEnv.AUTO_RIG_LIST_LEG_GUIDE[4],hadEnv.AUTO_RIG_LIST_LEG_GUIDE[5],hadEnv.AUTO_RIG_LIST_LEG_GUIDE[6],hadEnv.AUTO_RIG_LIST_LEG_GUIDE[7]]
+        listLocaB = [hadEnv.AUTO_RIG_LIST_LEG_GUIDE[0],hadEnv.AUTO_RIG_LIST_LEG_GUIDE[1],hadEnv.AUTO_RIG_LIST_LEG_GUIDE[2],hadEnv.AUTO_RIG_LIST_LEG_GUIDE[3],hadEnv.AUTO_RIG_LIST_LEG_GUIDE[4],hadEnv.AUTO_RIG_LIST_LEG_GUIDE[5],hadEnv.AUTO_RIG_LIST_LEG_GUIDE[6]]
         
-        if hadEnv.AUTORIGCHEST:
-            listLocaA.append(hadEnv.AUTORIGLISTCHESTGUIDE[1])
-            listLocaB.append(hadEnv.AUTORIGLISTLEGGUIDE[-1])
+        if hadEnv.AUTO_RIG_CHEST:
+            listLocaA.append(hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[1])
+            listLocaB.append(hadEnv.AUTO_RIG_LIST_LEG_GUIDE[-1])
 
         for parentLocaA, parentLocaB in zip(listLocaA, listLocaB):
 
@@ -299,26 +299,26 @@ class AutoRigCreateGuide(object):
 
             cmds.parent(masterLocaB, masterLocaA)
         
-            hadEnv.AUTORIGLISTLEGGUIDELINE.append(hadLib.createLineDisplay(locaA, locaB))
+            hadEnv.AUTO_RIG_LIST_LEG_GUIDELINE.append(hadLib.createLineDisplay(locaA, locaB))
 
-            cmds.parent(hadEnv.AUTORIGLISTLEGGUIDELINE[-1], hadEnv.GUIDELINEGRP)
-
-
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_GUIDELINE[-1], hadEnv.GUIDE_LINE_GRP)
 
 
-    def autoRigHeadModule(self):
 
-        if hadEnv.AUTORIGLISTHEADGUIDE and not hadEnv.AUTORIGLISTCHESTGUIDE:
-            cmds.delete(cmds.listRelatives(hadEnv.AUTORIGLISTHEADGUIDE[0], parent=True)[0])
-            for each in hadEnv.AUTORIGLISTHEADGUIDELINE:
+
+    def AUTO_RIG_HEADModule(self):
+
+        if hadEnv.AUTO_RIG_LIST_HEAD_GUIDE and not hadEnv.AUTO_RIG_LIST_CHEST_GUIDE:
+            cmds.delete(cmds.listRelatives(hadEnv.AUTO_RIG_LIST_HEAD_GUIDE[0], parent=True)[0])
+            for each in hadEnv.AUTO_RIG_LIST_HEAD_GUIDELINE:
                 cmds.delete(each)
-            hadEnv.AUTORIGLISTHEADGUIDE = []
-            hadEnv.AUTORIGLISTHEADGUIDELINE = []
-        elif hadEnv.AUTORIGLISTHEADGUIDE and hadEnv.AUTORIGLISTCHESTGUIDE:
-            for each in hadEnv.AUTORIGLISTHEADGUIDELINE:
+            hadEnv.AUTO_RIG_LIST_HEAD_GUIDE = []
+            hadEnv.AUTO_RIG_LIST_HEAD_GUIDELINE = []
+        elif hadEnv.AUTO_RIG_LIST_HEAD_GUIDE and hadEnv.AUTO_RIG_LIST_CHEST_GUIDE:
+            for each in hadEnv.AUTO_RIG_LIST_HEAD_GUIDELINE:
                 cmds.delete(each)
-            hadEnv.AUTORIGLISTHEADGUIDE = []
-            hadEnv.AUTORIGLISTHEADGUIDELINE = []
+            hadEnv.AUTO_RIG_LIST_HEAD_GUIDE = []
+            hadEnv.AUTO_RIG_LIST_HEAD_GUIDELINE = []
         else:
             pass
         
@@ -326,31 +326,31 @@ class AutoRigCreateGuide(object):
         cmds.xform(tempLoca, translation=[0, 16.074, -0.585], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTHEADGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_HEAD_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='Head', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[0, 16.806, -0.382], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTHEADGUIDE.append(tempLoca)
+        hadEnv.AUTO_RIG_LIST_HEAD_GUIDE.append(tempLoca)
         tempLoca = (cmds.listRelatives(cmds.createNode('locator', name='HeadEnd', skipSelect=True), parent=True)[0])
         cmds.xform(tempLoca, translation=[0, 18, -0.382], worldSpace=True)
         tempLocaShape = cmds.listRelatives(tempLoca, children=True)[0]
         tempLoca = cmds.rename(tempLoca, 'Locator'+tempLocaShape)
-        hadEnv.AUTORIGLISTHEADGUIDE.append(tempLoca)      
+        hadEnv.AUTO_RIG_LIST_HEAD_GUIDE.append(tempLoca)      
 
-        for each in hadEnv.AUTORIGLISTHEADGUIDE:
+        for each in hadEnv.AUTO_RIG_LIST_HEAD_GUIDE:
             r=0.25
             tempCrv = cmds.curve(name="Guide_"+each, degree=3, point=[	(0.5*r, 0.0, 0.0), (0.462*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r),(0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (-0.19*r, 0.0, 0.46*r),(-0.35*r, 0.0, 0.35*r), (-0.46*r, 0.0, 0.19*r), (-0.5*r, 0.0, 0.0),(-0.46*r, 0.0, -0.19*r), (-0.35*r, 0.0, -0.35*r), (-0.19*r, 0.0, -0.46*r),(0.0, 0.0, -0.5*r), (0.19*r, 0.0, -0.46*r), (0.35*r, 0.0, -0.35*r),(0.46*r, 0.0, -0.19*r), (0.5*r, 0.0, 0.0), (0.46*r, -0.19*r, 0.0*r),(0.35*r, -0.35*r, 0.0), (0.19*r, -0.46*r, 0.0), (0.0, -0.5*r, 0.0), (-0.19*r, -0.46*r, 0.0), (-0.35*r, -0.35*r, 0.0), (-0.46*r, -0.19*r, 0.0), (-0.5*r, 0.0, 0.0), (-0.46*r, 0.19*r, 0.0), (-0.35*r, 0.35*r, 0.0), (-0.19*r, 0.46*r, 0.0), (0.0, 0.5*r, 0.0), (0.19*r, 0.46*r, 0.0), (0.35*r, 0.35*r, 0.0), (0.46*r, 0.19*r, 0.0), (0.5*r, 0.0, 0.0), (0.46*r, 0.0, 0.19*r), (0.35*r, 0.0, 0.35*r), (0.19*r, 0.0, 0.46*r), (0.0, 0.0, 0.5*r), (0.0, 0.24*r, 0.44*r), (0.0, 0.44*r, 0.24*r), (0.0, 0.5*r, 0.0), (0.0, 0.44*r, -0.24*r), (0.0, 0.24*r, -0.44*r), (0.0, 0.0, -0.5*r), (0.0, -0.24*r, -0.44*r), (0.0, -0.44*r, -0.24*r), (0.0, -0.5*r, 0.0), (0.0, -0.44*r, 0.24*r), (0.0, -0.24*r, 0.44*r), (0.0, 0.0, 0.5*r)] )
             cmds.matchTransform(tempCrv, each)
             cmds.parent(each, tempCrv)
             cmds.setAttr(each+".visibility", 0)
 
-        listLocaA = [hadEnv.AUTORIGLISTHEADGUIDE[0],hadEnv.AUTORIGLISTHEADGUIDE[1]]
-        listLocaB = [hadEnv.AUTORIGLISTHEADGUIDE[1],hadEnv.AUTORIGLISTHEADGUIDE[2]]
+        listLocaA = [hadEnv.AUTO_RIG_LIST_HEAD_GUIDE[0],hadEnv.AUTO_RIG_LIST_HEAD_GUIDE[1]]
+        listLocaB = [hadEnv.AUTO_RIG_LIST_HEAD_GUIDE[1],hadEnv.AUTO_RIG_LIST_HEAD_GUIDE[2]]
 
-        if hadEnv.AUTORIGCHEST:
-            listLocaA.append(hadEnv.AUTORIGLISTCHESTGUIDE[4])
-            listLocaB.append(hadEnv.AUTORIGLISTHEADGUIDE[0])
+        if hadEnv.AUTO_RIG_CHEST:
+            listLocaA.append(hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[4])
+            listLocaB.append(hadEnv.AUTO_RIG_LIST_HEAD_GUIDE[0])
         
         for parentLocaA, parentLocaB in zip(listLocaA, listLocaB):
 
@@ -362,231 +362,231 @@ class AutoRigCreateGuide(object):
 
             cmds.parent(masterLocaB, masterLocaA)
         
-            hadEnv.AUTORIGLISTHEADGUIDELINE.append(hadLib.createLineDisplay(locaA, locaB))
+            hadEnv.AUTO_RIG_LIST_HEAD_GUIDELINE.append(hadLib.createLineDisplay(locaA, locaB))
 
-            cmds.parent(hadEnv.AUTORIGLISTHEADGUIDELINE[-1], hadEnv.GUIDELINEGRP)
+            cmds.parent(hadEnv.AUTO_RIG_LIST_HEAD_GUIDELINE[-1], hadEnv.GUIDE_LINE_GRP)
 
 class AutoRigGenerateRig(object):
 
     def autoRigCreateJoints(self):
 
-        if hadEnv.AUTORIGMIRROR:
+        if hadEnv.AUTO_RIG_MIRROR:
             side=0
         else:
             side=17
 
-        if hadEnv.AUTORIGLISTLEGGUIDE:
+        if hadEnv.AUTO_RIG_LIST_LEG_GUIDE:
 
-            for each in hadEnv.AUTORIGLISTLEGGUIDE:
+            for each in hadEnv.AUTO_RIG_LIST_LEG_GUIDE:
                 locaShape = cmds.listRelatives(each, children=True, shapes=True)[0]
-                hadEnv.AUTORIGLISTLEGJOINT.append(cmds.createNode('joint', name="Bs_"+ locaShape + hadEnv.DICTMIRROR[side], skipSelect=True))
-                cmds.matchTransform(hadEnv.AUTORIGLISTLEGJOINT[-1], each, rotation=False, scale=False)
+                hadEnv.AUTO_RIG_LIST_LEG_JOINT.append(cmds.createNode('joint', name="Bs_"+ locaShape + hadEnv.DICT_MIRROR[side], skipSelect=True))
+                cmds.matchTransform(hadEnv.AUTO_RIG_LIST_LEG_JOINT[-1], each, rotation=False, scale=False)
 
-            x, y, z = hadLib.getTranslate(hadEnv.AUTORIGLISTLEGJOINT[1])
+            x, y, z = hadLib.getTranslate(hadEnv.AUTO_RIG_LIST_LEG_JOINT[1])
 
-            hadEnv.AUTORIGLISTLEGJOINT.append(cmds.createNode('joint', name="Bdrv_Toe" + hadEnv.DICTMIRROR[side], skipSelect=True))
-            cmds.setAttr(hadEnv.AUTORIGLISTLEGJOINT[-1] + ".translateX", x)
-            cmds.setAttr(hadEnv.AUTORIGLISTLEGJOINT[-1] + ".translateY",0)
-            cmds.setAttr(hadEnv.AUTORIGLISTLEGJOINT[-1] + ".translateZ", z)
+            hadEnv.AUTO_RIG_LIST_LEG_JOINT.append(cmds.createNode('joint', name="Bdrv_Toe" + hadEnv.DICT_MIRROR[side], skipSelect=True))
+            cmds.setAttr(hadEnv.AUTO_RIG_LIST_LEG_JOINT[-1] + ".translateX", x)
+            cmds.setAttr(hadEnv.AUTO_RIG_LIST_LEG_JOINT[-1] + ".translateY",0)
+            cmds.setAttr(hadEnv.AUTO_RIG_LIST_LEG_JOINT[-1] + ".translateZ", z)
 
-            hadEnv.AUTORIGLISTLEGJOINT.append(cmds.duplicate(hadEnv.AUTORIGLISTLEGJOINT[4], name= 'Bdrv_BallMaster' + hadEnv.DICTMIRROR[side], parentOnly=True)[0])
-            hadEnv.AUTORIGLISTLEGJOINT.append(cmds.duplicate(hadEnv.AUTORIGLISTLEGJOINT[4], name= 'Bdrv_BallToe' + hadEnv.DICTMIRROR[side], parentOnly=True)[0])
-            hadEnv.AUTORIGLISTLEGJOINT.append(cmds.duplicate(hadEnv.AUTORIGLISTLEGJOINT[1], name= 'Bdrv_BallToeEnd' + hadEnv.DICTMIRROR[side], parentOnly=True)[0])
-            hadEnv.AUTORIGLISTLEGJOINT.append(cmds.duplicate(hadEnv.AUTORIGLISTLEGJOINT[4], name= 'Bdrv_BallAnkle' + hadEnv.DICTMIRROR[side], parentOnly=True)[0])
-            hadEnv.AUTORIGLISTLEGJOINT.append(cmds.duplicate(hadEnv.AUTORIGLISTLEGJOINT[5], name= 'Bdrv_BallAnkleEnd' + hadEnv.DICTMIRROR[side], parentOnly=True)[0])
+            hadEnv.AUTO_RIG_LIST_LEG_JOINT.append(cmds.duplicate(hadEnv.AUTO_RIG_LIST_LEG_JOINT[4], name= 'Bdrv_BallMaster' + hadEnv.DICT_MIRROR[side], parentOnly=True)[0])
+            hadEnv.AUTO_RIG_LIST_LEG_JOINT.append(cmds.duplicate(hadEnv.AUTO_RIG_LIST_LEG_JOINT[4], name= 'Bdrv_BallToe' + hadEnv.DICT_MIRROR[side], parentOnly=True)[0])
+            hadEnv.AUTO_RIG_LIST_LEG_JOINT.append(cmds.duplicate(hadEnv.AUTO_RIG_LIST_LEG_JOINT[1], name= 'Bdrv_BallToeEnd' + hadEnv.DICT_MIRROR[side], parentOnly=True)[0])
+            hadEnv.AUTO_RIG_LIST_LEG_JOINT.append(cmds.duplicate(hadEnv.AUTO_RIG_LIST_LEG_JOINT[4], name= 'Bdrv_BallAnkle' + hadEnv.DICT_MIRROR[side], parentOnly=True)[0])
+            hadEnv.AUTO_RIG_LIST_LEG_JOINT.append(cmds.duplicate(hadEnv.AUTO_RIG_LIST_LEG_JOINT[5], name= 'Bdrv_BallAnkleEnd' + hadEnv.DICT_MIRROR[side], parentOnly=True)[0])
 
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[1], hadEnv.AUTORIGLISTLEGJOINT[4])
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[4], hadEnv.AUTORIGLISTLEGJOINT[5])
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[5], hadEnv.AUTORIGLISTLEGJOINT[6])
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[6], hadEnv.AUTORIGLISTLEGJOINT[7])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[1], hadEnv.AUTO_RIG_LIST_LEG_JOINT[4])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[4], hadEnv.AUTO_RIG_LIST_LEG_JOINT[5])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[5], hadEnv.AUTO_RIG_LIST_LEG_JOINT[6])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[6], hadEnv.AUTO_RIG_LIST_LEG_JOINT[7])
 
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[3], hadEnv.AUTORIGLISTLEGJOINT[2])
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[0], hadEnv.AUTORIGLISTLEGJOINT[3])
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[8], hadEnv.AUTORIGLISTLEGJOINT[0])
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[9], hadEnv.AUTORIGLISTLEGJOINT[8])
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[10], hadEnv.AUTORIGLISTLEGJOINT[9])
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[11], hadEnv.AUTORIGLISTLEGJOINT[10])
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[12], hadEnv.AUTORIGLISTLEGJOINT[9])
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[13], hadEnv.AUTORIGLISTLEGJOINT[12])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[3], hadEnv.AUTO_RIG_LIST_LEG_JOINT[2])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[0], hadEnv.AUTO_RIG_LIST_LEG_JOINT[3])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[8], hadEnv.AUTO_RIG_LIST_LEG_JOINT[0])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[9], hadEnv.AUTO_RIG_LIST_LEG_JOINT[8])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[10], hadEnv.AUTO_RIG_LIST_LEG_JOINT[9])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[11], hadEnv.AUTO_RIG_LIST_LEG_JOINT[10])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[12], hadEnv.AUTO_RIG_LIST_LEG_JOINT[9])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[13], hadEnv.AUTO_RIG_LIST_LEG_JOINT[12])
 
-            cmds.delete(cmds.listRelatives(hadEnv.AUTORIGLISTLEGGUIDE[-1], parent=True)[0])
-            for each in hadEnv.AUTORIGLISTLEGGUIDELINE:
+            cmds.delete(cmds.listRelatives(hadEnv.AUTO_RIG_LIST_LEG_GUIDE[-1], parent=True)[0])
+            for each in hadEnv.AUTO_RIG_LIST_LEG_GUIDELINE:
                 cmds.delete(each)
-            hadEnv.AUTORIGLISTLEGGUIDE = []
-            hadEnv.AUTORIGLISTLEGGUIDELINE = []
+            hadEnv.AUTO_RIG_LIST_LEG_GUIDE = []
+            hadEnv.AUTO_RIG_LIST_LEG_GUIDELINE = []
 
-            cmds.select(hadEnv.AUTORIGLISTLEGJOINT[8])
+            cmds.select(hadEnv.AUTO_RIG_LIST_LEG_JOINT[8])
             cmds.select(hierarchy=True)
             cmds.joint(edit=True, zeroScaleOrient=True, orientJoint="xyz", secondaryAxisOrient="zdown")
 
-            cmds.select(hadEnv.AUTORIGLISTLEGJOINT[7])
+            cmds.select(hadEnv.AUTO_RIG_LIST_LEG_JOINT[7])
             cmds.select(hierarchy=True)
             cmds.joint(edit=True, zeroScaleOrient=True, orientJoint="xyz", secondaryAxisOrient="zdown")
 
-            TempEndJoint = [hadEnv.AUTORIGLISTLEGJOINT[1], hadEnv.AUTORIGLISTLEGJOINT[13], hadEnv.AUTORIGLISTLEGJOINT[11]]
+            TempEndJoint = [hadEnv.AUTO_RIG_LIST_LEG_JOINT[1], hadEnv.AUTO_RIG_LIST_LEG_JOINT[13], hadEnv.AUTO_RIG_LIST_LEG_JOINT[11]]
             for each in TempEndJoint:
                 for attr in [".jointOrientX", ".jointOrientY", ".jointOrientZ"]:
                     cmds.setAttr(each+attr, 0)
 
-            tempSeleA = cmds.listRelatives(hadEnv.AUTORIGLISTLEGJOINT[7], allDescendents=True)
-            tempSeleA.append(hadEnv.AUTORIGLISTLEGJOINT[7])
-            tempSeleB = cmds.listRelatives(hadEnv.AUTORIGLISTLEGJOINT[2], allDescendents=True)
-            tempSeleB.append(hadEnv.AUTORIGLISTLEGJOINT[2])
+            tempSeleA = cmds.listRelatives(hadEnv.AUTO_RIG_LIST_LEG_JOINT[7], allDescendents=True)
+            tempSeleA.append(hadEnv.AUTO_RIG_LIST_LEG_JOINT[7])
+            tempSeleB = cmds.listRelatives(hadEnv.AUTO_RIG_LIST_LEG_JOINT[2], allDescendents=True)
+            tempSeleB.append(hadEnv.AUTO_RIG_LIST_LEG_JOINT[2])
 
             tempSeleA.reverse()
             tempSeleB.reverse()
 
             tempSeleC = [tempSeleB[0],tempSeleB[1],tempSeleB[2],tempSeleB[3],tempSeleB[4],tempSeleB[7],tempSeleB[8],tempSeleB[5],tempSeleB[6]]
 
-            hadEnv.AUTORIGLISTLEGJOINT = []
+            hadEnv.AUTO_RIG_LIST_LEG_JOINT = []
             for each in tempSeleA:
-                hadEnv.AUTORIGLISTLEGJOINT.append(each)
+                hadEnv.AUTO_RIG_LIST_LEG_JOINT.append(each)
             for each in tempSeleC:
-                hadEnv.AUTORIGLISTLEGJOINT.append(each)
+                hadEnv.AUTO_RIG_LIST_LEG_JOINT.append(each)
 
-        if hadEnv.AUTORIGLISTARMGUIDE:
+        if hadEnv.AUTO_RIG_LIST_ARM_GUIDE:
 
-            for each in hadEnv.AUTORIGLISTARMGUIDE:
+            for each in hadEnv.AUTO_RIG_LIST_ARM_GUIDE:
                 locaShape = cmds.listRelatives(each, children=True, shapes=True)[0]
-                hadEnv.AUTORIGLISTARMJOINT.append(cmds.createNode('joint', name="Bs_"+ locaShape + hadEnv.DICTMIRROR[side], skipSelect=True))
-                cmds.matchTransform(hadEnv.AUTORIGLISTARMJOINT[-1], each, rotation=False, scale=False) 
+                hadEnv.AUTO_RIG_LIST_ARM_JOINT.append(cmds.createNode('joint', name="Bs_"+ locaShape + hadEnv.DICT_MIRROR[side], skipSelect=True))
+                cmds.matchTransform(hadEnv.AUTO_RIG_LIST_ARM_JOINT[-1], each, rotation=False, scale=False) 
 
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[1], hadEnv.AUTORIGLISTARMJOINT[0])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[2], hadEnv.AUTORIGLISTARMJOINT[1])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[3], hadEnv.AUTORIGLISTARMJOINT[2])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[4], hadEnv.AUTORIGLISTARMJOINT[3])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[5], hadEnv.AUTORIGLISTARMJOINT[4])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[6], hadEnv.AUTORIGLISTARMJOINT[5])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[7], hadEnv.AUTORIGLISTARMJOINT[3])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[8], hadEnv.AUTORIGLISTARMJOINT[7])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[9], hadEnv.AUTORIGLISTARMJOINT[8])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[10], hadEnv.AUTORIGLISTARMJOINT[9])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[11], hadEnv.AUTORIGLISTARMJOINT[7])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[12], hadEnv.AUTORIGLISTARMJOINT[11])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[13], hadEnv.AUTORIGLISTARMJOINT[12])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[14], hadEnv.AUTORIGLISTARMJOINT[7])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[15], hadEnv.AUTORIGLISTARMJOINT[14])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[16], hadEnv.AUTORIGLISTARMJOINT[15])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[17], hadEnv.AUTORIGLISTARMJOINT[7])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[18], hadEnv.AUTORIGLISTARMJOINT[17])
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[19], hadEnv.AUTORIGLISTARMJOINT[18])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[1], hadEnv.AUTO_RIG_LIST_ARM_JOINT[0])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[2], hadEnv.AUTO_RIG_LIST_ARM_JOINT[1])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[3], hadEnv.AUTO_RIG_LIST_ARM_JOINT[2])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[4], hadEnv.AUTO_RIG_LIST_ARM_JOINT[3])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[5], hadEnv.AUTO_RIG_LIST_ARM_JOINT[4])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[6], hadEnv.AUTO_RIG_LIST_ARM_JOINT[5])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[7], hadEnv.AUTO_RIG_LIST_ARM_JOINT[3])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[8], hadEnv.AUTO_RIG_LIST_ARM_JOINT[7])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[9], hadEnv.AUTO_RIG_LIST_ARM_JOINT[8])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[10], hadEnv.AUTO_RIG_LIST_ARM_JOINT[9])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[11], hadEnv.AUTO_RIG_LIST_ARM_JOINT[7])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[12], hadEnv.AUTO_RIG_LIST_ARM_JOINT[11])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[13], hadEnv.AUTO_RIG_LIST_ARM_JOINT[12])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[14], hadEnv.AUTO_RIG_LIST_ARM_JOINT[7])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[15], hadEnv.AUTO_RIG_LIST_ARM_JOINT[14])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[16], hadEnv.AUTO_RIG_LIST_ARM_JOINT[15])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[17], hadEnv.AUTO_RIG_LIST_ARM_JOINT[7])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[18], hadEnv.AUTO_RIG_LIST_ARM_JOINT[17])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[19], hadEnv.AUTO_RIG_LIST_ARM_JOINT[18])
 
-            cmds.delete(cmds.listRelatives(hadEnv.AUTORIGLISTARMGUIDE[0], parent=True)[0])
-            for each in hadEnv.AUTORIGLISTARMGUIDELINE:
+            cmds.delete(cmds.listRelatives(hadEnv.AUTO_RIG_LIST_ARM_GUIDE[0], parent=True)[0])
+            for each in hadEnv.AUTO_RIG_LIST_ARM_GUIDELINE:
                 cmds.delete(each)
-            hadEnv.AUTORIGLISTARMGUIDE = []
-            hadEnv.AUTORIGLISTARMGUIDELINE = [] 
+            hadEnv.AUTO_RIG_LIST_ARM_GUIDE = []
+            hadEnv.AUTO_RIG_LIST_ARM_GUIDELINE = [] 
 
-            cmds.select(hadEnv.AUTORIGLISTARMJOINT[0])
+            cmds.select(hadEnv.AUTO_RIG_LIST_ARM_JOINT[0])
             cmds.select(hierarchy=True)
             cmds.joint(edit=True, zeroScaleOrient=True, orientJoint="xyz", secondaryAxisOrient="zdown")
 
-            cmds.select(hadEnv.AUTORIGLISTARMJOINT[4])
+            cmds.select(hadEnv.AUTO_RIG_LIST_ARM_JOINT[4])
             cmds.select(hierarchy=True)
             cmds.joint(edit=True, zeroScaleOrient=True, orientJoint="xzy", secondaryAxisOrient="yup")
 
-            cmds.parent( hadEnv.AUTORIGLISTARMJOINT[5], world=True )       
-            TempX = cmds.getAttr(hadEnv.AUTORIGLISTARMJOINT[4] + ".jointOrientX")
-            TempY = cmds.getAttr(hadEnv.AUTORIGLISTARMJOINT[4] + ".jointOrientY")
+            cmds.parent( hadEnv.AUTO_RIG_LIST_ARM_JOINT[5], world=True )       
+            TempX = cmds.getAttr(hadEnv.AUTO_RIG_LIST_ARM_JOINT[4] + ".jointOrientX")
+            TempY = cmds.getAttr(hadEnv.AUTO_RIG_LIST_ARM_JOINT[4] + ".jointOrientY")
             TempX = TempX - TempY         
-            cmds.setAttr(hadEnv.AUTORIGLISTARMJOINT[4] + ".jointOrientX", TempX)
-            cmds.setAttr(hadEnv.AUTORIGLISTARMJOINT[4] + ".jointOrientZ", 0)           
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[5], hadEnv.AUTORIGLISTARMJOINT[4])
+            cmds.setAttr(hadEnv.AUTO_RIG_LIST_ARM_JOINT[4] + ".jointOrientX", TempX)
+            cmds.setAttr(hadEnv.AUTO_RIG_LIST_ARM_JOINT[4] + ".jointOrientZ", 0)           
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[5], hadEnv.AUTO_RIG_LIST_ARM_JOINT[4])
 
-            cmds.parent( hadEnv.AUTORIGLISTARMJOINT[4], world=True )
-            cmds.parent( hadEnv.AUTORIGLISTARMJOINT[7], world=True )
+            cmds.parent( hadEnv.AUTO_RIG_LIST_ARM_JOINT[4], world=True )
+            cmds.parent( hadEnv.AUTO_RIG_LIST_ARM_JOINT[7], world=True )
 
-            TempEndJoint = [hadEnv.AUTORIGLISTARMJOINT[3], hadEnv.AUTORIGLISTARMJOINT[19], hadEnv.AUTORIGLISTARMJOINT[16], hadEnv.AUTORIGLISTARMJOINT[13],hadEnv.AUTORIGLISTARMJOINT[10], hadEnv.AUTORIGLISTARMJOINT[6]]
+            TempEndJoint = [hadEnv.AUTO_RIG_LIST_ARM_JOINT[3], hadEnv.AUTO_RIG_LIST_ARM_JOINT[19], hadEnv.AUTO_RIG_LIST_ARM_JOINT[16], hadEnv.AUTO_RIG_LIST_ARM_JOINT[13],hadEnv.AUTO_RIG_LIST_ARM_JOINT[10], hadEnv.AUTO_RIG_LIST_ARM_JOINT[6]]
             for each in TempEndJoint:
                 for attr in [".jointOrientX", ".jointOrientY", ".jointOrientZ"]:
                     cmds.setAttr(each+attr, 0)
 
-            cmds.parent( hadEnv.AUTORIGLISTARMJOINT[4], hadEnv.AUTORIGLISTARMJOINT[3] )
-            cmds.parent( hadEnv.AUTORIGLISTARMJOINT[7], hadEnv.AUTORIGLISTARMJOINT[3] )
+            cmds.parent( hadEnv.AUTO_RIG_LIST_ARM_JOINT[4], hadEnv.AUTO_RIG_LIST_ARM_JOINT[3] )
+            cmds.parent( hadEnv.AUTO_RIG_LIST_ARM_JOINT[7], hadEnv.AUTO_RIG_LIST_ARM_JOINT[3] )
 
-        if hadEnv.AUTORIGLISTHEADGUIDE:
+        if hadEnv.AUTO_RIG_LIST_HEAD_GUIDE:
 
-            for each in hadEnv.AUTORIGLISTHEADGUIDE:
+            for each in hadEnv.AUTO_RIG_LIST_HEAD_GUIDE:
                 locaShape = cmds.listRelatives(each, children=True, shapes=True)[0]
-                hadEnv.AUTORIGLISTHEADJOINT.append(cmds.createNode('joint', name="Bs_"+ locaShape, skipSelect=True))
-                cmds.matchTransform(hadEnv.AUTORIGLISTHEADJOINT[-1], each, rotation=False, scale=False)  
+                hadEnv.AUTO_RIG_LIST_HEAD_JOINT.append(cmds.createNode('joint', name="Bs_"+ locaShape, skipSelect=True))
+                cmds.matchTransform(hadEnv.AUTO_RIG_LIST_HEAD_JOINT[-1], each, rotation=False, scale=False)  
 
-            cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[2], hadEnv.AUTORIGLISTHEADJOINT[1])
-            cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[1], hadEnv.AUTORIGLISTHEADJOINT[0])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_HEAD_JOINT[2], hadEnv.AUTO_RIG_LIST_HEAD_JOINT[1])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_HEAD_JOINT[1], hadEnv.AUTO_RIG_LIST_HEAD_JOINT[0])
 
-            cmds.delete(cmds.listRelatives(hadEnv.AUTORIGLISTHEADGUIDE[0], parent=True)[0])
-            for each in hadEnv.AUTORIGLISTHEADGUIDELINE:
+            cmds.delete(cmds.listRelatives(hadEnv.AUTO_RIG_LIST_HEAD_GUIDE[0], parent=True)[0])
+            for each in hadEnv.AUTO_RIG_LIST_HEAD_GUIDELINE:
                 cmds.delete(each)
-            hadEnv.AUTORIGLISTHEADGUIDE = []
-            hadEnv.AUTORIGLISTHEADGUIDELINE = []
+            hadEnv.AUTO_RIG_LIST_HEAD_GUIDE = []
+            hadEnv.AUTO_RIG_LIST_HEAD_GUIDELINE = []
 
-            cmds.select(hadEnv.AUTORIGLISTHEADJOINT[0])
+            cmds.select(hadEnv.AUTO_RIG_LIST_HEAD_JOINT[0])
             cmds.select(hierarchy=True)
             cmds.joint(edit=True, zeroScaleOrient=True, orientJoint="xyz", secondaryAxisOrient="zdown")
 
-            hadLib.setRotateOrient(hadEnv.AUTORIGLISTHEADJOINT[-1],0,0,0)
+            hadLib.setRotateOrient(hadEnv.AUTO_RIG_LIST_HEAD_JOINT[-1],0,0,0)
 
 
-        if hadEnv.AUTORIGLISTCHESTGUIDE:
+        if hadEnv.AUTO_RIG_LIST_CHEST_GUIDE:
             
-            for each in hadEnv.AUTORIGLISTCHESTGUIDE:
+            for each in hadEnv.AUTO_RIG_LIST_CHEST_GUIDE:
                 locaShape = cmds.listRelatives(each, children=True, shapes=True)[0]
-                hadEnv.AUTORIGLISTCHESTJOINT.append(cmds.createNode('joint', name="Bs_"+ locaShape, skipSelect=True))
-                cmds.matchTransform(hadEnv.AUTORIGLISTCHESTJOINT[-1], each, rotation=False, scale=False)
+                hadEnv.AUTO_RIG_LIST_CHEST_JOINT.append(cmds.createNode('joint', name="Bs_"+ locaShape, skipSelect=True))
+                cmds.matchTransform(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[-1], each, rotation=False, scale=False)
 
-            hadEnv.AUTORIGLISTCHESTJOINT.append(cmds.createNode('joint', name="SpineB", skipSelect=True))
-            cmds.delete(cmds.parentConstraint(hadEnv.AUTORIGLISTCHESTJOINT[2], hadEnv.AUTORIGLISTCHESTJOINT[3], hadEnv.AUTORIGLISTCHESTJOINT[-1]))
-            hadEnv.AUTORIGLISTCHESTJOINT.append(cmds.createNode('joint', name="SpineD", skipSelect=True))
-            cmds.delete(cmds.parentConstraint(hadEnv.AUTORIGLISTCHESTJOINT[3], hadEnv.AUTORIGLISTCHESTJOINT[4], hadEnv.AUTORIGLISTCHESTJOINT[-1]))   
+            hadEnv.AUTO_RIG_LIST_CHEST_JOINT.append(cmds.createNode('joint', name="SpineB", skipSelect=True))
+            cmds.delete(cmds.parentConstraint(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[2], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[3], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[-1]))
+            hadEnv.AUTO_RIG_LIST_CHEST_JOINT.append(cmds.createNode('joint', name="SpineD", skipSelect=True))
+            cmds.delete(cmds.parentConstraint(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[3], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[4], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[-1]))   
 
-            cmds.parent(hadEnv.AUTORIGLISTCHESTJOINT[4], hadEnv.AUTORIGLISTCHESTJOINT[6])
-            cmds.parent(hadEnv.AUTORIGLISTCHESTJOINT[6], hadEnv.AUTORIGLISTCHESTJOINT[3])
-            cmds.parent(hadEnv.AUTORIGLISTCHESTJOINT[3], hadEnv.AUTORIGLISTCHESTJOINT[5])
-            cmds.parent(hadEnv.AUTORIGLISTCHESTJOINT[5], hadEnv.AUTORIGLISTCHESTJOINT[2])
-            cmds.parent(hadEnv.AUTORIGLISTCHESTJOINT[2], hadEnv.AUTORIGLISTCHESTJOINT[0])
-            cmds.parent(hadEnv.AUTORIGLISTCHESTJOINT[1], hadEnv.AUTORIGLISTCHESTJOINT[0])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[4], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[6])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[6], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[3])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[3], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[5])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[5], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[2])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[2], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[0])
+            cmds.parent(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[1], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[0])
             
 
-            cmds.delete(cmds.listRelatives(hadEnv.AUTORIGLISTCHESTGUIDE[0], parent=True)[0])
-            for each in hadEnv.AUTORIGLISTCHESTGUIDELINE:
+            cmds.delete(cmds.listRelatives(hadEnv.AUTO_RIG_LIST_CHEST_GUIDE[0], parent=True)[0])
+            for each in hadEnv.AUTO_RIG_LIST_CHEST_GUIDELINE:
                 cmds.delete(each)
-            hadEnv.AUTORIGLISTCHESTGUIDE = []
-            hadEnv.AUTORIGLISTCHESTGUIDELINE = []
+            hadEnv.AUTO_RIG_LIST_CHEST_GUIDE = []
+            hadEnv.AUTO_RIG_LIST_CHEST_GUIDELINE = []
 
-            cmds.select(hadEnv.AUTORIGLISTCHESTJOINT[2])
+            cmds.select(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[2])
             cmds.select(hierarchy=True)
             cmds.joint(edit=True, zeroScaleOrient=True, orientJoint="xyz", secondaryAxisOrient="zdown")
 
-            hadLib.setRotateOrient(hadEnv.AUTORIGLISTCHESTJOINT[4],0,0,0)        
+            hadLib.setRotateOrient(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[4],0,0,0)        
 
-        cmds.delete(hadEnv.GUIDELINEGRP)
+        cmds.delete(hadEnv.GUIDE_LINE_GRP)
 
 
     def autoRigCheckMirror(self):
 
-        if hadEnv.AUTORIGLISTARMJOINT:
-            tempSele = cmds.mirrorJoint(hadEnv.AUTORIGLISTARMJOINT[0],mirrorBehavior=True,mirrorYZ=True, searchReplace= (hadEnv.DICTMIRROR[0], hadEnv.DICTMIRROR[6]))
+        if hadEnv.AUTO_RIG_LIST_ARM_JOINT:
+            tempSele = cmds.mirrorJoint(hadEnv.AUTO_RIG_LIST_ARM_JOINT[0],mirrorBehavior=True,mirrorYZ=True, searchReplace= (hadEnv.DICT_MIRROR[0], hadEnv.DICT_MIRROR[6]))
             for each in tempSele:
-                hadEnv.AUTORIGLISTARMJOINT.append(each)
-        if hadEnv.AUTORIGLISTLEGJOINT:
-            tempSele = cmds.mirrorJoint(hadEnv.AUTORIGLISTLEGJOINT[0],mirrorBehavior=True,mirrorYZ=True, searchReplace= (hadEnv.DICTMIRROR[0], hadEnv.DICTMIRROR[6]))
+                hadEnv.AUTO_RIG_LIST_ARM_JOINT.append(each)
+        if hadEnv.AUTO_RIG_LIST_LEG_JOINT:
+            tempSele = cmds.mirrorJoint(hadEnv.AUTO_RIG_LIST_LEG_JOINT[0],mirrorBehavior=True,mirrorYZ=True, searchReplace= (hadEnv.DICT_MIRROR[0], hadEnv.DICT_MIRROR[6]))
             for each in tempSele:
-                hadEnv.AUTORIGLISTLEGJOINT.append(each)
-            tempSele = cmds.mirrorJoint(hadEnv.AUTORIGLISTLEGJOINT[5],mirrorBehavior=True,mirrorYZ=True, searchReplace= (hadEnv.DICTMIRROR[0], hadEnv.DICTMIRROR[6]))
+                hadEnv.AUTO_RIG_LIST_LEG_JOINT.append(each)
+            tempSele = cmds.mirrorJoint(hadEnv.AUTO_RIG_LIST_LEG_JOINT[5],mirrorBehavior=True,mirrorYZ=True, searchReplace= (hadEnv.DICT_MIRROR[0], hadEnv.DICT_MIRROR[6]))
             for each in tempSele:
-                hadEnv.AUTORIGLISTLEGJOINT.append(each)
-            cmds.select(hadEnv.AUTORIGLISTLEGJOINT[22])
+                hadEnv.AUTO_RIG_LIST_LEG_JOINT.append(each)
+            cmds.select(hadEnv.AUTO_RIG_LIST_LEG_JOINT[22])
             cmds.select(hierarchy=True)
             cmds.joint(edit=True, zeroScaleOrient=True, orientJoint="xyz", secondaryAxisOrient="zdown")
     
     def autoRigCreateRigWithOutSide(self):
 
-        def ctrlGeneral(self):
+        def CTRL_GENERAL(self):
             
-            self.ctrlGeneral = cmds.circle(normal=(0, 1, 0), center=(0, 0, 0), radius=7, name= "Ctrl_General", constructionHistory=False)[0]
+            self.CTRL_GENERAL = cmds.circle(normal=(0, 1, 0), center=(0, 0, 0), radius=7, name= "Ctrl_General", constructionHistory=False)[0]
             
-            cmds.setAttr(self.ctrlGeneral + ".overrideEnabled", 1)
-            cmds.setAttr(self.ctrlGeneral + ".overrideColor", 9)
+            cmds.setAttr(self.CTRL_GENERAL + ".overrideEnabled", 1)
+            cmds.setAttr(self.CTRL_GENERAL + ".overrideColor", 9)
 
             cmds.group( em=True, name="AutoRig_By_Mathieu" )
             cmds.group( em=True, name="GlobalMove" )
@@ -612,34 +612,34 @@ class AutoRigGenerateRig(object):
             cmds.parent("ControlObjects", "GlobalMove")
             cmds.parent("ExtraNodes", "AutoRig_By_Mathieu")
             
-            cmds.parent(self.ctrlGeneral, "AutoRig_By_Mathieu")
+            cmds.parent(self.CTRL_GENERAL, "AutoRig_By_Mathieu")
             
-            cmds.connectAttr(self.ctrlGeneral + ".translate", "GlobalMove.translate")
-            cmds.connectAttr(self.ctrlGeneral + ".rotate", "GlobalMove.rotate")
+            cmds.connectAttr(self.CTRL_GENERAL + ".translate", "GlobalMove.translate")
+            cmds.connectAttr(self.CTRL_GENERAL + ".rotate", "GlobalMove.rotate")
             
             cmds.connectAttr("GlobalMove.scaleY", "GlobalMove.scaleX")
             cmds.connectAttr("GlobalMove.scaleY", "GlobalMove.scaleZ")
             
-            cmds.connectAttr(self.ctrlGeneral + ".scaleY", self.ctrlGeneral +".scaleZ")
-            cmds.connectAttr(self.ctrlGeneral + ".scaleY", self.ctrlGeneral +".scaleX")
+            cmds.connectAttr(self.CTRL_GENERAL + ".scaleY", self.CTRL_GENERAL +".scaleZ")
+            cmds.connectAttr(self.CTRL_GENERAL + ".scaleY", self.CTRL_GENERAL +".scaleX")
             
-            cmds.connectAttr(self.ctrlGeneral + ".scaleX", "GlobalMove.scaleY")
+            cmds.connectAttr(self.CTRL_GENERAL + ".scaleX", "GlobalMove.scaleY")
             
-            cmds.setAttr( self.ctrlGeneral +'.scaleX', lock=True , keyable = False , channelBox=False )
-            cmds.setAttr( self.ctrlGeneral +'.scaleZ', lock=True , keyable = False , channelBox=False )  
+            cmds.setAttr( self.CTRL_GENERAL +'.scaleX', lock=True , keyable = False , channelBox=False )
+            cmds.setAttr( self.CTRL_GENERAL +'.scaleZ', lock=True , keyable = False , channelBox=False )  
 
-            hadEnv.CTRLGENERAL = self.ctrlGeneral
+            hadEnv.CTRL_GENERAL = self.CTRL_GENERAL
 
-        ctrlGeneral(self)
+        CTRL_GENERAL(self)
         
         def rigHead(self):
 
             #Neck and Head controller
 
-            hadEnv.AUTORIGLISTHEADJOINT[0]
+            hadEnv.AUTO_RIG_LIST_HEAD_JOINT[0]
         
-            self.ctrlNeck = cmds.circle(normal=(1, 0, 0), center=(0, 0, 0), radius=1.4, name= "Ctrl_" + hadEnv.AUTORIGLISTHEADJOINT[0] , constructionHistory=False)[0]        
-            ctrlHead = cmds.curve(name= "Ctrl_" + hadEnv.AUTORIGLISTHEADJOINT[1], d=3, p=[(0, -1, 0), (-0.5, -0.9, 0), (-1.3, -0.7, 0), (-2.5, 1.5, 0), (-1.7, 3.3, 0), (0, 3.3, 0), (1.7, 3.3, 0), (2.5, 1.5, 0), (1.3, -0.7, 0), (0.5, -0.9, 0), (0, -1, 0)] )
+            self.ctrlNeck = cmds.circle(normal=(1, 0, 0), center=(0, 0, 0), radius=1.4, name= "Ctrl_" + hadEnv.AUTO_RIG_LIST_HEAD_JOINT[0] , constructionHistory=False)[0]        
+            ctrlHead = cmds.curve(name= "Ctrl_" + hadEnv.AUTO_RIG_LIST_HEAD_JOINT[1], d=3, p=[(0, -1, 0), (-0.5, -0.9, 0), (-1.3, -0.7, 0), (-2.5, 1.5, 0), (-1.7, 3.3, 0), (0, 3.3, 0), (1.7, 3.3, 0), (2.5, 1.5, 0), (1.3, -0.7, 0), (0.5, -0.9, 0), (0, -1, 0)] )
 
             hadLib.setRotate(ctrlHead, 0, 90, -90)
             hadLib.setScale(ctrlHead, 0.7, 0.7, 0.7)
@@ -649,8 +649,8 @@ class AutoRigGenerateRig(object):
 
             self.grpCtrlNeck = cmds.group( self.ctrlNeck, n= "Grp_"+self.ctrlNeck ) 
 
-            cmds.matchTransform(self.grpCtrlNeck, hadEnv.AUTORIGLISTHEADJOINT[0])
-            cmds.matchTransform(grpCtrlHead, hadEnv.AUTORIGLISTHEADJOINT[1]) 
+            cmds.matchTransform(self.grpCtrlNeck, hadEnv.AUTO_RIG_LIST_HEAD_JOINT[0])
+            cmds.matchTransform(grpCtrlHead, hadEnv.AUTO_RIG_LIST_HEAD_JOINT[1]) 
             
             cmds.parent(grpCtrlHead, self.ctrlNeck)
             
@@ -659,44 +659,44 @@ class AutoRigGenerateRig(object):
             for each in range:
                 hadLib.freezeTranslate(each)
                 hadLib.freezeScale(each)
-                cmds.parentConstraint(each, hadEnv.AUTORIGLISTHEADJOINT[x])
+                cmds.parentConstraint(each, hadEnv.AUTO_RIG_LIST_HEAD_JOINT[x])
                 x = 1 
                 cmds.setAttr(each + ".overrideEnabled", 1)
                 cmds.setAttr(each + ".overrideColor", 17)
 
             #clean 
 
-            cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[0], 'Joints')
+            cmds.parent(hadEnv.AUTO_RIG_LIST_HEAD_JOINT[0], 'Joints')
             cmds.parent(self.grpCtrlNeck, 'ControlObjects')
 
         def rigChest(self):
 
             #Create Root Ctrl
         
-            ctrlRoot = cmds.curve(n= "Ctrl_" + hadEnv.AUTORIGLISTCHESTJOINT[0], d=1, p=[(2, 1, 2),(2,1,-2) ,(2, -1, -2) ,(2, -1, 2) ,(-2, -1, 2) ,(-2, 1, 2) ,(2, 1, 2) ,(2, -1, 2) ,(-2, -1, 2) ,(-2, -1, -2) ,(-2, 1, -2) ,(2, 1, -2) ,(2, -1, -2) ,(-2, -1, -2) ,(-2, 1, -2) ,(-2, 1, 2)], k = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
+            ctrlRoot = cmds.curve(n= "Ctrl_" + hadEnv.AUTO_RIG_LIST_CHEST_JOINT[0], d=1, p=[(2, 1, 2),(2,1,-2) ,(2, -1, -2) ,(2, -1, 2) ,(-2, -1, 2) ,(-2, 1, 2) ,(2, 1, 2) ,(2, -1, 2) ,(-2, -1, 2) ,(-2, -1, -2) ,(-2, 1, -2) ,(2, 1, -2) ,(2, -1, -2) ,(-2, -1, -2) ,(-2, 1, -2) ,(-2, 1, 2)], k = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
             grpCtrlRoot = cmds.group( em=True, name='Grp*'+ ctrlRoot )
             cmds.parent(ctrlRoot, grpCtrlRoot)
-            cmds.matchTransform(grpCtrlRoot, hadEnv.AUTORIGLISTCHESTJOINT[0])
+            cmds.matchTransform(grpCtrlRoot, hadEnv.AUTO_RIG_LIST_CHEST_JOINT[0])
             hadLib.freezeScale(ctrlRoot)
             cmds.setAttr(ctrlRoot + ".overrideEnabled", 1)
             cmds.setAttr(ctrlRoot + ".overrideColor", 17)
 
             #Create Spine IK
                
-            ikSpine = cmds.ikHandle( name = "Ik_Spine_IK", startJoint= hadEnv.AUTORIGLISTCHESTJOINT[0], endEffector= hadEnv.AUTORIGLISTCHESTJOINT[4] , solver='ikSplineSolver',parentCurve=False,simplifyCurve=False, createCurve= True)[0]
+            ikSpine = cmds.ikHandle( name = "Ik_Spine_IK", startJoint= hadEnv.AUTO_RIG_LIST_CHEST_JOINT[0], endEffector= hadEnv.AUTO_RIG_LIST_CHEST_JOINT[4] , solver='ikSplineSolver',parentCurve=False,simplifyCurve=False, createCurve= True)[0]
             crvSpine = cmds.rename('curve1', 'Crv_Spine_IK')
             
             jointSpineIklist = []
-            jointSpineIklist.append(cmds.duplicate(hadEnv.AUTORIGLISTCHESTJOINT[0], parentOnly=True, name= "Spine_Start_IK")[0])
+            jointSpineIklist.append(cmds.duplicate(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[0], parentOnly=True, name= "Spine_Start_IK")[0])
             hadLib.setRotateOrient(jointSpineIklist[-1], -90, 0, 90)
-            jointSpineIklist.append(cmds.duplicate(hadEnv.AUTORIGLISTCHESTJOINT[3], parentOnly=True, name= "Spine_Mid_IK")[0])
+            jointSpineIklist.append(cmds.duplicate(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[3], parentOnly=True, name= "Spine_Mid_IK")[0])
             cmds.parent(jointSpineIklist[-1], world=True)
-            jointSpineIklist.append(cmds.duplicate(hadEnv.AUTORIGLISTCHESTJOINT[4], parentOnly=True, name= "Spine_End_IK")[0])
+            jointSpineIklist.append(cmds.duplicate(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[4], parentOnly=True, name= "Spine_End_IK")[0])
             cmds.parent(jointSpineIklist[-1], world=True)
             
             cmds.skinCluster(jointSpineIklist[0], jointSpineIklist[1], jointSpineIklist[2], crvSpine, tsb=True)
 
-            hadEnv.JOINTIKCHEST = jointSpineIklist
+            hadEnv.JOINT_IK_CHEST = jointSpineIklist
 
             #Create Spine Ctrl IK
 
@@ -713,7 +713,7 @@ class AutoRigGenerateRig(object):
 
             cmds.connectAttr(ctrlSpineIK[-1]+".rotateX", ikSpine+".twist")
 
-            jointSpineFKlist = [hadEnv.AUTORIGLISTCHESTJOINT[2], hadEnv.AUTORIGLISTCHESTJOINT[5], hadEnv.AUTORIGLISTCHESTJOINT[3], hadEnv.AUTORIGLISTCHESTJOINT[6], hadEnv.AUTORIGLISTCHESTJOINT[4]]
+            jointSpineFKlist = [hadEnv.AUTO_RIG_LIST_CHEST_JOINT[2], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[5], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[3], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[6], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[4]]
 
             ctrlSpineFK = []
             grpCtrlSpineFK = []
@@ -750,13 +750,13 @@ class AutoRigGenerateRig(object):
             cmds.setAttr(grpCtrlHip+'.translateX', 3.2)
             cmds.parent(grpCtrlHip, ctrlRoot)
             cmds.setAttr(grpCtrlHip+'.rotateY', 90) 
-            cmds.orientConstraint( ctrlHip, hadEnv.AUTORIGLISTCHESTJOINT[1] )
+            cmds.orientConstraint( ctrlHip, hadEnv.AUTO_RIG_LIST_CHEST_JOINT[1] )
             cmds.setAttr(ctrlHip + ".overrideEnabled", 1)
             cmds.setAttr(ctrlHip + ".overrideColor", 22)
 
             #Clean
 
-            cmds.parent(hadEnv.AUTORIGLISTCHESTJOINT[0], 'Joints')
+            cmds.parent(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[0], 'Joints')
             for each in jointSpineIklist:
                 cmds.parent(each, 'Joints')
                 cmds.setAttr(each+'.visibility', 0)
@@ -764,32 +764,32 @@ class AutoRigGenerateRig(object):
             cmds.parent(crvSpine, 'Xtra_toHide')
             cmds.parent(grpCtrlRoot, 'ControlObjects')
 
-            hadEnv.JOINTIKCHEST = jointSpineIklist
-            hadEnv.CTRLIKCHEST = ctrlSpineIK
+            hadEnv.JOINT_IK_CHEST = jointSpineIklist
+            hadEnv.CTRL_IK_CHEST = ctrlSpineIK
         
-        if hadEnv.AUTORIGLISTHEADJOINT:
+        if hadEnv.AUTO_RIG_LIST_HEAD_JOINT:
             rigHead(self)
-        if hadEnv.AUTORIGLISTCHESTJOINT:
+        if hadEnv.AUTO_RIG_LIST_CHEST_JOINT:
             rigChest(self)
-            if hadEnv.AUTORIGLISTHEADJOINT:
+            if hadEnv.AUTO_RIG_LIST_HEAD_JOINT:
 
-                cmds.parent(hadEnv.AUTORIGLISTHEADJOINT[0], hadEnv.AUTORIGLISTCHESTJOINT[4])
-                cmds.parentConstraint(hadEnv.AUTORIGLISTCHESTJOINT[4], self.grpCtrlNeck, maintainOffset=True)
+                cmds.parent(hadEnv.AUTO_RIG_LIST_HEAD_JOINT[0], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[4])
+                cmds.parentConstraint(hadEnv.AUTO_RIG_LIST_CHEST_JOINT[4], self.grpCtrlNeck, maintainOffset=True)
 
         x = 0
-        for each in hadEnv.AUTORIGLISTCHESTJOINT:
+        for each in hadEnv.AUTO_RIG_LIST_CHEST_JOINT:
             print(x, '=', each)
             x +=1
         x = 0
-        for each in hadEnv.AUTORIGLISTLEGJOINT:
+        for each in hadEnv.AUTO_RIG_LIST_LEG_JOINT:
             print(x, '=', each)
             x +=1
         x = 0
-        for each in hadEnv.AUTORIGLISTHEADJOINT:
+        for each in hadEnv.AUTO_RIG_LIST_HEAD_JOINT:
             print(x, '=', each)
             x +=1
         x = 0
-        for each in hadEnv.AUTORIGLISTARMJOINT:
+        for each in hadEnv.AUTO_RIG_LIST_ARM_JOINT:
             print(x, '=', each)
             x +=1
                 
@@ -799,24 +799,24 @@ class AutoRigGenerateRig(object):
         def rigLegs(side):
 
             if side == 6:
-                step = hadEnv.DICTMIRROR['stepLeg']
+                step = hadEnv.DICT_MIRROR['stepLeg']
             else:
                 step = 0
 
             #CreateIKFK
 
-            self.jointsListLegIK = hadLib.createIKJoints(hadEnv.AUTORIGLISTLEGJOINT[0+step])           
-            self.jointsListLegFK = hadLib.createFKJoints(hadEnv.AUTORIGLISTLEGJOINT[0+step])
+            self.jointsListLegIK = hadLib.createIKJoints(hadEnv.AUTO_RIG_LIST_LEG_JOINT[0+step])           
+            self.jointsListLegFK = hadLib.createFKJoints(hadEnv.AUTO_RIG_LIST_LEG_JOINT[0+step])
 
             #Create IK handle
 
-            tempIkAnkle = cmds.ikHandle(name='Ik_Legs'+ hadEnv.DICTMIRROR[side], startJoint=self.jointsListLegIK[0], endEffector=self.jointsListLegIK[2])[0]
-            tempIkFoot = cmds.ikHandle(name='Ik_Foot'+ hadEnv.DICTMIRROR[side], startJoint=self.jointsListLegIK[2], endEffector=self.jointsListLegIK[3])[0]
-            tempIkToe = cmds.ikHandle(name='Ik_Toe'+ hadEnv.DICTMIRROR[side], startJoint=self.jointsListLegIK[3], endEffector=self.jointsListLegIK[4])[0]
+            tempIkAnkle = cmds.ikHandle(name='Ik_Legs'+ hadEnv.DICT_MIRROR[side], startJoint=self.jointsListLegIK[0], endEffector=self.jointsListLegIK[2])[0]
+            tempIkFoot = cmds.ikHandle(name='Ik_Foot'+ hadEnv.DICT_MIRROR[side], startJoint=self.jointsListLegIK[2], endEffector=self.jointsListLegIK[3])[0]
+            tempIkToe = cmds.ikHandle(name='Ik_Toe'+ hadEnv.DICT_MIRROR[side], startJoint=self.jointsListLegIK[3], endEffector=self.jointsListLegIK[4])[0]
 
-            cmds.parent(tempIkAnkle, hadEnv.AUTORIGLISTLEGJOINT[13+step])
-            cmds.parent(tempIkFoot, hadEnv.AUTORIGLISTLEGJOINT[9+step])
-            cmds.parent(tempIkToe, hadEnv.AUTORIGLISTLEGJOINT[11+step])
+            cmds.parent(tempIkAnkle, hadEnv.AUTO_RIG_LIST_LEG_JOINT[13+step])
+            cmds.parent(tempIkFoot, hadEnv.AUTO_RIG_LIST_LEG_JOINT[9+step])
+            cmds.parent(tempIkToe, hadEnv.AUTO_RIG_LIST_LEG_JOINT[11+step])
 
             #Create pole vector for legs
 
@@ -824,7 +824,7 @@ class AutoRigGenerateRig(object):
 
             #Create IK Ctrl for legs
         
-            ctrlLegIk = cmds.curve(name="Ctrl_Leg" + hadEnv.DICTMIRROR[side] , d=1, p=[(0.5, 0, 2.5),(0.5, 1 ,-0.5) ,(0.5, -1, -0.5) ,(0.5, -1, 2.5) ,(-0.5, -1, 2.5) ,(-0.5, 0, 2.5) ,(0.5, 0, 2.5) ,(0.5, -1, 2.5) ,(-0.5, -1, 2.5) ,(-0.5, -1, -0.5) ,(-0.5, 1, -0.5) ,(0.5, 1, -0.5) ,(0.5, -1, -0.5) ,(-0.5, -1, -0.5) ,(-0.5, 1, -0.5) ,(-0.5, 0, 2.5)], k = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
+            ctrlLegIk = cmds.curve(name="Ctrl_Leg" + hadEnv.DICT_MIRROR[side] , d=1, p=[(0.5, 0, 2.5),(0.5, 1 ,-0.5) ,(0.5, -1, -0.5) ,(0.5, -1, 2.5) ,(-0.5, -1, 2.5) ,(-0.5, 0, 2.5) ,(0.5, 0, 2.5) ,(0.5, -1, 2.5) ,(-0.5, -1, 2.5) ,(-0.5, -1, -0.5) ,(-0.5, 1, -0.5) ,(0.5, 1, -0.5) ,(0.5, -1, -0.5) ,(-0.5, -1, -0.5) ,(-0.5, 1, -0.5) ,(-0.5, 0, 2.5)], k = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
             cmds.addAttr(shortName='HeelSwivel', longName='HeelSwivel', defaultValue=0, k=True)
             cmds.addAttr(shortName='HeelLift', longName='HeelLift', defaultValue=0, k=True)
             cmds.addAttr(shortName='ToeSwivel', longName='ToeSwivel', defaultValue=0, k=True)
@@ -839,35 +839,35 @@ class AutoRigGenerateRig(object):
             cmds.setAttr(ctrlLegIk + ".overrideColor", 6+side) 
             grpctrlLegIk = cmds.group( em=True, name='Grp*'+ctrlLegIk, )
             cmds.parent(ctrlLegIk, grpctrlLegIk)
-            cmds.matchTransform(grpctrlLegIk, hadEnv.AUTORIGLISTLEGJOINT[2+step])
+            cmds.matchTransform(grpctrlLegIk, hadEnv.AUTO_RIG_LIST_LEG_JOINT[2+step])
             hadLib.setRotate(grpctrlLegIk, 0, 0, 0)
             
-            GrpFootRool = cmds.group(hadEnv.AUTORIGLISTLEGJOINT[5+step], name='Grp_FootRoll*'+ hadEnv.AUTORIGLISTLEGJOINT[5+step])
+            GrpFootRool = cmds.group(hadEnv.AUTO_RIG_LIST_LEG_JOINT[5+step], name='Grp_FootRoll*'+ hadEnv.AUTO_RIG_LIST_LEG_JOINT[5+step])
             
             cmds.parentConstraint( ctrlLegIk, GrpFootRool, maintainOffset=True )
 
-            cmds.connectAttr(ctrlLegIk+'.HeelSwivel', hadEnv.AUTORIGLISTLEGJOINT[7+step]+'.rotateY')
-            cmds.connectAttr(ctrlLegIk+'.HeelLift', hadEnv.AUTORIGLISTLEGJOINT[7+step]+'.rotateX')
-            cmds.connectAttr(ctrlLegIk+'.ToeSwivel', hadEnv.AUTORIGLISTLEGJOINT[8+step]+'.rotateY')
-            cmds.connectAttr(ctrlLegIk+'.BallSwivel', hadEnv.AUTORIGLISTLEGJOINT[9+step]+'.rotateY')
-            cmds.connectAttr(ctrlLegIk+'.ToeTap', hadEnv.AUTORIGLISTLEGJOINT[10+step]+'.rotateY')
+            cmds.connectAttr(ctrlLegIk+'.HeelSwivel', hadEnv.AUTO_RIG_LIST_LEG_JOINT[7+step]+'.rotateY')
+            cmds.connectAttr(ctrlLegIk+'.HeelLift', hadEnv.AUTO_RIG_LIST_LEG_JOINT[7+step]+'.rotateX')
+            cmds.connectAttr(ctrlLegIk+'.ToeSwivel', hadEnv.AUTO_RIG_LIST_LEG_JOINT[8+step]+'.rotateY')
+            cmds.connectAttr(ctrlLegIk+'.BallSwivel', hadEnv.AUTO_RIG_LIST_LEG_JOINT[9+step]+'.rotateY')
+            cmds.connectAttr(ctrlLegIk+'.ToeTap', hadEnv.AUTO_RIG_LIST_LEG_JOINT[10+step]+'.rotateY')
                 
             #Tilt : 
                 
-            condFoot = cmds.createNode('condition', name='conditionTilt_Foot' + hadEnv.DICTMIRROR[side] , skipSelect=True)
+            condFoot = cmds.createNode('condition', name='conditionTilt_Foot' + hadEnv.DICT_MIRROR[side] , skipSelect=True)
             cmds.setAttr(condFoot+'.operation', 3)
             cmds.connectAttr(ctrlLegIk+'.Tilt', condFoot+'.firstTerm')
             cmds.connectAttr(ctrlLegIk+'.Tilt', condFoot+'.colorIfTrueR')
             cmds.connectAttr(ctrlLegIk+'.Tilt', condFoot+'.colorIfFalseG')
             cmds.setAttr(condFoot+'.colorIfFalseR', 0)
             cmds.setAttr(condFoot+'.colorIfTrueG', 0)
-            cmds.connectAttr(condFoot+'.outColorR', hadEnv.AUTORIGLISTLEGJOINT[5+step] + ".rotateZ")
+            cmds.connectAttr(condFoot+'.outColorR', hadEnv.AUTO_RIG_LIST_LEG_JOINT[5+step] + ".rotateZ")
 
-            cmds.connectAttr(condFoot+'.outColorG', hadEnv.AUTORIGLISTLEGJOINT[6+step] + ".rotateZ")
+            cmds.connectAttr(condFoot+'.outColorG', hadEnv.AUTO_RIG_LIST_LEG_JOINT[6+step] + ".rotateZ")
                 
             #FootRoll
         
-            setRangeFootRoll = cmds.createNode('setRange', name='SetRange_FootRoll'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            setRangeFootRoll = cmds.createNode('setRange', name='SetRange_FootRoll'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
             cmds.connectAttr(ctrlLegIk+'.Roll',setRangeFootRoll+'.valueX')
             cmds.connectAttr(ctrlLegIk+'.Roll',setRangeFootRoll+'.valueY')
             cmds.connectAttr(ctrlLegIk+'.RollLimit',setRangeFootRoll+'.oldMinX')
@@ -876,14 +876,14 @@ class AutoRigGenerateRig(object):
             cmds.setAttr(setRangeFootRoll+'.maxX', 1)
             cmds.setAttr(setRangeFootRoll+'.maxY', 1)       
                 
-            revFootRoll = cmds.createNode('reverse', name='Reverse_FootRool'+ hadEnv.DICTMIRROR[side], skipSelect=True)
-            mulFootRollA = cmds.createNode('multiplyDivide', name='MultiplyDivide_FootRollA'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            revFootRoll = cmds.createNode('reverse', name='Reverse_FootRool'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
+            mulFootRollA = cmds.createNode('multiplyDivide', name='MultiplyDivide_FootRollA'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
             cmds.setAttr(mulFootRollA + '.operation', 1)
-            mulFootRollB = cmds.createNode('multiplyDivide', name='MultiplyDivide_FootRollB'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            mulFootRollB = cmds.createNode('multiplyDivide', name='MultiplyDivide_FootRollB'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
             cmds.setAttr(mulFootRollB + '.operation', 1)
-            mulFootRollC = cmds.createNode('multiplyDivide', name='MultiplyDivide_FootRollC'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            mulFootRollC = cmds.createNode('multiplyDivide', name='MultiplyDivide_FootRollC'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
             cmds.setAttr(mulFootRollC + '.operation', 1)
-            addFootRollD = cmds.createNode('addDoubleLinear', name='AddDoubleLinear_FootRollD'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            addFootRollD = cmds.createNode('addDoubleLinear', name='AddDoubleLinear_FootRollD'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
                 
             cmds.connectAttr(setRangeFootRoll+'.outValueX', mulFootRollA+'.input1X')
             cmds.connectAttr(ctrlLegIk+'.Roll', mulFootRollA+'.input2X')
@@ -895,19 +895,19 @@ class AutoRigGenerateRig(object):
             
             cmds.connectAttr(mulFootRollB+'.outputX', mulFootRollC+'.input1X')
             cmds.connectAttr(ctrlLegIk+'.Roll', mulFootRollC+'.input2X')
-            mulFootRollD = cmds.createNode('multiplyDivide', name='MultiplyDivide_FootRoolD'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            mulFootRollD = cmds.createNode('multiplyDivide', name='MultiplyDivide_FootRoolD'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
             cmds.setAttr(mulFootRollD + '.operation', 1)
             cmds.setAttr(mulFootRollD + '.input2X', -1)
             cmds.connectAttr(mulFootRollC+'.outputX', mulFootRollD+'.input1X')
-            cmds.connectAttr(mulFootRollD+'.outputX', hadEnv.AUTORIGLISTLEGJOINT[12+step]+'.rotateZ')           
+            cmds.connectAttr(mulFootRollD+'.outputX', hadEnv.AUTO_RIG_LIST_LEG_JOINT[12+step]+'.rotateZ')           
             
-            mulFootRollE = cmds.createNode('multiplyDivide', name='MultiplyDivide_FootRoolE'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            mulFootRollE = cmds.createNode('multiplyDivide', name='MultiplyDivide_FootRoolE'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
             cmds.setAttr(mulFootRollE + '.operation', 1)
             cmds.setAttr(mulFootRollE + '.input2X', -1)
             cmds.connectAttr(mulFootRollA+'.outputX', mulFootRollE+'.input1X')
             cmds.connectAttr(mulFootRollE+'.outputX', addFootRollD+'.input1')
             cmds.connectAttr(ctrlLegIk+'.ToeLift', addFootRollD+'.input2')
-            cmds.connectAttr(addFootRollD+'.output', hadEnv.AUTORIGLISTLEGJOINT[8+step]+'.rotateZ')  
+            cmds.connectAttr(addFootRollD+'.output', hadEnv.AUTO_RIG_LIST_LEG_JOINT[8+step]+'.rotateZ')  
             
             #hide Foot Roll
                 
@@ -924,7 +924,7 @@ class AutoRigGenerateRig(object):
             self.grpCtrlLegFK = []
             ctrlLegFK = []
             for each in self.jointsListLegFK:
-                tempCtrl = cmds.circle(nr=(1, 0, 0), c=(0, 0, 0), r=1, n='Ctrl*'+each+ hadEnv.DICTMIRROR[side], constructionHistory=False)[0]
+                tempCtrl = cmds.circle(nr=(1, 0, 0), c=(0, 0, 0), r=1, n='Ctrl*'+each+ hadEnv.DICT_MIRROR[side], constructionHistory=False)[0]
                 ctrlLegFK.append(tempCtrl)
                 tempGrp = cmds.group(tempCtrl, name='Grp*'+tempCtrl)
                 self.grpCtrlLegFK.append(tempGrp)    
@@ -942,7 +942,7 @@ class AutoRigGenerateRig(object):
 
             #Create Ctrls for swicth IK FK
 
-            ctrlLegIKFK = cmds.curve(name="Ctrl_Switch_IK/Fk_Leg"+ hadEnv.DICTMIRROR[side], d=1, p=[(-0.5, 0, 2.5), (-0.5, 0, 2.5), (-0.5, 0, 2), (0.5, 0, 2), (0.5, 0, 2.5), (1, 0, 2.5), (1, 0, 3.5), (0.5, 0, 3.5), (0.5, 0, 4), (-0.5, 0, 4), (-0.5, 0, 3.5), (-1, 0, 3.5), (-1, 0, 2.5), (-0.5, 0, 2.5)]) 
+            ctrlLegIKFK = cmds.curve(name="Ctrl_Switch_IK/Fk_Leg"+ hadEnv.DICT_MIRROR[side], d=1, p=[(-0.5, 0, 2.5), (-0.5, 0, 2.5), (-0.5, 0, 2), (0.5, 0, 2), (0.5, 0, 2.5), (1, 0, 2.5), (1, 0, 3.5), (0.5, 0, 3.5), (0.5, 0, 4), (-0.5, 0, 4), (-0.5, 0, 3.5), (-1, 0, 3.5), (-1, 0, 2.5), (-0.5, 0, 2.5)]) 
             cmds.addAttr( shortName='SwitchIKFK', longName='SwitchIKFK', defaultValue=0, minValue=0, maxValue=1, k=True)
             grpCtrlLegIKFK = cmds.group( em=True, name='Grp*'+ ctrlLegIKFK )
             if side == 6:
@@ -952,8 +952,8 @@ class AutoRigGenerateRig(object):
             else:
                 pass
             cmds.parent(ctrlLegIKFK, grpCtrlLegIKFK)
-            cmds.matchTransform(grpCtrlLegIKFK, hadEnv.AUTORIGLISTLEGJOINT[1+step])
-            cmds.parentConstraint( hadEnv.AUTORIGLISTLEGJOINT[1+step], grpCtrlLegIKFK ) 
+            cmds.matchTransform(grpCtrlLegIKFK, hadEnv.AUTO_RIG_LIST_LEG_JOINT[1+step])
+            cmds.parentConstraint( hadEnv.AUTO_RIG_LIST_LEG_JOINT[1+step], grpCtrlLegIKFK ) 
             
             hadLib.freezeTranslate(ctrlLegIKFK)  
             hadLib.freezeRotate(ctrlLegIKFK)
@@ -963,11 +963,11 @@ class AutoRigGenerateRig(object):
 
             #Create PairBlend
 
-            jointsListLegSK = [hadEnv.AUTORIGLISTLEGJOINT[0+step], hadEnv.AUTORIGLISTLEGJOINT[1+step], hadEnv.AUTORIGLISTLEGJOINT[2+step], hadEnv.AUTORIGLISTLEGJOINT[3+step], hadEnv.AUTORIGLISTLEGJOINT[4+step]]
+            jointsListLegSK = [hadEnv.AUTO_RIG_LIST_LEG_JOINT[0+step], hadEnv.AUTO_RIG_LIST_LEG_JOINT[1+step], hadEnv.AUTO_RIG_LIST_LEG_JOINT[2+step], hadEnv.AUTO_RIG_LIST_LEG_JOINT[3+step], hadEnv.AUTO_RIG_LIST_LEG_JOINT[4+step]]
  
             for jointSK, jointIK, jointFK in zip(jointsListLegSK, self.jointsListLegIK , self.jointsListLegFK):    
         
-                pairBlendLeg = cmds.createNode('pairBlend', name= jointSK + '_pairBlend'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                pairBlendLeg = cmds.createNode('pairBlend', name= jointSK + '_pairBlend'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
                 cmds.setAttr(pairBlendLeg+'.rotInterpolation', 1)
                 cmds.connectAttr(jointIK+'.translate', pairBlendLeg+'.inTranslate1')
                 cmds.connectAttr(jointIK+'.rotate', pairBlendLeg+'.inRotate1')
@@ -985,7 +985,7 @@ class AutoRigGenerateRig(object):
             #set visibility switch IK FK
             
             cmds.connectAttr(ctrlLegIKFK+'.SwitchIKFK', self.grpCtrlLegFK[0]+'.visibility')   
-            reverseIK = cmds.createNode('reverse', name='reverseIK'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            reverseIK = cmds.createNode('reverse', name='reverseIK'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
             cmds.connectAttr(ctrlLegIKFK+'.SwitchIKFK', reverseIK+'.inputX')
             cmds.connectAttr(reverseIK+'.outputX', grpctrlLegIk+'.visibility')
             grpCtrlPLLeg = cmds.listRelatives(ctrlPLLeg, parent=True)[0]
@@ -996,7 +996,7 @@ class AutoRigGenerateRig(object):
 
             #Clean
 
-            cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[0+step], 'Joints')
+            cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[0+step], 'Joints')
             cmds.parent(self.jointsListLegIK[0], 'Joints')
             cmds.parent(self.jointsListLegFK[0], 'Joints')
             cmds.parent(grpCtrlPLLeg, 'ControlObjects')
@@ -1008,12 +1008,12 @@ class AutoRigGenerateRig(object):
         def rigArms(side):
 
             if side == 6:
-                step = hadEnv.DICTMIRROR['stepArm']
+                step = hadEnv.DICT_MIRROR['stepArm']
             else:
                 step = 0
 
-            jointsListArmIK = hadLib.createIKJoints(hadEnv.AUTORIGLISTARMJOINT[1+step])           
-            jointsListArmFK = hadLib.createFKJoints(hadEnv.AUTORIGLISTARMJOINT[1+step])
+            jointsListArmIK = hadLib.createIKJoints(hadEnv.AUTO_RIG_LIST_ARM_JOINT[1+step])           
+            jointsListArmFK = hadLib.createFKJoints(hadEnv.AUTO_RIG_LIST_ARM_JOINT[1+step])
 
             cmds.delete(jointsListArmIK[3])
             cmds.delete(jointsListArmIK[6])
@@ -1026,7 +1026,7 @@ class AutoRigGenerateRig(object):
 
             #Create Clavicle Ctrl
         
-            ctrlClavicle = cmds.circle(name=  "Ctrl_Clavicle" + hadEnv.DICTMIRROR[side], normal=(0, 1, 0), center=(0, -1, 0), radius=0.7, degree=1, sections=1, constructionHistory=False)[0]         
+            ctrlClavicle = cmds.circle(name=  "Ctrl_Clavicle" + hadEnv.DICT_MIRROR[side], normal=(0, 1, 0), center=(0, -1, 0), radius=0.7, degree=1, sections=1, constructionHistory=False)[0]         
             if side == 6:
                 tempA = 180
                 tempB = 180
@@ -1038,7 +1038,7 @@ class AutoRigGenerateRig(object):
             cmds.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
             self.grpCtrlClavicle = cmds.group( em=True, name='Grp*'+ctrlClavicle )
             cmds.parent(ctrlClavicle , self.grpCtrlClavicle)
-            cmds.matchTransform(self.grpCtrlClavicle, hadEnv.AUTORIGLISTARMJOINT[0+step])
+            cmds.matchTransform(self.grpCtrlClavicle, hadEnv.AUTO_RIG_LIST_ARM_JOINT[0+step])
             cmds.setAttr(ctrlClavicle + ".overrideEnabled", 1)
             cmds.setAttr(ctrlClavicle + ".overrideColor", 6+side) 
             hadLib.freezeTranslate(ctrlClavicle)  
@@ -1046,12 +1046,12 @@ class AutoRigGenerateRig(object):
 
             #Create Scapula Ctrl for Clavicle
         
-            ctrlScapula = cmds.curve( name = "Ctrl_Scapula" + hadEnv.DICTMIRROR[side], degree=3, point=[(0, -0.6, 0), (-0.2, -0.6, 0), (-0.5, -0.6, 0), (-0.2, 0, 1), (-0.5, 0.6, 0), (0, 0.8, 0), (0.5, 0.6, 0), (0.2, 0, 1), (0.5, -0.6, 0), (0.2, -0.6, 0), (0, -0.6, 0)] )
+            ctrlScapula = cmds.curve( name = "Ctrl_Scapula" + hadEnv.DICT_MIRROR[side], degree=3, point=[(0, -0.6, 0), (-0.2, -0.6, 0), (-0.5, -0.6, 0), (-0.2, 0, 1), (-0.5, 0.6, 0), (0, 0.8, 0), (0.5, 0.6, 0), (0.2, 0, 1), (0.5, -0.6, 0), (0.2, -0.6, 0), (0, -0.6, 0)] )
             cmds.setAttr(ctrlScapula+'.rotateX', tempA)
             cmds.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
             grpCtrlScapula = cmds.group( em=True, name='Grp*'+ctrlScapula )
             cmds.parent(ctrlScapula , grpCtrlScapula)
-            cmds.matchTransform(grpCtrlScapula, hadEnv.AUTORIGLISTARMJOINT[1+step]) 
+            cmds.matchTransform(grpCtrlScapula, hadEnv.AUTO_RIG_LIST_ARM_JOINT[1+step]) 
             cmds.setAttr(ctrlScapula + ".overrideEnabled", 1)
             cmds.setAttr(ctrlScapula + ".overrideColor", 6+side) 
             hadLib.freezeRotate(ctrlScapula)  
@@ -1060,11 +1060,11 @@ class AutoRigGenerateRig(object):
             #Contraints Scapula
         
             cmds.parent(grpCtrlScapula, ctrlClavicle)           
-            cmds.aimConstraint( ctrlScapula, hadEnv.AUTORIGLISTARMJOINT[0+step] , maintainOffset = True )
+            cmds.aimConstraint( ctrlScapula, hadEnv.AUTO_RIG_LIST_ARM_JOINT[0+step] , maintainOffset = True )
 
             #Create IK handle
 
-            tempIkArm = cmds.ikHandle(name='Ik_Arms'+ hadEnv.DICTMIRROR[side], startJoint=jointsListArmIK[0], endEffector=jointsListArmIK[2])[0]
+            tempIkArm = cmds.ikHandle(name='Ik_Arms'+ hadEnv.DICT_MIRROR[side], startJoint=jointsListArmIK[0], endEffector=jointsListArmIK[2])[0]
 
             #Create pole vector for legs
 
@@ -1075,7 +1075,7 @@ class AutoRigGenerateRig(object):
 
             #Create Ctrl IK Arm  
         
-            ctrlWristIK = cmds.curve(name = "Ctrl_Wrist" + hadEnv.DICTMIRROR[side], degree=1, point=[(0, 1, 1),(0,1,-1) ,(0, -1, -1) ,(0, -1, 1) ,(0, 1, 1)], knot = [0,1,2,3,4])        
+            ctrlWristIK = cmds.curve(name = "Ctrl_Wrist" + hadEnv.DICT_MIRROR[side], degree=1, point=[(0, 1, 1),(0,1,-1) ,(0, -1, -1) ,(0, -1, 1) ,(0, 1, 1)], knot = [0,1,2,3,4])        
             cmds.addAttr( shortName='Stretch', longName='Stretch', defaultValue=0, minValue=0, maxValue=1 , keyable = True)
             cmds.addAttr( shortName='Squash', longName='Squash', defaultValue=0, minValue=0, maxValue=1 , keyable = True)
             grpCtrlWristIK = cmds.group( ctrlWristIK, name= "Grp_"+ctrlWristIK ) 
@@ -1092,7 +1092,7 @@ class AutoRigGenerateRig(object):
             grpCtrlArmFK = []
             ctrlArmFK = []
             for each in jointsListArmFK:
-                tempCtrl = cmds.circle(nr=(1, 0, 0), c=(0, 0, 0), r=1, n='Ctrl*'+each+ hadEnv.DICTMIRROR[side], constructionHistory=False)[0]
+                tempCtrl = cmds.circle(nr=(1, 0, 0), c=(0, 0, 0), r=1, n='Ctrl*'+each+ hadEnv.DICT_MIRROR[side], constructionHistory=False)[0]
                 ctrlArmFK.append(tempCtrl)
                 tempGrp = cmds.group(tempCtrl, name='Grp*'+tempCtrl)
                 grpCtrlArmFK.append(tempGrp)    
@@ -1108,7 +1108,7 @@ class AutoRigGenerateRig(object):
 
             #Create Ctrls for swicth IK FK
         
-            ctrlLArmIKFK = cmds.curve(name="Ctrl_L_Switch_IK/Fk_Arm"+ hadEnv.DICTMIRROR[side], d=1, p=[(-1, -0.5, 1), (-0.5, -0.5, 1), (-0.5, -1, 1), (0.5, -1, 1), (0.5, -0.5, 1), (1, -0.5, 1), (1, 0.5, 1), (0.5, 0.5, 1), (0.5, 1, 1), (-0.5, 1, 1), (-0.5, 0.5, 1), (-1, 0.5, 1), (-1, -0.5, 1), (-0.5, -0.5, 1)]) 
+            ctrlLArmIKFK = cmds.curve(name="Ctrl_L_Switch_IK/Fk_Arm"+ hadEnv.DICT_MIRROR[side], d=1, p=[(-1, -0.5, 1), (-0.5, -0.5, 1), (-0.5, -1, 1), (0.5, -1, 1), (0.5, -0.5, 1), (1, -0.5, 1), (1, 0.5, 1), (0.5, 0.5, 1), (0.5, 1, 1), (-0.5, 1, 1), (-0.5, 0.5, 1), (-1, 0.5, 1), (-1, -0.5, 1), (-0.5, -0.5, 1)]) 
             cmds.addAttr( shortName='SwitchIKFK', longName='SwitchIKFK', defaultValue=0, minValue=0, maxValue=1, k=True)
             cmds.addAttr( shortName='ThumbCurl', longName='ThumbCurl', defaultValue=0, minValue=-20, maxValue=60, k=True)
             cmds.addAttr( shortName='IndexCurl', longName='IndexCurl', defaultValue=0, minValue=-20, maxValue=60, k=True)
@@ -1124,8 +1124,8 @@ class AutoRigGenerateRig(object):
                 pass
             GrpctrlLArmIKFK = cmds.group( em=True, name='Grp*'+ ctrlLArmIKFK )
             cmds.parent(ctrlLArmIKFK, GrpctrlLArmIKFK)
-            cmds.matchTransform(GrpctrlLArmIKFK, hadEnv.AUTORIGLISTARMJOINT[3+step])
-            cmds.parentConstraint( hadEnv.AUTORIGLISTARMJOINT[3+step], GrpctrlLArmIKFK ) 
+            cmds.matchTransform(GrpctrlLArmIKFK, hadEnv.AUTO_RIG_LIST_ARM_JOINT[3+step])
+            cmds.parentConstraint( hadEnv.AUTO_RIG_LIST_ARM_JOINT[3+step], GrpctrlLArmIKFK ) 
 
             hadLib.freezeTranslate(ctrlLArmIKFK)  
             hadLib.freezeRotate(ctrlLArmIKFK)
@@ -1135,11 +1135,11 @@ class AutoRigGenerateRig(object):
 
             #Create PairBlend
 
-            jointsListArmSK = [hadEnv.AUTORIGLISTARMJOINT[1+step], hadEnv.AUTORIGLISTARMJOINT[2+step], hadEnv.AUTORIGLISTARMJOINT[3+step]]
+            jointsListArmSK = [hadEnv.AUTO_RIG_LIST_ARM_JOINT[1+step], hadEnv.AUTO_RIG_LIST_ARM_JOINT[2+step], hadEnv.AUTO_RIG_LIST_ARM_JOINT[3+step]]
 
             for jointSK, jointIK, jointFK in zip(jointsListArmSK, jointsListArmIK , jointsListArmFK):    
         
-                pairBlendArm = cmds.createNode('pairBlend', name= jointSK + '_pairBlend'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                pairBlendArm = cmds.createNode('pairBlend', name= jointSK + '_pairBlend'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
                 cmds.setAttr(pairBlendArm+'.rotInterpolation', 1)
                 cmds.connectAttr(jointIK+'.translate', pairBlendArm+'.inTranslate1')
                 cmds.connectAttr(jointIK+'.rotate', pairBlendArm+'.inRotate1')
@@ -1157,7 +1157,7 @@ class AutoRigGenerateRig(object):
             #set visibility switch IK FK
             
             cmds.connectAttr(ctrlLArmIKFK+'.SwitchIKFK', grpCtrlArmFK[0]+'.visibility')   
-            reverseIK = cmds.createNode('reverse', name='reverseIK'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            reverseIK = cmds.createNode('reverse', name='reverseIK'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
             cmds.connectAttr(ctrlLArmIKFK+'.SwitchIKFK', reverseIK+'.inputX')
             cmds.connectAttr(reverseIK+'.outputX', grpCtrlWristIK+'.visibility')
             grpCtrlPLArm = cmds.listRelatives(ctrlPLArm, parent=True)[0]
@@ -1170,7 +1170,7 @@ class AutoRigGenerateRig(object):
 
             #Fix Last Fingers orient : 
 
-            range = [hadEnv.AUTORIGLISTARMJOINT[6+step], hadEnv.AUTORIGLISTARMJOINT[10+step], hadEnv.AUTORIGLISTARMJOINT[13+step], hadEnv.AUTORIGLISTARMJOINT[16+step], hadEnv.AUTORIGLISTARMJOINT[19+step]]
+            range = [hadEnv.AUTO_RIG_LIST_ARM_JOINT[6+step], hadEnv.AUTO_RIG_LIST_ARM_JOINT[10+step], hadEnv.AUTO_RIG_LIST_ARM_JOINT[13+step], hadEnv.AUTO_RIG_LIST_ARM_JOINT[16+step], hadEnv.AUTO_RIG_LIST_ARM_JOINT[19+step]]
             
             for each in range:
                 cmds.setAttr(each + ".jointOrientY", 10)
@@ -1181,7 +1181,7 @@ class AutoRigGenerateRig(object):
             grpOffsetFingers = []
             ctrlFingers = []
             
-            for each in hadEnv.AUTORIGLISTARMJOINT[4+step:20+step]:
+            for each in hadEnv.AUTO_RIG_LIST_ARM_JOINT[4+step:20+step]:
                 
                 tempCtrlFinger = cmds.curve(name= "Ctrl" + each, d=1, p=[(0, 0, 0), (0, 0, -0.44), (0, 0, -0.9), (0, 0, -1.23), (-0.21, 0, -1.37), (-0.44, 0, -2), (0, 0, -2.2), (0.44, 0, -2), (0.21, 0, -1.37), (0, 0, -1.23), (0, 0.21, -1.37), (0, 0.44, -2), (0, 0, -2.2), (0, -0.44, -2), (0, -0.21, -1.37), (0, 0, -1.23)] )
                 ctrlFingers.append(tempCtrlFinger)
@@ -1218,8 +1218,8 @@ class AutoRigGenerateRig(object):
             cmds.parent(grpFingers[13], ctrlFingers[3])
             cmds.parent(grpFingers[2], ctrlFingers[1])
             cmds.parent(grpFingers[1], ctrlFingers[0])
-            cmds.parentConstraint(hadEnv.AUTORIGLISTARMJOINT[3+step], grpFingers[0], maintainOffset = True)
-            cmds.parentConstraint(hadEnv.AUTORIGLISTARMJOINT[3+step], grpFingers[3], maintainOffset = True)
+            cmds.parentConstraint(hadEnv.AUTO_RIG_LIST_ARM_JOINT[3+step], grpFingers[0], maintainOffset = True)
+            cmds.parentConstraint(hadEnv.AUTO_RIG_LIST_ARM_JOINT[3+step], grpFingers[3], maintainOffset = True)
 
             #Fingers control attribute
         
@@ -1245,10 +1245,10 @@ class AutoRigGenerateRig(object):
             
             cmds.connectAttr(ctrlLArmIKFK+'.Spread', grpOffsetFingers[0]+'.rotateZ')
             cmds.connectAttr(ctrlLArmIKFK+'.Spread', grpOffsetFingers[4]+'.rotateZ')
-            mulSpreadFingersA = cmds.createNode('multiplyDivide', name='MultiplyDivide_SpreadFingersA'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            mulSpreadFingersA = cmds.createNode('multiplyDivide', name='MultiplyDivide_SpreadFingersA'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
             cmds.setAttr(mulSpreadFingersA + '.operation', 1)
             cmds.setAttr(mulSpreadFingersA + '.input2X', -1)
-            mulSpreadFingersB = cmds.createNode('multiplyDivide', name='MultiplyDivide_SpreadFingersB'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            mulSpreadFingersB = cmds.createNode('multiplyDivide', name='MultiplyDivide_SpreadFingersB'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
             cmds.setAttr(mulSpreadFingersB + '.operation', 1)
             cmds.setAttr(mulSpreadFingersB + '.input2X', -0.5)
             cmds.connectAttr(ctrlLArmIKFK+'.Spread', mulSpreadFingersA+'.input1X')
@@ -1258,19 +1258,19 @@ class AutoRigGenerateRig(object):
 
             #twist joints
 
-            x, y, z = hadLib.getTranslate(hadEnv.AUTORIGLISTARMJOINT[3+step])
+            x, y, z = hadLib.getTranslate(hadEnv.AUTO_RIG_LIST_ARM_JOINT[3+step])
             lenWrist = x/4
-            x, y, z = hadLib.getTranslate(hadEnv.AUTORIGLISTARMJOINT[2+step])
+            x, y, z = hadLib.getTranslate(hadEnv.AUTO_RIG_LIST_ARM_JOINT[2+step])
             lenElbow = x/4
 
             listTwistArm = []
 
-            listTwistArm.append(cmds.createNode('joint', name='Bs_twist_UpperArm_Compensate'+ hadEnv.DICTMIRROR[side], skipSelect=True))
+            listTwistArm.append(cmds.createNode('joint', name='Bs_twist_UpperArm_Compensate'+ hadEnv.DICT_MIRROR[side], skipSelect=True))
 
             for each in ['A','B','C']:
 
-                listTwistArm.append(cmds.createNode('joint', name='Bs_twist_UpperArm_'+ each+ hadEnv.DICTMIRROR[side], skipSelect=True))
-                listTwistArm.append(cmds.createNode('joint', name='Bs_twist_LowerArm_'+ each+ hadEnv.DICTMIRROR[side], skipSelect=True))
+                listTwistArm.append(cmds.createNode('joint', name='Bs_twist_UpperArm_'+ each+ hadEnv.DICT_MIRROR[side], skipSelect=True))
+                listTwistArm.append(cmds.createNode('joint', name='Bs_twist_LowerArm_'+ each+ hadEnv.DICT_MIRROR[side], skipSelect=True))
             for each in listTwistArm:
                 print(each)
 
@@ -1278,7 +1278,7 @@ class AutoRigGenerateRig(object):
 
                 cmds.parent(listTwistArm[5+each], listTwistArm[3+each])
                 cmds.parent(listTwistArm[3+each], listTwistArm[1+each])
-                cmds.parent(listTwistArm[1+each],hadEnv.AUTORIGLISTARMJOINT[1+each+step])
+                cmds.parent(listTwistArm[1+each],hadEnv.AUTO_RIG_LIST_ARM_JOINT[1+each+step])
 
                 hadLib.setTranslate(listTwistArm[0+each+each], 0, 0, 0)
                 hadLib.setRotateOrient(listTwistArm[0+each+each], 0, 0, 0)
@@ -1291,7 +1291,7 @@ class AutoRigGenerateRig(object):
                 cmds.setAttr(listTwistArm[4]+'.translateX', lenWrist)
                 cmds.setAttr(listTwistArm[2]+'.translateX', lenWrist)
 
-            cmds.parent(listTwistArm[0],hadEnv.AUTORIGLISTARMJOINT[1+step])
+            cmds.parent(listTwistArm[0],hadEnv.AUTO_RIG_LIST_ARM_JOINT[1+step])
             cmds.parent(listTwistArm[1],listTwistArm[0])
             hadLib.setTranslate(listTwistArm[0], 0, 0, 0)
             hadLib.setRotateOrient(listTwistArm[0], 0, 0, 0)
@@ -1303,8 +1303,8 @@ class AutoRigGenerateRig(object):
             tempListBaseArm = []
 
             for nameA, posA in zip(['UpperArm_twistEnd','UpperArm_twistBase','LowerArm_twistBase','LowerArm_twistEnd'],[1,2,2,3]):
-                tempListBaseArm.append(cmds.createNode('joint', name='Bdrv_'+nameA+ hadEnv.DICTMIRROR[side], skipSelect=True))
-                cmds.matchTransform(tempListBaseArm[-1], hadEnv.AUTORIGLISTARMJOINT[posA+step])
+                tempListBaseArm.append(cmds.createNode('joint', name='Bdrv_'+nameA+ hadEnv.DICT_MIRROR[side], skipSelect=True))
+                cmds.matchTransform(tempListBaseArm[-1], hadEnv.AUTO_RIG_LIST_ARM_JOINT[posA+step])
                 cmds.setAttr(tempListBaseArm[-1]+'.visibility', 0)
 
             cmds.parent(tempListBaseArm[0],tempListBaseArm[1])
@@ -1325,18 +1325,18 @@ class AutoRigGenerateRig(object):
                 for attr in [".jointOrientX", ".jointOrientY", ".jointOrientZ"]:
                     cmds.setAttr(each+attr, 0)
 
-            tempIkUpperArm = cmds.ikHandle(name='Ik_UpperArm_twist'+ hadEnv.DICTMIRROR[side], startJoint=tempListBaseArm[1], endEffector=tempListBaseArm[0])[0]
-            tempIkLowerArm = cmds.ikHandle(name='Ik_LowerArm_twist'+ hadEnv.DICTMIRROR[side], startJoint=tempListBaseArm[2], endEffector=tempListBaseArm[3])[0]
+            tempIkUpperArm = cmds.ikHandle(name='Ik_UpperArm_twist'+ hadEnv.DICT_MIRROR[side], startJoint=tempListBaseArm[1], endEffector=tempListBaseArm[0])[0]
+            tempIkLowerArm = cmds.ikHandle(name='Ik_LowerArm_twist'+ hadEnv.DICT_MIRROR[side], startJoint=tempListBaseArm[2], endEffector=tempListBaseArm[3])[0]
 
-            cmds.parent(tempIkUpperArm, hadEnv.AUTORIGLISTARMJOINT[0+step])
-            cmds.parent(tempIkLowerArm, hadEnv.AUTORIGLISTARMJOINT[3+step])
+            cmds.parent(tempIkUpperArm, hadEnv.AUTO_RIG_LIST_ARM_JOINT[0+step])
+            cmds.parent(tempIkLowerArm, hadEnv.AUTO_RIG_LIST_ARM_JOINT[3+step])
 
             #twistJoints rotation
 
             x=0
             for nameB, stepB, sideB in zip(['UpperArm', 'LowerArm'], [1,2], [4,4]):
 
-                mulRotateArm = cmds.createNode('multiplyDivide', name='MultiplyDivide_Rotate'+nameB+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                mulRotateArm = cmds.createNode('multiplyDivide', name='MultiplyDivide_Rotate'+nameB+ hadEnv.DICT_MIRROR[side], skipSelect=True)
                 cmds.setAttr(mulRotateArm + '.operation', 2)
                 cmds.setAttr(mulRotateArm + '.input2X', sideB )
                 cmds.connectAttr(tempListBaseArm[stepB]+'.rotateX', mulRotateArm + '.input1X', force=True)
@@ -1345,18 +1345,18 @@ class AutoRigGenerateRig(object):
                 cmds.connectAttr(mulRotateArm +'.outputX', listTwistArm[5+x]+'.rotateX', force=True)
                 x+=1
 
-            cmds.parent(tempListBaseArm[1],hadEnv.AUTORIGLISTARMJOINT[1+step])
-            cmds.parent(tempListBaseArm[2],hadEnv.AUTORIGLISTARMJOINT[2+step])
+            cmds.parent(tempListBaseArm[1],hadEnv.AUTO_RIG_LIST_ARM_JOINT[1+step])
+            cmds.parent(tempListBaseArm[2],hadEnv.AUTO_RIG_LIST_ARM_JOINT[2+step])
 
-            mulCompensateArm = cmds.createNode('multiplyDivide', name='MultiplyDivide_CompensateArm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+            mulCompensateArm = cmds.createNode('multiplyDivide', name='MultiplyDivide_CompensateArm'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
             cmds.setAttr(mulCompensateArm + '.operation', 1)
             cmds.setAttr(mulCompensateArm + '.input2X', 1)
-            cmds.connectAttr(hadEnv.AUTORIGLISTARMJOINT[1+stepB]+'.rotateX', mulCompensateArm+'.input1X', force=True)
+            cmds.connectAttr(hadEnv.AUTO_RIG_LIST_ARM_JOINT[1+stepB]+'.rotateX', mulCompensateArm+'.input1X', force=True)
             cmds.connectAttr(mulCompensateArm+'.outputX', listTwistArm[0]+'.rotateX', force=True)
 
             #Clean
 
-            cmds.parent(hadEnv.AUTORIGLISTARMJOINT[0+step], 'Joints')
+            cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[0+step], 'Joints')
             cmds.parent(self.grpCtrlClavicle, 'ControlObjects')
             cmds.parent(tempIkArm, 'Iks')
             cmds.parent(grpCtrlPLArm, 'ControlObjects')
@@ -1367,7 +1367,7 @@ class AutoRigGenerateRig(object):
 
             #Stretch
 
-            if hadEnv.AUTORIGSTRETCH:
+            if hadEnv.AUTO_RIG_STRETCH:
 
                 locatorsArm = []
                 locatorsArmShape = []
@@ -1399,22 +1399,22 @@ class AutoRigGenerateRig(object):
                 cmds.delete(distanceArm[0])
                 cmds.delete(distanceArm[1])
 
-                mulScaleFactorArm = cmds.createNode('multiplyDivide', name= 'ScaleFactor_Arm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                mulScaleFactorArm = cmds.createNode('multiplyDivide', name= 'ScaleFactor_Arm'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
                 cmds.setAttr(mulScaleFactorArm + '.operation', 1)
-                cmds.connectAttr(hadEnv.CTRLGENERAL+'.scaleY', mulScaleFactorArm+'.input1X')
+                cmds.connectAttr(hadEnv.CTRL_GENERAL+'.scaleY', mulScaleFactorArm+'.input1X')
                 cmds.setAttr(mulScaleFactorArm + '.input2X', distanceMax)
 
-                mulStretchFactorArm = cmds.createNode('multiplyDivide', name= 'StretchFactor_Arm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                mulStretchFactorArm = cmds.createNode('multiplyDivide', name= 'StretchFactor_Arm'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
                 cmds.setAttr(mulStretchFactorArm + '.operation', 2)
                 cmds.connectAttr(mulScaleFactorArm+'.outputX', mulStretchFactorArm+'.input2X')
                 cmds.connectAttr(distanceArm[2]+'.distance', mulStretchFactorArm+'.input1X')
 
-                conditionArm= cmds.createNode('condition',name= 'ConditionStretch_Arm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                conditionArm= cmds.createNode('condition',name= 'ConditionStretch_Arm'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
                 cmds.setAttr(conditionArm+'.operation', 2)
                 cmds.connectAttr(mulScaleFactorArm+'.outputX', conditionArm+'.secondTerm')
                 cmds.connectAttr(distanceArm[2]+'.distance', conditionArm+'.firstTerm')
 
-                setRangeArm= cmds.createNode('setRange', name= 'SetRangeStretch_Arm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                setRangeArm= cmds.createNode('setRange', name= 'SetRangeStretch_Arm'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
                 cmds.setAttr(setRangeArm+'.minX', 1)
                 cmds.setAttr(setRangeArm+'.oldMaxX', 1)
 
@@ -1425,12 +1425,12 @@ class AutoRigGenerateRig(object):
 
                 #Squash
 
-                squashFactorArm = cmds.createNode('multiplyDivide', name= 'SquashFactor'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                squashFactorArm = cmds.createNode('multiplyDivide', name= 'SquashFactor'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
                 cmds.setAttr(squashFactorArm+'.operation', 3)
                 cmds.connectAttr(conditionArm+'.outColorR', squashFactorArm+'.input1X')
 
 
-                multiSquashArm = cmds.createNode('multiplyDivide', name= 'SquashMultiply'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                multiSquashArm = cmds.createNode('multiplyDivide', name= 'SquashMultiply'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
                 cmds.setAttr(multiSquashArm + '.operation', 1)
                 cmds.setAttr(multiSquashArm+'.input2X', -1)
                 
@@ -1445,7 +1445,7 @@ class AutoRigGenerateRig(object):
 
                 x = 0
                 for jointSK, jointIK, jointFK in zip(jointsListArmSK, jointsListArmIK , jointsListArmFK): 
-                        blendColorArm= cmds.createNode('blendColors', name='blendColorsArm'+ hadEnv.DICTMIRROR[side], skipSelect=True)
+                        blendColorArm= cmds.createNode('blendColors', name='blendColorsArm'+ hadEnv.DICT_MIRROR[side], skipSelect=True)
                         cmds.connectAttr(jointFK+'.scale', blendColorArm+'.color1')
                         cmds.connectAttr(jointIK+'.scale', blendColorArm+'.color2')
                         cmds.connectAttr(ctrlLArmIKFK+'.SwitchIKFK', blendColorArm+'.blender')
@@ -1458,27 +1458,27 @@ class AutoRigGenerateRig(object):
 
 
 
-        if hadEnv.AUTORIGLISTLEGJOINT:
+        if hadEnv.AUTO_RIG_LIST_LEG_JOINT:
             rigLegs(side)
-            if hadEnv.AUTORIGLISTCHESTJOINT:
+            if hadEnv.AUTO_RIG_LIST_CHEST_JOINT:
                 if side == 6:
-                    step = hadEnv.DICTMIRROR['stepLeg']
+                    step = hadEnv.DICT_MIRROR['stepLeg']
                 else:
                     step = 0
-                cmds.parent(hadEnv.AUTORIGLISTLEGJOINT[0+step], hadEnv.AUTORIGLISTCHESTJOINT[1])
-                cmds.parent(self.jointsListLegIK[0], hadEnv.AUTORIGLISTCHESTJOINT[1])
-                cmds.parent(self.jointsListLegFK[0], hadEnv.AUTORIGLISTCHESTJOINT[1])
-                cmds.parent(self.grpCtrlLegFK[0] , hadEnv.AUTORIGLISTCHESTJOINT[1])
+                cmds.parent(hadEnv.AUTO_RIG_LIST_LEG_JOINT[0+step], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[1])
+                cmds.parent(self.jointsListLegIK[0], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[1])
+                cmds.parent(self.jointsListLegFK[0], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[1])
+                cmds.parent(self.grpCtrlLegFK[0] , hadEnv.AUTO_RIG_LIST_CHEST_JOINT[1])
 
 
-        if hadEnv.AUTORIGLISTARMJOINT:
+        if hadEnv.AUTO_RIG_LIST_ARM_JOINT:
             rigArms(side)
-            if hadEnv.AUTORIGLISTCHESTJOINT:
+            if hadEnv.AUTO_RIG_LIST_CHEST_JOINT:
                 if side == 6:
-                    step = hadEnv.DICTMIRROR['stepArm']
+                    step = hadEnv.DICT_MIRROR['stepArm']
                 else:
                     step = 0
-                cmds.parent(hadEnv.AUTORIGLISTARMJOINT[0+step], hadEnv.AUTORIGLISTCHESTJOINT[4])
-                cmds.orientConstraint(hadEnv.JOINTIKCHEST[-1], self.grpCtrlClavicle, maintainOffset=True)
-                cmds.parent(self.grpCtrlClavicle, hadEnv.CTRLIKCHEST[-1])
+                cmds.parent(hadEnv.AUTO_RIG_LIST_ARM_JOINT[0+step], hadEnv.AUTO_RIG_LIST_CHEST_JOINT[4])
+                cmds.orientConstraint(hadEnv.JOINT_IK_CHEST[-1], self.grpCtrlClavicle, maintainOffset=True)
+                cmds.parent(self.grpCtrlClavicle, hadEnv.CTRL_IK_CHEST[-1])
 
