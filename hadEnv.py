@@ -1,5 +1,5 @@
 PATH = ''
-VERSION = "V.1.3.1"
+VERSION = "V.1.4.1"
 
 WINDOW_CHECK = True
 
