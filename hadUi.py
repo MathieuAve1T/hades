@@ -105,6 +105,10 @@ class Hades(MyUi):
         self.autoRig_but = QtWidgets.QPushButton("AutoRig")
         self.autoRig_but.clicked.connect(self.clickAutoRig_But)
         self.autoRig_l = QtWidgets.QLabel("AutoRig basic for biped character")
+        
+        self.cerberus_but = QtWidgets.QPushButton("AutoRig Cerberus")
+        self.cerberus_but.clicked.connect(self.clickCerberus_But)
+        self.cerberus_l = QtWidgets.QLabel("AutoRig with module")
 
         self.skinTool_but = QtWidgets.QPushButton("SkinTool")
         self.skinTool_but.clicked.connect(self.clickSkinTool_But)
@@ -124,6 +128,7 @@ class Hades(MyUi):
 
         self.masterTab = QtWidgets.QWidget()
         self.autoRigTab = QtWidgets.QWidget()
+        self.cerberusTab = QtWidgets.QWidget()
         self.skinToolTab = QtWidgets.QWidget()
         self.toolMayaTab = QtWidgets.QWidget()
         self.createCtrlTab = QtWidgets.QWidget()
@@ -153,6 +158,10 @@ class Hades(MyUi):
         self.autoRig_createRig_l = QtWidgets.QLabel("Please place the guides then click on the 'Create Rig' button")
         self.autoRig_createRig_but = QtWidgets.QPushButton("Create Rig")
         self.autoRig_createRig_but.clicked.connect(self.clickAutoRigGenerator_But)
+        
+        #Cerberus_tab
+        
+        self.cerberus_test_l = QtWidgets.QLabel("test :")
 
         #skinTool_tab
 
@@ -641,9 +650,13 @@ class Hades(MyUi):
         
         #master_tab : 
         
-        self.autoRig_layout = QtWidgets.QVBoxLayout()
-        self.autoRig_layout.addWidget(self.autoRig_but)
-        self.autoRig_layout.addWidget(self.autoRig_l)
+        autoRig_layout = QtWidgets.QVBoxLayout()
+        autoRig_layout.addWidget(self.autoRig_but)
+        autoRig_layout.addWidget(self.autoRig_l)
+        
+        cerberus_layout = QtWidgets.QVBoxLayout()
+        cerberus_layout.addWidget(self.cerberus_but)
+        cerberus_layout.addWidget(self.cerberus_l)
 
         skinTool_layout = QtWidgets.QVBoxLayout() 
         skinTool_layout.addWidget(self.skinTool_but)
@@ -663,7 +676,8 @@ class Hades(MyUi):
 
         master_layout = QtWidgets.QVBoxLayout(self.masterTab)
         master_layout.addWidget(self.title_l)
-        master_layout.addLayout(self.autoRig_layout)
+        master_layout.addLayout(autoRig_layout)
+        master_layout.addLayout(cerberus_layout)
         master_layout.addLayout(skinTool_layout)
         master_layout.addLayout(toolMaya_layout)
         master_layout.addLayout(createCrv_layout)
@@ -684,6 +698,11 @@ class Hades(MyUi):
         self.autoRigTab_layout.addWidget(self.autoRig_mirror_chk)
         self.autoRigTab_layout.addWidget(self.autoRig_createRig_l)
         self.autoRigTab_layout.addWidget(self.autoRig_createRig_but)
+        
+        #Cerberus_tab
+        
+        self.cerberusTab_layout = QtWidgets.QHBoxLayout(self.cerberusTab)
+        self.cerberusTab_layout.addWidget(self.cerberus_test_l)
 
         #skinTool_tab
 
@@ -826,6 +845,11 @@ class Hades(MyUi):
     def clickAutoRig_But(self):
 
         self.tabMaster.addTab(self.autoRigTab,'AutoRig')
+        self.tabMaster.setCurrentIndex(1)
+        
+    def clickCerberus_But(self):
+
+        self.tabMaster.addTab(self.cerberusTab,'Cerberus')
         self.tabMaster.setCurrentIndex(1)
 
     def clickSkinTool_But(self):
