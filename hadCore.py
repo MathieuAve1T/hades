@@ -182,8 +182,8 @@ def refreshSelectionValue(obsoleteArg=None):
 				value = format(value, '.4f')
 				value = str(value)
 				vertice = str(vtx)
-				skinToolItem_tree = QtWidgets.QTreeWidgetItem([vertice,value,joint])
-				hadEnv.TREE_SKIN_VALUES.addTopLevelItem(skinToolItem_tree)
+				thanatosItem_tree = QtWidgets.QTreeWidgetItem([vertice,value,joint])
+				hadEnv.TREE_SKIN_VALUES.addTopLevelItem(thanatosItem_tree)
 				hadEnv.TREE_SKIN_VALUES.resizeColumnToContents(0)
 	else:
 		raise RuntimeError("Selected mesh has no skinCluster")
@@ -282,65 +282,65 @@ def selectionJoint():
 	__myGlobalVar = OpenMaya.MEventMessage.addEventCallback("SelectionChanged", refreshSelectionVtx)
 
  
-def coreSkinToolShrink():
+def corethanatosShrink():
 	mel.eval('PolySelectTraverse 2')
 
-def coreSkinToolGrow():
+def corethanatosGrow():
 	mel.eval('PolySelectTraverse 1')
 
-def coreSkinToolRing():
+def corethanatosRing():
 	cmds.polySelectSp(ring=True)
 
-def coreSkinToolLoop():
+def corethanatosLoop():
 	cmds.polySelectSp(loop=True)
 
-def coreSkinTool0(self):
+def corethanatos0(self):
 	hadLib.applyWeight(0)
 	refreshSelectionValue(self)
 
-def coreSkinTool01(self):
+def corethanatos01(self):
 	hadLib.applyWeight(0.1)
 	refreshSelectionValue(self)
 
-def coreSkinTool025(self):
+def corethanatos025(self):
 	hadLib.applyWeight(0.25)
 	refreshSelectionValue(self)
 
-def coreSkinTool05(self):
+def corethanatos05(self):
 	hadLib.applyWeight(0.5)
 	refreshSelectionValue(self)
 
-def coreSkinTool075(self):
+def corethanatos075(self):
 	hadLib.applyWeight(0.75)
 	refreshSelectionValue(self)
 
-def coreSkinTool09(self):
+def corethanatos09(self):
 	hadLib.applyWeight(0.9)
 	refreshSelectionValue(self)
 
-def coreSkinTool1(self):
+def corethanatos1(self):
 	hadLib.applyWeight(1)
 	refreshSelectionValue(self)
 
-def coreSkinToolSetWeight():
+def corethanatosSetWeight():
 	pass
 
-def coreSkinToolSetWeightAdd():
+def corethanatosSetWeightAdd():
 	pass
 
-def coreSkinToolSetWeightSub():
+def corethanatosSetWeightSub():
 	pass
 
-def coreSkinToolScaleWeight():
+def corethanatosScaleWeight():
 	pass
 
-def coreSkinToolScaleWeightAdd():
+def corethanatosScaleWeightAdd():
 	pass
 
-def coreSkinToolScaleWeightSub():
+def corethanatosScaleWeightSub():
 	pass
 
-def coreSkinToolCopy():
+def corethanatosCopy():
 	mel.eval('artAttrSkinWeightCopy;')
 	listSelection = []
 	lenVertices = 0
@@ -353,13 +353,13 @@ def coreSkinToolCopy():
 			hadEnv.LABEL_VERTICE_MEMORY.setText(labelVertices)
 
 
-def coreSkinToolPaste():
+def corethanatosPaste():
 	mel.eval('artAttrSkinWeightPaste;')
 
 def coreSkinTooPastePos():
 	pass
 
-def coreSkinToolBlend():
+def corethanatosBlend():
 	pass
 
 

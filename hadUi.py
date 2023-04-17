@@ -3,10 +3,14 @@ try: from PySide2 import QtCore, QtGui, QtWidgets
 except: from PyQt5 import QtCore, QtGui, QtWidgets
 finally: __qt_binding__ = QtCore.__name__.partition('.')[0]
 
+### TO DELETE
+
 #from Qt import QtWidgets
 #from Qt import QtCore
 #from Qt import QtGui
 #from Qt import QtCompat
+
+###
 
 
 if __qt_binding__ == 'PySide2':
@@ -55,7 +59,7 @@ ui.show()
 '''
 
 def maya_main_window():
-    return wrapInstance(long(MQtUtil.mainWindow()), QtWidgets.QWidget)
+    return wrapInstance(int(MQtUtil.mainWindow()), QtWidgets.QWidget)
 
 class MyLineEdit(QtWidgets.QLineEdit):
     def __init__(self, text='', parent=None):
@@ -104,16 +108,34 @@ class Hades(MyUi):
 
         self.autoRig_but = QtWidgets.QPushButton("AutoRig")
         self.autoRig_but.clicked.connect(self.clickAutoRig_But)
-        self.autoRig_l = QtWidgets.QLabel("AutoRig basic for biped character")
+        self.autoRig_l = QtWidgets.QLabel("USELESS")
         
         self.cerberus_but = QtWidgets.QPushButton("AutoRig Cerberus")
         self.cerberus_but.clicked.connect(self.clickCerberus_But)
-        self.cerberus_l = QtWidgets.QLabel("AutoRig with module")
+        self.cerberus_l = QtWidgets.QLabel("AutoRig with bricks")
 
-        self.skinTool_but = QtWidgets.QPushButton("SkinTool")
-        self.skinTool_but.clicked.connect(self.clickSkinTool_But)
-        self.skinTool_l = QtWidgets.QLabel("[Coming soon]")
+        self.thanatos_but = QtWidgets.QPushButton("SkinTool Thanatos")
+        self.thanatos_but.clicked.connect(self.clickThanatos_But)
+        self.thanatos_l = QtWidgets.QLabel("[Coming soon]")
 
+        self.chaos_but = QtWidgets.QPushButton("Tools Chaos")
+        self.chaos_but.clicked.connect(self.clickChaos_But)
+        self.chaos_l = QtWidgets.QLabel("[Coming soon]")
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         self.toolMaya_but = QtWidgets.QPushButton("Tools for Maya")
         self.toolMaya_but.clicked.connect(self.clickToolMaya_But)
         self.toolMaya_l = QtWidgets.QLabel("Library of Maya tools")
@@ -129,7 +151,11 @@ class Hades(MyUi):
         self.masterTab = QtWidgets.QWidget()
         self.autoRigTab = QtWidgets.QWidget()
         self.cerberusTab = QtWidgets.QWidget()
-        self.skinToolTab = QtWidgets.QWidget()
+        self.cerberusConsTab = QtWidgets.QWidget()
+        self.cerberusTreeTab = QtWidgets.QWidget()
+        self.cerberusMuscleTab = QtWidgets.QWidget()
+        self.thanatosTab = QtWidgets.QWidget()
+        self.chaosTab = QtWidgets.QWidget()
         self.toolMayaTab = QtWidgets.QWidget()
         self.createCtrlTab = QtWidgets.QWidget()
         self.toolZivaTab = QtWidgets.QWidget()
@@ -161,74 +187,174 @@ class Hades(MyUi):
         
         #Cerberus_tab
         
-        self.cerberus_test_l = QtWidgets.QLabel("test :")
+        self.cerberus_title_l = QtWidgets.QLabel("Cerberus 1.0.3")
+        
+        self.cerberus_titleTemplate_l = QtWidgets.QLabel("Import Template")
+        self.cerberus_titleTemplate_butBi = QtWidgets.QPushButton("Biped")
+        self.cerberus_titleTemplate_butQa = QtWidgets.QPushButton("Quadruped")
+        self.cerberus_titleTemplate_butWi = QtWidgets.QPushButton("Wing")
+        self.cerberus_titleTemplate_butFa = QtWidgets.QPushButton("Facial")
+        
+        self.cerberus_titleBrick_l = QtWidgets.QLabel("Import Brick Preset")
+        self.cerberus_presetBrick_CB = QtWidgets.QComboBox(self)
+        self.cerberus_presetBrickSimple_menu = self.cerberus_presetBrick_CB.addItem("simple")
+        self.cerberus_presetBrickSpine_menu = self.cerberus_presetBrick_CB.addItem("spine")
+        self.cerberus_presetBrickArm_menu = self.cerberus_presetBrick_CB.addItem("arm")
+        self.cerberus_presetBrickHand_menu = self.cerberus_presetBrick_CB.addItem("hand")
+        self.cerberus_presetBrickFoot_menu = self.cerberus_presetBrick_CB.addItem("foot")
+        self.cerberus_presetBrickLeg_menu = self.cerberus_presetBrick_CB.addItem("leg")
+        self.cerberus_presetBrickEye_menu = self.cerberus_presetBrick_CB.addItem("eye")
+        self.cerberus_presetBrickMouth_menu = self.cerberus_presetBrick_CB.addItem("mouth")
+        self.cerberus_presetBrickQuadrupedLeg_menu = self.cerberus_presetBrick_CB.addItem("quadruped leg")
+        self.cerberus_presetBrickMuscle_menu = self.cerberus_presetBrick_CB.addItem("muscle")
+        self.cerberus_presetBrickCustom_menu = self.cerberus_presetBrick_CB.addItem("custom")
+        
+        self.cerberus_editName_lE = QtWidgets.QLineEdit()
+        self.cerberus_editName_l = QtWidgets.QLabel("Name : ") 
+        
+        self.cerberus_editSide_l = QtWidgets.QLabel("Side")
+        self.cerberus_editSide_rB1 = QtWidgets.QRadioButton("Left")
+        self.cerberus_editSide_rB2 = QtWidgets.QRadioButton("Right")
+        self.cerberus_editSide_rB3 = QtWidgets.QRadioButton("Center")
+        self.cerberus_editSide_rB1.setChecked(True)
+        
+        self.cerberus_editMirror_l = QtWidgets.QLabel("Mirror")
+        self.cerberus_editMirror_chk = QtWidgets.QCheckBox()
+        self.cerberus_editMirror_chk.setChecked(False)
+        
+        self.cerberus_editLevel_l = QtWidgets.QLabel("Lvl")
+        self.cerberus_editLevel_rB1 = QtWidgets.QRadioButton("Fk")
+        self.cerberus_editLevel_rB2 = QtWidgets.QRadioButton("Ik")
+        self.cerberus_editLevel_rB3 = QtWidgets.QRadioButton("Fk/Ik")
+        self.cerberus_editLevel_rB4 = QtWidgets.QRadioButton("Both")
+        self.cerberus_editLevel_rB1.setChecked(True)
 
-        #skinTool_tab
+        self.cerberus_parent_l = QtWidgets.QLabel("Parent : ")
+        self.cerberus_parent_lE = QtWidgets.QLineEdit() 
+        self.cerberus_parent_but = QtWidgets.QPushButton("<<<")
+        
+        self.cerberus_constraint_l = QtWidgets.QLabel("Constraint : ")
+        self.cerberus_constraint_but = QtWidgets.QPushButton("Constraint settings")
+        self.cerberus_constraint_but.clicked.connect(self.clickCerberusCons_But)
+        
+        self.cerberus_option_l = QtWidgets.QLabel("Option :")
+        self.cerberus_optionTwist_chk = QtWidgets.QCheckBox("Twist")
+        self.cerberus_optionStretch_chk = QtWidgets.QCheckBox("Stretch")
+        self.cerberus_optionSquash_chk = QtWidgets.QCheckBox("Squash")
+        
+        self.cerberus_treeSet_l = QtWidgets.QLabel("Tree : ")
+        self.cerberus_treeSet_but = QtWidgets.QPushButton("Tree settings")
+        self.cerberus_treeSet_but.clicked.connect(self.clickCerberusTree_But)
 
-        self.skinTool_shrink_but = QtWidgets.QPushButton("Shrink")
-        self.skinTool_shrink_but.clicked.connect(self.clickSkinToolShrink_But)
-        self.skinTool_grow_but = QtWidgets.QPushButton("Grow")
-        self.skinTool_grow_but.clicked.connect(self.clickSkinToolGrow_But)
-        self.skinTool_ring_but = QtWidgets.QPushButton("Ring")
-        self.skinTool_ring_but.clicked.connect(self.clickSkinToolRing_But)
-        self.skinTool_loop_but = QtWidgets.QPushButton("Loop")
-        self.skinTool_loop_but.clicked.connect(self.clickSkinToolLoop_But)
-        self.skinTool_0_but = QtWidgets.QPushButton("0")
-        self.skinTool_0_but.clicked.connect(self.clickSkinTool0_But)
-        self.skinTool_01_but = QtWidgets.QPushButton(".1")
-        self.skinTool_01_but.clicked.connect(self.clickSkinTool01_But)
-        self.skinTool_025_but = QtWidgets.QPushButton(".25")
-        self.skinTool_025_but.clicked.connect(self.clickSkinTool025_But)
-        self.skinTool_05_but = QtWidgets.QPushButton(".5")
-        self.skinTool_05_but.clicked.connect(self.clickSkinTool05_But)
-        self.skinTool_075_but = QtWidgets.QPushButton(".75")
-        self.skinTool_075_but.clicked.connect(self.clickSkinTool075_But)
-        self.skinTool_09_but = QtWidgets.QPushButton(".9")
-        self.skinTool_09_but.clicked.connect(self.clickSkinTool09_But)
-        self.skinTool_1_but = QtWidgets.QPushButton("1")
-        self.skinTool_1_but.clicked.connect(self.clickSkinTool1_But)
-        self.skinTool_setWeight_but = QtWidgets.QPushButton("Set Weight")
-        self.skinTool_setWeight_but.clicked.connect(self.clickSkinToolSetWeight_But)
-        self.skinTool_setWeight_sb = QtWidgets.QDoubleSpinBox()
-        self.skinTool_setWeight_sb.setValue(0.5)
-        self.skinTool_setWeight_sb.setMinimum(0)
-        self.skinTool_setWeight_sb.setMaximum(1)
-        self.skinTool_setWeight_sb.setSingleStep(0.05)
-        self.skinTool_setWeightAdd_but = QtWidgets.QPushButton("+")
-        self.skinTool_setWeight_but.clicked.connect(self.clickSkinToolSetWeightAdd_But)
-        self.skinTool_setWeightSub_but = QtWidgets.QPushButton("-")
-        self.skinTool_setWeightSub_but.clicked.connect(self.clickSkinToolSetWeightSub_But)
-        self.skinTool_scaleWeight_but = QtWidgets.QPushButton("Scale Weight")
-        self.skinTool_scaleWeight_but.clicked.connect(self.clickSkinToolScaleWeight_But)
-        self.skinTool_scaleWeight_sb = QtWidgets.QDoubleSpinBox()
-        self.skinTool_scaleWeight_sb.setValue(0.95)
-        self.skinTool_scaleWeight_sb.setMinimum(0.001)
-        self.skinTool_scaleWeight_sb.setMaximum(5)
-        self.skinTool_scaleWeight_sb.setSingleStep(0.05)
-        self.skinTool_scaleWeightAdd_but = QtWidgets.QPushButton("+")
-        self.skinTool_scaleWeightAdd_but.clicked.connect(self.clickSkinToolScaleWeightAdd_But)
-        self.skinTool_scaleWeightSub_but = QtWidgets.QPushButton("-")
-        self.skinTool_scaleWeightSub_but.clicked.connect(self.clickSkinToolScaleWeightSub_But)
-        self.skinTool_copy_but = QtWidgets.QPushButton("Copy")
-        self.skinTool_copy_but.clicked.connect(self.clickSkinToolCopy_But)
-        self.skinTool_paste_but = QtWidgets.QPushButton("Paste")
-        self.skinTool_paste_but.clicked.connect(self.clickSkinToolPaste_But)
-        self.skinTool_pastePos_but = QtWidgets.QPushButton("Paste-Pos")
-        self.skinTool_pastePos_but.clicked.connect(self.clickSkinToolPastePos_But)
-        self.skinTool_blend_but = QtWidgets.QPushButton("Blend")
-        self.skinTool_blend_but.clicked.connect(self.clickSkinToolBlend_But)
-        self.skinTool_pastePosTol_l = QtWidgets.QLabel('Paste-Pos Tolerance')
-        self.skinTool_pastePosTol_sb = QtWidgets.QDoubleSpinBox()
-        self.skinTool_pastePosTol_sb.setValue(0.1)
-        self.skinTool_pastePosTol_sb.setMinimum(0)
-        self.skinTool_pastePosTol_sb.setMaximum(10)
-        self.skinTool_pastePosTol_sb.setSingleStep(0.1)
-        hadEnv.LABEL_VERTICE_MEMORY = self.skinTool_verCopyBuffer_l = QtWidgets.QLabel("0 Vertice In Copy Buffer")
-        hadEnv.LABEL_VERTICE_SELECTED = self.skinTool_verSelected_l = QtWidgets.QLabel("0 Vertice Selected")
-        hadEnv.TREE_SKIN_VALUES = self.skinTool_tree = QtWidgets.QTreeWidget()
-        self.skinTool_tree.setColumnCount(2)
-        self.skinTool_tree.setHeaderLabels(["Vertice","Value", "Joints"])
-        self.skinTool_tree.itemSelectionChanged.connect(hadCore.selectionJoint)
+        self.cerberus_muscle_l = QtWidgets.QLabel("Muscle preset : ")
+        self.cerberus_muscle_CB = QtWidgets.QComboBox(self)
+        self.cerberus_muscleBiceps_menu = self.cerberus_muscle_CB.addItem("biceps")
+        self.cerberus_muscleTriceps_menu = self.cerberus_muscle_CB.addItem("triceps")
+        self.cerberus_musclePectoral_menu = self.cerberus_muscle_CB.addItem("pectoral")
+        self.cerberus_muscleScapula_menu = self.cerberus_muscle_CB.addItem("scapula")
+        self.cerberus_muscleTrapesius_menu = self.cerberus_muscle_CB.addItem("trapesius")
+        self.cerberus_muscle_but = QtWidgets.QPushButton("Muscle settings")
+        self.cerberus_muscle_but.clicked.connect(self.clickCerberusMuscle_But)
+
+        self.cerberus_CreateBrick_but = QtWidgets.QPushButton("Create")
+        self.cerberus_titleTree_l = QtWidgets.QLabel("Cerberus Editor")
+        self.cerberus_refreshTree_l = QtWidgets.QPushButton("Refresh")
+        
+        self.cerberus_tree = QtWidgets.QTreeWidget()
+        self.cerberus_tree.setColumnCount(2)
+        self.cerberus_treeEdit_but = QtWidgets.QToolButton()
+        
+        self.cerberus_tree.setHeaderLabels(["Bricks :", ""])
+
+        items = ["Item 1", "Item 2", "Item 3"]
+        for item in items:
+            tree_item = QtWidgets.QTreeWidgetItem(self.cerberus_tree)
+            tree_item.setText(0, item)
+
+            # Ajouter un bouton dans la seconde colonne
+            button = QtWidgets.QPushButton("Edit")
+            self.cerberus_tree.setItemWidget(tree_item, 1, button)
+        
+        self.cerberus_tree.setColumnWidth(0, 275)
+        self.cerberus_Build_but = QtWidgets.QPushButton("Build")
+        self.cerberus_BuildToggle_chk = QtWidgets.QCheckBox("Toggle Bricks")
+
+        #thanatos_tab
+
+        self.thanatos_shrink_but = QtWidgets.QPushButton("Shrink")
+        self.thanatos_shrink_but.clicked.connect(self.clickthanatosShrink_But)
+        self.thanatos_grow_but = QtWidgets.QPushButton("Grow")
+        self.thanatos_grow_but.clicked.connect(self.clickthanatosGrow_But)
+        self.thanatos_ring_but = QtWidgets.QPushButton("Ring")
+        self.thanatos_ring_but.clicked.connect(self.clickthanatosRing_But)
+        self.thanatos_loop_but = QtWidgets.QPushButton("Loop")
+        self.thanatos_loop_but.clicked.connect(self.clickthanatosLoop_But)
+        self.thanatos_0_but = QtWidgets.QPushButton("0")
+        self.thanatos_0_but.clicked.connect(self.clickthanatos0_But)
+        self.thanatos_01_but = QtWidgets.QPushButton(".1")
+        self.thanatos_01_but.clicked.connect(self.clickthanatos01_But)
+        self.thanatos_025_but = QtWidgets.QPushButton(".25")
+        self.thanatos_025_but.clicked.connect(self.clickthanatos025_But)
+        self.thanatos_05_but = QtWidgets.QPushButton(".5")
+        self.thanatos_05_but.clicked.connect(self.clickthanatos05_But)
+        self.thanatos_075_but = QtWidgets.QPushButton(".75")
+        self.thanatos_075_but.clicked.connect(self.clickthanatos075_But)
+        self.thanatos_09_but = QtWidgets.QPushButton(".9")
+        self.thanatos_09_but.clicked.connect(self.clickthanatos09_But)
+        self.thanatos_1_but = QtWidgets.QPushButton("1")
+        self.thanatos_1_but.clicked.connect(self.clickthanatos1_But)
+        self.thanatos_setWeight_but = QtWidgets.QPushButton("Set Weight")
+        self.thanatos_setWeight_but.clicked.connect(self.clickthanatosSetWeight_But)
+        self.thanatos_setWeight_sb = QtWidgets.QDoubleSpinBox()
+        self.thanatos_setWeight_sb.setValue(0.5)
+        self.thanatos_setWeight_sb.setMinimum(0)
+        self.thanatos_setWeight_sb.setMaximum(1)
+        self.thanatos_setWeight_sb.setSingleStep(0.05)
+        self.thanatos_setWeightAdd_but = QtWidgets.QPushButton("+")
+        self.thanatos_setWeight_but.clicked.connect(self.clickthanatosSetWeightAdd_But)
+        self.thanatos_setWeightSub_but = QtWidgets.QPushButton("-")
+        self.thanatos_setWeightSub_but.clicked.connect(self.clickthanatosSetWeightSub_But)
+        self.thanatos_scaleWeight_but = QtWidgets.QPushButton("Scale Weight")
+        self.thanatos_scaleWeight_but.clicked.connect(self.clickthanatosScaleWeight_But)
+        self.thanatos_scaleWeight_sb = QtWidgets.QDoubleSpinBox()
+        self.thanatos_scaleWeight_sb.setValue(0.95)
+        self.thanatos_scaleWeight_sb.setMinimum(0.001)
+        self.thanatos_scaleWeight_sb.setMaximum(5)
+        self.thanatos_scaleWeight_sb.setSingleStep(0.05)
+        self.thanatos_scaleWeightAdd_but = QtWidgets.QPushButton("+")
+        self.thanatos_scaleWeightAdd_but.clicked.connect(self.clickthanatosScaleWeightAdd_But)
+        self.thanatos_scaleWeightSub_but = QtWidgets.QPushButton("-")
+        self.thanatos_scaleWeightSub_but.clicked.connect(self.clickthanatosScaleWeightSub_But)
+        self.thanatos_copy_but = QtWidgets.QPushButton("Copy")
+        self.thanatos_copy_but.clicked.connect(self.clickthanatosCopy_But)
+        self.thanatos_paste_but = QtWidgets.QPushButton("Paste")
+        self.thanatos_paste_but.clicked.connect(self.clickthanatosPaste_But)
+        self.thanatos_pastePos_but = QtWidgets.QPushButton("Paste-Pos")
+        self.thanatos_pastePos_but.clicked.connect(self.clickthanatosPastePos_But)
+        self.thanatos_blend_but = QtWidgets.QPushButton("Blend")
+        self.thanatos_blend_but.clicked.connect(self.clickthanatosBlend_But)
+        self.thanatos_pastePosTol_l = QtWidgets.QLabel('Paste-Pos Tolerance')
+        self.thanatos_pastePosTol_sb = QtWidgets.QDoubleSpinBox()
+        self.thanatos_pastePosTol_sb.setValue(0.1)
+        self.thanatos_pastePosTol_sb.setMinimum(0)
+        self.thanatos_pastePosTol_sb.setMaximum(10)
+        self.thanatos_pastePosTol_sb.setSingleStep(0.1)
+        hadEnv.LABEL_VERTICE_MEMORY = self.thanatos_verCopyBuffer_l = QtWidgets.QLabel("0 Vertice In Copy Buffer")
+        hadEnv.LABEL_VERTICE_SELECTED = self.thanatos_verSelected_l = QtWidgets.QLabel("0 Vertice Selected")
+        hadEnv.TREE_SKIN_VALUES = self.thanatos_tree = QtWidgets.QTreeWidget()
+        self.thanatos_tree.setColumnCount(2)
+        self.thanatos_tree.setHeaderLabels(["Vertice","Value", "Joints"])
+        self.thanatos_tree.itemSelectionChanged.connect(hadCore.selectionJoint)
+        
+        #chaos_tab
+        
+        
+        
+        
+        
+        
+        
+        
 
         #tools_for_Maya
 
@@ -492,9 +618,7 @@ class Hades(MyUi):
         self.toolZivaPaintAttach_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','zAttachment.png')))
         self.toolZivaPaintAttach_but.setMenu(self.toolZivaPaintAttach_menu)
 
-
         self.toolZivaThird_l = QtWidgets.QLabel("Edit Mesh :")
-
 
         self.toolZivaCopyPaste_menu = QtWidgets.QMenu(self)
         self.toolZivaCopyPaste_copy = self.toolZivaCopyPaste_menu.addAction("Copy")
@@ -504,7 +628,6 @@ class Hades(MyUi):
         self.toolZivaCopyPaste_but = QtWidgets.QPushButton("CopyPaste")
         self.toolZivaCopyPaste_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','copyPaste.png')))
         self.toolZivaCopyPaste_but.setMenu(self.toolZivaCopyPaste_menu)
-
 
         self.toolZivaMeshSculpt_menu = QtWidgets.QMenu(self)
         self.toolZivaMeshSculpt_standard = self.toolZivaMeshSculpt_menu.addAction("Standard")
@@ -520,7 +643,6 @@ class Hades(MyUi):
         self.toolZivaMeshSculpt_but = QtWidgets.QPushButton("MeshSculpt")
         self.toolZivaMeshSculpt_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','meshStandart.png')))
         self.toolZivaMeshSculpt_but.setMenu(self.toolZivaMeshSculpt_menu)
-
 
         self.toolZivaMeshModify_menu = QtWidgets.QMenu(self)
         self.toolZivaMeshModify_smooth = self.toolZivaMeshModify_menu.addAction("Smooth")
@@ -538,9 +660,6 @@ class Hades(MyUi):
         self.toolZivaMeshModify_but = QtWidgets.QPushButton("MeshModify")
         self.toolZivaMeshModify_but.setIcon(QtGui.QIcon(os.path.join(hadEnv.PATH,'images','meshOption.png')))
         self.toolZivaMeshModify_but.setMenu(self.toolZivaMeshModify_menu)
-
-
-
 
         self.toolZivaMeshMirror_menu = QtWidgets.QMenu(self)
         self.toolZivaMeshMirror_mirror = self.toolZivaMeshMirror_menu.addAction("Mirror")
@@ -658,9 +777,13 @@ class Hades(MyUi):
         cerberus_layout.addWidget(self.cerberus_but)
         cerberus_layout.addWidget(self.cerberus_l)
 
-        skinTool_layout = QtWidgets.QVBoxLayout() 
-        skinTool_layout.addWidget(self.skinTool_but)
-        skinTool_layout.addWidget(self.skinTool_l)
+        thanatos_layout = QtWidgets.QVBoxLayout() 
+        thanatos_layout.addWidget(self.thanatos_but)
+        thanatos_layout.addWidget(self.thanatos_l)
+        
+        chaos_layout = QtWidgets.QVBoxLayout() 
+        chaos_layout.addWidget(self.chaos_but)
+        chaos_layout.addWidget(self.chaos_l)
 
         toolMaya_layout = QtWidgets.QVBoxLayout()
         toolMaya_layout.addWidget(self.toolMaya_but)
@@ -676,12 +799,13 @@ class Hades(MyUi):
 
         master_layout = QtWidgets.QVBoxLayout(self.masterTab)
         master_layout.addWidget(self.title_l)
-        master_layout.addLayout(autoRig_layout)
+        #master_layout.addLayout(autoRig_layout)
         master_layout.addLayout(cerberus_layout)
-        master_layout.addLayout(skinTool_layout)
-        master_layout.addLayout(toolMaya_layout)
-        master_layout.addLayout(createCrv_layout)
-        master_layout.addLayout(toolZiva_layout)
+        master_layout.addLayout(thanatos_layout)
+        master_layout.addLayout(chaos_layout)
+        #master_layout.addLayout(toolMaya_layout)
+        #master_layout.addLayout(createCrv_layout)
+        #master_layout.addLayout(toolZiva_layout)
 
         #auto_rig_tab
 
@@ -700,65 +824,249 @@ class Hades(MyUi):
         self.autoRigTab_layout.addWidget(self.autoRig_createRig_but)
         
         #Cerberus_tab
+
+        self.cerberus_layoutA = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutA.addWidget(self.cerberus_title_l)
+        self.cerberus_layoutB = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutB.addWidget(self.cerberus_titleTemplate_l)
+        self.cerberus_layoutC = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutC.addWidget(self.cerberus_titleTemplate_butBi)
+        self.cerberus_layoutC.addWidget(self.cerberus_titleTemplate_butQa)
+        self.cerberus_layoutC.addWidget(self.cerberus_titleTemplate_butWi)
+        self.cerberus_layoutC.addWidget(self.cerberus_titleTemplate_butFa)
+        self.cerberus_layoutD = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutD.addWidget(self.cerberus_titleBrick_l)
+        self.cerberus_layoutE = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutE.addWidget(self.cerberus_presetBrick_CB)
+
+        self.cerberus_layoutG = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutG.addWidget(self.cerberus_editName_l)
+        self.cerberus_layoutG.addWidget(self.cerberus_editName_lE)
+        self.cerberus_layoutH = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutH.addWidget(self.cerberus_editSide_l)
         
-        self.cerberusTab_layout = QtWidgets.QHBoxLayout(self.cerberusTab)
-        self.cerberusTab_layout.addWidget(self.cerberus_test_l)
+        self.cerberus_editSide_grpBut = QtWidgets.QButtonGroup()
+        self.cerberus_editSide_grpBut.addButton(self.cerberus_editSide_rB1)
+        self.cerberus_editSide_grpBut.addButton(self.cerberus_editSide_rB2)
+        self.cerberus_editSide_grpBut.addButton(self.cerberus_editSide_rB3)  
+        
+        self.cerberus_layoutH.addWidget(self.cerberus_editSide_rB1)
+        self.cerberus_layoutH.addWidget(self.cerberus_editSide_rB2)
+        self.cerberus_layoutH.addWidget(self.cerberus_editSide_rB3)
 
-        #skinTool_tab
+        self.cerberus_layoutH.addStretch(1)
+        
+        self.cerberus_layoutI = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutI.addWidget(self.cerberus_editMirror_l)
+        self.cerberus_layoutI.addWidget(self.cerberus_editMirror_chk)
+        self.cerberus_layoutI.addStretch(1)
+        self.cerberus_layoutJ = QtWidgets.QHBoxLayout()
+        
+        self.cerberus_editLevel_grpBut = QtWidgets.QButtonGroup()
+        self.cerberus_editLevel_grpBut.addButton(self.cerberus_editLevel_rB1)
+        self.cerberus_editLevel_grpBut.addButton(self.cerberus_editLevel_rB2)
+        self.cerberus_editLevel_grpBut.addButton(self.cerberus_editLevel_rB3)
+        self.cerberus_editLevel_grpBut.addButton(self.cerberus_editLevel_rB4)
+        
+        
+        self.cerberus_layoutJ.addWidget(self.cerberus_editLevel_l)
+        self.cerberus_layoutJ.addWidget(self.cerberus_editLevel_rB1)
+        self.cerberus_layoutJ.addWidget(self.cerberus_editLevel_rB2)
+        self.cerberus_layoutJ.addWidget(self.cerberus_editLevel_rB3)
+        self.cerberus_layoutJ.addWidget(self.cerberus_editLevel_rB4)
+        
+        
+        
+        self.cerberus_layoutJ.addStretch(1)
+        self.cerberus_layoutK = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutK.addWidget(self.cerberus_parent_l)
+        self.cerberus_layoutK.addWidget(self.cerberus_parent_lE)
+        self.cerberus_layoutK.addWidget(self.cerberus_parent_but)
+        self.cerberus_layoutL = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutL.addWidget(self.cerberus_constraint_l)
+        self.cerberus_layoutL.addWidget(self.cerberus_constraint_but)
+        self.cerberus_layoutF = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutF.addWidget(self.cerberus_treeSet_l)
+        self.cerberus_layoutF.addWidget(self.cerberus_treeSet_but)
+        self.cerberus_layoutM = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutM.addWidget(self.cerberus_muscle_l)
+        self.cerberus_layoutM.addWidget(self.cerberus_muscle_CB)
+        self.cerberus_layoutM.addWidget(self.cerberus_muscle_but)
+        
+        self.cerberus_layoutN = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutN.addWidget(self.cerberus_option_l)
+        self.cerberus_layoutN.addWidget(self.cerberus_optionTwist_chk)
+        self.cerberus_layoutN.addWidget(self.cerberus_optionStretch_chk)
+        self.cerberus_layoutN.addWidget(self.cerberus_optionSquash_chk)
+               
+        
 
-        self.skinTool_layoutA = QtWidgets.QHBoxLayout()
-        self.skinTool_layoutA.addWidget(self.skinTool_shrink_but)
-        self.skinTool_layoutA.addWidget(self.skinTool_grow_but)
-        self.skinTool_layoutA.addWidget(self.skinTool_ring_but)
-        self.skinTool_layoutA.addWidget(self.skinTool_loop_but)
+        
+        self.cerberus_layoutV = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutV.addWidget(self.cerberus_CreateBrick_but)
+        self.cerberus_layoutW = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutW.addWidget(self.cerberus_titleTree_l)
+        self.cerberus_layoutW.addWidget(self.cerberus_refreshTree_l)
+        self.cerberus_layoutW.addStretch(1)
+        self.cerberus_layoutX = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutX.addWidget(self.cerberus_tree)
+        self.cerberus_layoutY = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutY.addWidget(self.cerberus_Build_but)
+        self.cerberus_layoutZ = QtWidgets.QHBoxLayout()
+        self.cerberus_layoutZ.addWidget(self.cerberus_BuildToggle_chk)
+        
+        
+        self.cerberus_layout = QtWidgets.QVBoxLayout(self.cerberusTab)
+        self.cerberus_layout.addLayout(self.cerberus_layoutA)
+        self.cerberus_layout.addLayout(self.cerberus_layoutB)
+        self.cerberus_layout.addLayout(self.cerberus_layoutC)
+        self.cerberus_layout.addLayout(self.cerberus_layoutD)
+        self.cerberus_layout.addLayout(self.cerberus_layoutE)
+        self.cerberus_layout.addLayout(self.cerberus_layoutG)
+        self.cerberus_layout.addLayout(self.cerberus_layoutH)
+        self.cerberus_layout.addLayout(self.cerberus_layoutI)
+        self.cerberus_layout.addLayout(self.cerberus_layoutJ)
+        self.cerberus_layout.addLayout(self.cerberus_layoutK)
+        self.cerberus_layout.addLayout(self.cerberus_layoutL)
+        self.cerberus_layout.addLayout(self.cerberus_layoutF)
+        self.cerberus_layout.addLayout(self.cerberus_layoutM)
+        self.cerberus_layout.addLayout(self.cerberus_layoutN)
 
-        self.skinTool_layoutB = QtWidgets.QHBoxLayout()
-        self.skinTool_layoutB.addWidget(self.skinTool_0_but)
-        self.skinTool_layoutB.addWidget(self.skinTool_01_but)
-        self.skinTool_layoutB.addWidget(self.skinTool_025_but)
-        self.skinTool_layoutB.addWidget(self.skinTool_05_but)
-        self.skinTool_layoutB.addWidget(self.skinTool_075_but)
-        self.skinTool_layoutB.addWidget(self.skinTool_09_but)
-        self.skinTool_layoutB.addWidget(self.skinTool_1_but)
+        self.cerberus_layout.addLayout(self.cerberus_layoutV)
+        self.cerberus_layout.addLayout(self.cerberus_layoutW)
+        self.cerberus_layout.addLayout(self.cerberus_layoutX)
+        self.cerberus_layout.addLayout(self.cerberus_layoutY)
+        self.cerberus_layout.addLayout(self.cerberus_layoutZ)
 
-        self.skinTool_layoutC = QtWidgets.QHBoxLayout()
-        self.skinTool_layoutC.addWidget(self.skinTool_setWeight_but)
-        self.skinTool_layoutC.addWidget(self.skinTool_setWeight_sb)
-        self.skinTool_layoutC.addWidget(self.skinTool_setWeightAdd_but)
-        self.skinTool_layoutC.addWidget(self.skinTool_setWeightSub_but)
 
-        self.skinTool_layoutD = QtWidgets.QHBoxLayout()
-        self.skinTool_layoutD.addWidget(self.skinTool_scaleWeight_but)
-        self.skinTool_layoutD.addWidget(self.skinTool_scaleWeight_sb)
-        self.skinTool_layoutD.addWidget(self.skinTool_scaleWeightAdd_but)
-        self.skinTool_layoutD.addWidget(self.skinTool_scaleWeightSub_but)
 
-        self.skinTool_layoutE = QtWidgets.QHBoxLayout()
-        self.skinTool_layoutE.addWidget(self.skinTool_copy_but)
-        self.skinTool_layoutE.addWidget(self.skinTool_paste_but)
-        self.skinTool_layoutE.addWidget(self.skinTool_pastePos_but)
-        self.skinTool_layoutE.addWidget(self.skinTool_blend_but)
 
-        self.skinTool_layoutF = QtWidgets.QHBoxLayout()
-        self.skinTool_layoutF.addWidget(self.skinTool_pastePosTol_l)
-        self.skinTool_layoutF.addWidget(self.skinTool_pastePosTol_sb)
 
-        self.skinTool_layoutG = QtWidgets.QHBoxLayout()
-        self.skinTool_layoutG.addWidget(self.skinTool_verSelected_l)
-        self.skinTool_layoutG.addWidget(self.skinTool_verCopyBuffer_l)
 
-        self.skinTool_layoutH = QtWidgets.QHBoxLayout()
-        self.skinTool_layoutH.addWidget(self.skinTool_tree)
 
-        self.skinTool_layout = QtWidgets.QVBoxLayout(self.skinToolTab)
-        self.skinTool_layout.addLayout(self.skinTool_layoutA)
-        self.skinTool_layout.addLayout(self.skinTool_layoutB)
-        self.skinTool_layout.addLayout(self.skinTool_layoutC)
-        self.skinTool_layout.addLayout(self.skinTool_layoutD)
-        self.skinTool_layout.addLayout(self.skinTool_layoutE)
-        self.skinTool_layout.addLayout(self.skinTool_layoutF)
-        self.skinTool_layout.addLayout(self.skinTool_layoutG)
-        self.skinTool_layout.addLayout(self.skinTool_layoutH)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #Cerberus constraint setting tab
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #thanatos_tab
+
+        self.thanatos_layoutA = QtWidgets.QHBoxLayout()
+        self.thanatos_layoutA.addWidget(self.thanatos_shrink_but)
+        self.thanatos_layoutA.addWidget(self.thanatos_grow_but)
+        self.thanatos_layoutA.addWidget(self.thanatos_ring_but)
+        self.thanatos_layoutA.addWidget(self.thanatos_loop_but)
+
+        self.thanatos_layoutB = QtWidgets.QHBoxLayout()
+        self.thanatos_layoutB.addWidget(self.thanatos_0_but)
+        self.thanatos_layoutB.addWidget(self.thanatos_01_but)
+        self.thanatos_layoutB.addWidget(self.thanatos_025_but)
+        self.thanatos_layoutB.addWidget(self.thanatos_05_but)
+        self.thanatos_layoutB.addWidget(self.thanatos_075_but)
+        self.thanatos_layoutB.addWidget(self.thanatos_09_but)
+        self.thanatos_layoutB.addWidget(self.thanatos_1_but)
+
+        self.thanatos_layoutC = QtWidgets.QHBoxLayout()
+        self.thanatos_layoutC.addWidget(self.thanatos_setWeight_but)
+        self.thanatos_layoutC.addWidget(self.thanatos_setWeight_sb)
+        self.thanatos_layoutC.addWidget(self.thanatos_setWeightAdd_but)
+        self.thanatos_layoutC.addWidget(self.thanatos_setWeightSub_but)
+
+        self.thanatos_layoutD = QtWidgets.QHBoxLayout()
+        self.thanatos_layoutD.addWidget(self.thanatos_scaleWeight_but)
+        self.thanatos_layoutD.addWidget(self.thanatos_scaleWeight_sb)
+        self.thanatos_layoutD.addWidget(self.thanatos_scaleWeightAdd_but)
+        self.thanatos_layoutD.addWidget(self.thanatos_scaleWeightSub_but)
+
+        self.thanatos_layoutE = QtWidgets.QHBoxLayout()
+        self.thanatos_layoutE.addWidget(self.thanatos_copy_but)
+        self.thanatos_layoutE.addWidget(self.thanatos_paste_but)
+        self.thanatos_layoutE.addWidget(self.thanatos_pastePos_but)
+        self.thanatos_layoutE.addWidget(self.thanatos_blend_but)
+
+        self.thanatos_layoutF = QtWidgets.QHBoxLayout()
+        self.thanatos_layoutF.addWidget(self.thanatos_pastePosTol_l)
+        self.thanatos_layoutF.addWidget(self.thanatos_pastePosTol_sb)
+
+        self.thanatos_layoutG = QtWidgets.QHBoxLayout()
+        self.thanatos_layoutG.addWidget(self.thanatos_verSelected_l)
+        self.thanatos_layoutG.addWidget(self.thanatos_verCopyBuffer_l)
+
+        self.thanatos_layoutH = QtWidgets.QHBoxLayout()
+        self.thanatos_layoutH.addWidget(self.thanatos_tree)
+
+        self.thanatos_layout = QtWidgets.QVBoxLayout(self.thanatosTab)
+        self.thanatos_layout.addLayout(self.thanatos_layoutA)
+        self.thanatos_layout.addLayout(self.thanatos_layoutB)
+        self.thanatos_layout.addLayout(self.thanatos_layoutC)
+        self.thanatos_layout.addLayout(self.thanatos_layoutD)
+        self.thanatos_layout.addLayout(self.thanatos_layoutE)
+        self.thanatos_layout.addLayout(self.thanatos_layoutF)
+        self.thanatos_layout.addLayout(self.thanatos_layoutG)
+        self.thanatos_layout.addLayout(self.thanatos_layoutH)
+        
+        #cerberus tab
+        
+        
 
         #tool_for_maya_tab
 
@@ -837,7 +1145,15 @@ class Hades(MyUi):
 
     def tabChanged(self):
         if self.tabMaster.currentIndex() == 0:
+            self.tabMaster.removeTab(2)
             self.tabMaster.removeTab(1)
+            self.resize(400, 400)
+        else:
+            pass
+        if self.tabMaster.currentIndex() == 1:
+            if self.tabMaster.tabText(1) == 'Cerberus':
+                self.tabMaster.removeTab(2)
+                self.resize(400, 800)
         else:
             pass
         hadCore.endEventSelection()
@@ -851,11 +1167,34 @@ class Hades(MyUi):
 
         self.tabMaster.addTab(self.cerberusTab,'Cerberus')
         self.tabMaster.setCurrentIndex(1)
+        self.resize(400, 800)
 
-    def clickSkinTool_But(self):
-        self.tabMaster.addTab(self.skinToolTab,'SkinTool')
+    def clickCerberusCons_But(self):
+
+        self.tabMaster.addTab(self.cerberusConsTab,'Constraint Setting')
+        self.tabMaster.setCurrentIndex(2)
+        self.resize(400, 400)
+        
+    def clickCerberusTree_But(self):
+
+        self.tabMaster.addTab(self.cerberusTreeTab,'Tree setting')
+        self.tabMaster.setCurrentIndex(2)
+        self.resize(400, 400)
+        
+    def clickCerberusMuscle_But(self):
+
+        self.tabMaster.addTab(self.cerberusMuscleTab,'Muscle setting')
+        self.tabMaster.setCurrentIndex(2)
+        self.resize(400, 400)
+
+    def clickThanatos_But(self):
+        self.tabMaster.addTab(self.thanatosTab,'Thanatos')
         self.tabMaster.setCurrentIndex(1)
         hadCore.startEventSelection()
+        
+    def clickChaos_But(self):
+        self.tabMaster.addTab(self.chaosTab,'Chaos')
+        self.tabMaster.setCurrentIndex(1)
 
     def clickToolMaya_But(self):
         self.tabMaster.addTab(self.toolMayaTab,'Maya Tools')
@@ -883,70 +1222,70 @@ class Hades(MyUi):
         hadEnv.AUTO_RIG_MIRROR = self.autoRig_mirror_chk.isChecked()
         hadCore.coreAutoRigGenerator()
 
-    #SkinTool
+    #thanatos
 
-    def clickSkinToolShrink_But(self):
-        hadCore.coreSkinToolShrink()
+    def clickthanatosShrink_But(self):
+        hadCore.corethanatosShrink()
 
-    def clickSkinToolGrow_But(self):
-        hadCore.coreSkinToolGrow()
+    def clickthanatosGrow_But(self):
+        hadCore.corethanatosGrow()
 
-    def clickSkinToolRing_But(self):
-        hadCore.coreSkinToolRing()
+    def clickthanatosRing_But(self):
+        hadCore.corethanatosRing()
 
-    def clickSkinToolLoop_But(self):
-        hadCore.coreSkinToolLoop()
+    def clickthanatosLoop_But(self):
+        hadCore.corethanatosLoop()
 
-    def clickSkinTool0_But(self):
-        hadCore.coreSkinTool0(self)
+    def clickthanatos0_But(self):
+        hadCore.corethanatos0(self)
 
-    def clickSkinTool01_But(self):
-        hadCore.coreSkinTool01(self)
+    def clickthanatos01_But(self):
+        hadCore.corethanatos01(self)
 
-    def clickSkinTool025_But(self):
-        hadCore.coreSkinTool025(self)
+    def clickthanatos025_But(self):
+        hadCore.corethanatos025(self)
 
-    def clickSkinTool05_But(self):
-        hadCore.coreSkinTool05(self)
+    def clickthanatos05_But(self):
+        hadCore.corethanatos05(self)
 
-    def clickSkinTool075_But(self):
-        hadCore.coreSkinTool075(self)
+    def clickthanatos075_But(self):
+        hadCore.corethanatos075(self)
 
-    def clickSkinTool09_But(self):
-        hadCore.coreSkinTool09(self)
+    def clickthanatos09_But(self):
+        hadCore.corethanatos09(self)
 
-    def clickSkinTool1_But(self):
-        hadCore.coreSkinTool1(self)
+    def clickthanatos1_But(self):
+        hadCore.corethanatos1(self)
 
-    def clickSkinToolSetWeight_But(self):
-        hadCore.coreSkinToolSetWeight()
+    def clickthanatosSetWeight_But(self):
+        hadCore.corethanatosSetWeight()
 
-    def clickSkinToolSetWeightAdd_But(self):
-        hadCore.coreSkinToolSetWeightAdd()
+    def clickthanatosSetWeightAdd_But(self):
+        hadCore.corethanatosSetWeightAdd()
 
-    def clickSkinToolSetWeightSub_But(self):
-        hadCore.coreSkinToolSetWeightSub()
+    def clickthanatosSetWeightSub_But(self):
+        hadCore.corethanatosSetWeightSub()
 
-    def clickSkinToolScaleWeight_But(self):
-        hadCore.coreSkinToolScaleWeight()
+    def clickthanatosScaleWeight_But(self):
+        hadCore.corethanatosScaleWeight()
 
-    def clickSkinToolScaleWeightAdd_But(self):
-        hadCore.coreSkinToolScaleWeightAdd()
+    def clickthanatosScaleWeightAdd_But(self):
+        hadCore.corethanatosScaleWeightAdd()
 
-    def clickSkinToolScaleWeightSub_But(self):
-        hadCore.coreSkinToolScaleWeightSub()
+    def clickthanatosScaleWeightSub_But(self):
+        hadCore.corethanatosScaleWeightSub()
 
-    def clickSkinToolCopy_But(self):
-        hadCore.coreSkinToolCopy()
+    def clickthanatosCopy_But(self):
+        hadCore.corethanatosCopy()
 
-    def clickSkinToolPaste_But(self):
-        hadCore.coreSkinToolPaste()
+    def clickthanatosPaste_But(self):
+        hadCore.corethanatosPaste()
 
-    def clickSkinToolPastePos_But(self):
+    def clickthanatosPastePos_But(self):
         hadCore.coreSkinTooPastePos()
 
-    def clickSkinToolBlend_But(self):
-        hadCore.coreSkinToolBlend()
+    def clickthanatosBlend_But(self):
+        hadCore.corethanatosBlend()
 
 
     #Tool for maya
